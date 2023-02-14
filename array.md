@@ -18,6 +18,19 @@ Array
 * To remove elements, except for end, must shift the other elements (up to n elements) O(n)! 
 * When insert have to shift others right! When remove have to shift others left -- keeps everything contiguous still!
 
+Array Insert - move elements over to create space - O(n)
+
+| 0 | 1 | 2 | 3 | 4 | 5 |
+|---|---|---|---|---|---|
+| 1 | 3 |   | 4 | 7 | 8 |
+
+Array Insert - add new element value
+
+| 0 | 1 | 2 | 3 | 4 | 5 |
+|---|---|---|---|---|---|
+| 1 | 3 | 5 | 4 | 7 | 8 |
+
+
 ```mermaid
 flowchart LR
     subgraph RAM
