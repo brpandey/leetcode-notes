@@ -2,10 +2,10 @@ Linked List
 
 | Operations | Time Complexity |
 |------------|-----------------|
-| Insert End | O(1)            |
-| Remove End | O(1)            |
-| Insert Mid | O(1)            |
-| Remove Mid | O(1)            |
+| Insert End with Tail ptr / else | O(1)  / O(n)          |
+| Remove End with Tail ptr / else | O(1)  / O(n)          |
+| Insert Mid with Mid ptr / else | O(1)  / O(n)          |
+| Remove Mid with Mid ptr / else | O(1)  / O(n)          |
 
 ```mermaid
 flowchart LR
@@ -28,10 +28,10 @@ flowchart LR
 ```mermaid
 flowchart LR
     subgraph RAM
-        id1[[x008: 6]] -.- id2
-        id2[[x105: 3]] -.- id3
-        id3[[x792: 9]] -.- id4
-        id4[[x910: 8]]
+        id1[[0x008: 6]] -.- id2
+        id2[[0x105: 3]] -.- id3
+        id3[[0x792: 9]] -.- id4
+        id4[[0x910: 8]]
     end
  ```
  
