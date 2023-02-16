@@ -1,6 +1,4 @@
-Graphs
-
-Complexity 
+# Graphs 
 
 * Graphs are represented by nodes and edges (to other nodes or neighbors)
 * Graphs are best modeled with adjacency lists e.g.
