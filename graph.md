@@ -39,6 +39,7 @@ flowchart TD
       id1(1)
 ```
 
+BFS Traversal Path: 1
 Iteration 1: Grab element from queue -- 1, visit it, its neighbors are 4 and 2, add it to queue
 
 | ~~1~~ | 4 | 2 |
@@ -51,6 +52,7 @@ flowchart TD
       id4(4)
 ```
 
+BFS Traversal Path: 1, 4
 Iteration 2: Grab next element from queue -- 4, visit it, its neighbors are 1 (already visited) and 3, add it to queue
 
 | ~~1~~ | ~~4~~ | 2 | 3 |
@@ -64,11 +66,12 @@ flowchart TD
       id3(3)
 ```
 
-
+BFS Traversal Path: 1, 4, 2
 Iteration 3: Grab next element from queue -- 2, visit it, its neighbors are 1 (already visited) and 3 (already visited)
 | ~~1~~ | ~~4~~ | ~~2~~ | 3 |
 |---|---|---| --- |
 
+BFS Traversal Path: 1, 4, 2, 3
 Iteration 4: Grab next element from queue -- 3, visit it, its neighbors are 2 (already visited), 4 (already visited), 9, and 10, add it to queue
 | ~~1~~ | ~~4~~ | ~~2~~ | ~~3~~ | 9 | 10 |
 |---|---|---| --- | ---| --- |
@@ -83,10 +86,12 @@ flowchart TD
       id10(10)
 ```
 
+BFS Traversal Path: 1, 4, 2, 3, 9
 Iteration 5: Grab next element from queue - 9, visit it, its neighbors are only 3 (already visited)
 | ~~1~~ | ~~4~~ | ~~2~~ | ~~3~~ | ~~9~~ | 10 |
 |---|---|---| --- | ---| --- |
 
+BFS Traversal Path: 1, 4, 2, 3, 9, 10
 Iteration 6: Grab next element from queue - 10, visit it, its neighbors are only 3 (already visited)
 | ~~1~~ | ~~4~~ | ~~2~~ | ~~3~~ | ~~9~~ | ~~10~~ |
 |---|---|---| --- | ---| --- |
@@ -94,39 +99,134 @@ Iteration 6: Grab next element from queue - 10, visit it, its neighbors are only
 Done
 
 
-* A DFS approach of above graph could be:
+> A DFS approach of above graph could be:
 
-Initial Step: Start with seed element 1, visit one of its neighbors, e.g. 4 or 2, save 1 onto stack (start exploring 2, ignore 4 for now)
+* DFS Traversal Path: 1
+* Initial Step: Start with seed element 1, visit one of its neighbors, e.g. 4 or 2, save 1 onto stack (start exploring 2, ignore 4 for now)
 
 | Stack |
 |-------|
 |       |
 |       |
 |       |
-|       |
 | 1     |
+
 
 ```mermaid
 flowchart TD
-      id1(1)
+      id1(1) --- id2 & id4
+      id2(((2)))
+      id4(4)
 ```
 
-Iteration 1: Visit one of 2's neighbors, e.g. 1 (already visited) or 3, save 2 onto stack (start exploring 3)
+* DFS Traversal Path: 1, 2
+* Iteration 1: Visit one of 2's neighbors, e.g. 1 (already visited) or 3, save 2 onto stack (start exploring 3)
+
+| Stack |
+|-------|
+|       |
+|       |
+| 2     |
+| 1     |
+
+
+```mermaid
+flowchart TD
+      id1(1) --- id2 & id4
+      id2(2) --- id3
+      id4(4) --- id3
+      id3(((3)))
+```
+
+* DFS Traversal Path: 1, 2, 3
+* Iteration 2: Visit one of 3's neighbors, e.g. 2 (already visited) or 4 or 9 or 10, save 3 onto stack (start exploring 9)
+
+| Stack |
+|-------|
+|       |
+| 3     |
+| 2     |
+| 1     |
+
+
+```mermaid
+flowchart TD
+      id1(1) --- id2 & id4
+      id2(2) --- id3
+      id4(4) --- id3
+      id3(3) --- id9 & id10
+      id9(((9)))
+      id10(10)
+```
+
+* DFS Traversal Path: 1, 2, 3, 9
+* Iteration 3: Visit one of 9's neighbors -- no unvisited neighbors! Pop from stack, get 3, check non-visited neighbors of 3, explore 10, save 3 again!
+
+| Stack |
+|-------|
+|       |
+|       |
+| 2     |
+| 1     |
+
+
+| Stack |
+|-------|
+|       |
+| 3     |
+| 2     |
+| 1     |
+
+* DFS Traversal Path: 1, 2, 3, 9, 10
+* Iteration 4: Visit one of 10's neighbors -- no unvisited neighbors! Pop from stack, get 3, explore
+
+| Stack |
+|-------|
+|       |
+|       |
+| 2     |
+| 1     |
+
+
+```mermaid
+flowchart TD
+      id1(1) --- id2 & id4
+      id2(2) --- id3
+      id4(4) --- id3
+      id3(((3))) --- id9 & id10
+      id9(9)
+      id10(10)
+```
+
+* DFS Traversal Path: 1, 2, 3, 9, 10
+* Iteration 5: Visit one of 3's neighbors -- e.g. 4! explore 4
+
+| Stack |
+|-------|
+|       |
+|       |
+| 2     |
+| 1     |
+
+* DFS Traversal Path: 1, 2, 3, 9, 10, 4
+* Iteration 6: Vist one of 4's neighbor's -- no unvisited neighbors (1,3)! Pop from stack, get 2, explore
 
 | Stack |
 |-------|
 |       |
 |       |
 |       |
-| 2     |
 | 1     |
 
-Iteration 2: Visit one of 3's neighbors, e.g. 4,2 (already visited) or 9 or 10, save 3 onto stack (start exploring 9)
+* Iteration 7: Visit one of 2's neighbors -- no unvisited neighbors! Pop from stack, get 1, explore
 
 | Stack |
 |-------|
 |       |
 |       |
 |       |
-| 2     |
-| 1     |
+|       |
+
+* Iteration 8: Visit one of 1's neighbors -- no unvisited neighbors! Stack empty
+
+Done
