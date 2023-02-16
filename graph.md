@@ -7,10 +7,10 @@ Complexity
 
 | node | neigbhors |
 |------|-----------|
-| 1    | 4,2       |
-| 2    | 1,3       |
-| 3    | 2,4,9,10  |
-| 4    | 1,3       |
+| 1    | 4, 2       |
+| 2    | 1, 3       |
+| 3    | 2, 4, 9, 10  |
+| 4    | 1, 3       |
 | 9    | 3         |
 | 10   | 3         |
 
@@ -29,7 +29,7 @@ flowchart TD
 
 * A BFS approach of above graph could be:
 
-Iteration 0: Start with seed element, add it to queue
+Initial Step: Start with seed element, add it to queue
 
 | 1 |
 |---|
@@ -92,3 +92,41 @@ Iteration 6: Grab next element from queue - 10, visit it, its neighbors are only
 |---|---|---| --- | ---| --- |
 
 Done
+
+
+* A DFS approach of above graph could be:
+
+Initial Step: Start with seed element 1, visit one of its neighbors, e.g. 4 or 2, save 1 onto stack (start exploring 2, ignore 4 for now)
+
+| Stack |
+|-------|
+|       |
+|       |
+|       |
+|       |
+| 1     |
+
+```mermaid
+flowchart TD
+      id1(1)
+```
+
+Iteration 1: Visit one of 2's neighbors, e.g. 1 (already visited) or 3, save 2 onto stack (start exploring 3)
+
+| Stack |
+|-------|
+|       |
+|       |
+|       |
+| 2     |
+| 1     |
+
+Iteration 2: Visit one of 3's neighbors, e.g. 4,2 (already visited) or 9 or 10, save 3 onto stack (start exploring 9)
+
+| Stack |
+|-------|
+|       |
+|       |
+|       |
+| 2     |
+| 1     |
