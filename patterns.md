@@ -1,3 +1,27 @@
+```mermaid
+
+flowchart TD
+  id1(Arrays & Hashing) ---> id2 & id3
+  id2(2 Pointers) ---> id4 & id5 & id6
+  id3(Stack)
+  id4(Binary Search) ---> id7
+  id5(Sliding Window)
+  id6(Linked List) ---> id7
+  id7(Trees) ---> id8 & id9 & id10
+  id8(Tries)
+  id9(Heap / Priority Queues) ---> id13 & id14 & id15
+  id10(Backtracking) ---> id11 & id12
+  id11(Graphs) ---> id15 & id16 & id18
+  id12(1-D DP) ---> id16 & id17
+  id13(Intervals)
+  id14(Greedy)
+  id15(Advanced Graphs)
+  id16(2-D DP)
+  id17(Bit Manipulation) ---> id18
+  id18(Math & Geometry)
+```
+
+
 
 ## Sliding Window
 > [Playlist](https://www.youtube.com/watch?v=1pkOgXD63yU&list=PLot-Xpze53leOBgcVsJBEGrHPd_7x_koV)
