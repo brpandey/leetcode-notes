@@ -1,7 +1,3 @@
-![Complexity](images/complexity.png)
-
-
-
 
 ## Sliding Window
 > [Playlist](https://www.youtube.com/watch?v=1pkOgXD63yU&list=PLot-Xpze53leOBgcVsJBEGrHPd_7x_koV)
