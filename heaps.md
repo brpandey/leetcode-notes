@@ -3,10 +3,10 @@
 | insert    | O(log n)        |
 | remove    | O(log n)        |
 | heapify   | O(n)            |
-| min/max   | O(1)            |
+| top       | O(1)            |
 
 Notes
-* Efficient to get max or min element O(1)
+* Efficient to access max or min element - top is 0(1), remove min/max worst case is O(log n)
 * Order property: Min always going to be root and children always going to be greater, ditto for max with children less than
 * each layer of the tree always filled in
 * heapify takes O(n) time given all n elements are already present beforehand
