@@ -8,18 +8,7 @@ flowchart TD
   id4(D Binary Search) ---> id7
   id5(E Sliding Window)
   id6(F Linked List) ---> id7
-  id7(G Trees) ---> id8 & id9 & id10
-  id8(H Tries)
-  id9(I Heap / Priority Queues) ---> id13 & id14 & id15
-  id10(J Backtracking) ---> id11 & id12
-  id11(K Graphs) ---> id15 & id16 & id18
-  id12(L 1-D DP) ---> id16 & id17
-  id13(M Intervals)
-  id14(N Greedy)
-  id15(O Advanced Graphs)
-  id16(P 2-D DP)
-  id17(Q Bit Manipulation) ---> id18
-  id18(R Math & Geometry)
+  id7(G Trees)
 ```
 
 > Leetcode Problems: Easy - E, Medium - M, Hard - H
@@ -133,6 +122,23 @@ pub fn best_time_to_buy_sell(nums: &[i32]) -> i32 {
 9. [LRU Cache](https://github.com/brpandey/leetcode/blob/master/rust/src/p0146_lru_cache.rs) 146 M
 10. [Merge K Sorted Lists](https://github.com/brpandey/leetcode/blob/master/rust/src/p0023_merge_k_sorted_lists.rs) 23 H
 11. Reverse Nodes In K Group [25](https://leetcode.com/problems/reverse-nodes-in-k-group/) H
+
+```mermaid
+
+flowchart TD
+  id7(G Trees) ---> id8 & id9 & id10
+  id8(H Tries)
+  id9(I Heap / Priority Queues) ---> id13 & id14 & id15
+  id10(J Backtracking) ---> id11 & id12
+  id11(K Graphs) ---> id15 & id16 & id18
+  id12(L 1-D DP) ---> id16 & id17
+  id13(M Intervals)
+  id14(N Greedy)
+  id15(O Advanced Graphs)
+  id16(P 2-D DP)
+  id17(Q Bit Manipulation) ---> id18
+  id18(R Math & Geometry)
+```
 
 ### G) Trees (DFS & BFS) ~~11~~
 > [Playlist](https://www.youtube.com/watch?v=OnSn2XEQ4MY&list=PLot-Xpze53ldg4pN6PfzoJY7KsKcxF1jg&index=2&t=0s)
