@@ -240,7 +240,7 @@ pub fn best_time_to_buy_sell(nums: &[i32]) -> i32 {
 4. Gas Station	[134](https://leetcode.com/problems/gas-station/) M
 5. Hand of Straights	[846](https://leetcode.com/problems/hand-of-straights/) M
 6. Merge Triplets to Form Target Triplet	[1899](https://leetcode.com/problems/merge-triplets-to-form-target-triplet/) M
-7. [Partition Labels](https://github.com/brpandey/leetcode/blob/master/rust/src/p0763_partition_labels.rs)	M
+7. [Partition Labels](https://github.com/brpandey/leetcode/blob/master/rust/src/p0763_partition_labels.rs) 763 M
 8. Valid Parenthesis String [678](https://leetcode.com/problems/valid-parenthesis-string/) M
 
 ### O) Advanced Graphs ~~3~~
