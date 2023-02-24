@@ -21,25 +21,28 @@ flowchart TD
   id18(Math & Geometry)
 ```
 
+> Leetode Problems: Easy - E, Medium - M, Hard - H
+
+
 ## Arrays & Hashing
 
-1. Easy - [Contains Duplicate](https://github.com/brpandey/leetcode/blob/master/rust/src/p0217_contains_duplicate.rs)
-2. Easy - [Valid Anagram](https://github.com/brpandey/leetcode/blob/master/rust/src/p0242_valid_anagram.rs)
-3. Easy - [Two Sum](https://github.com/brpandey/leetcode/blob/master/rust/src/p0001_two_sum.rs)
-4. Medium - [Group Anagrams](https://github.com/brpandey/leetcode/blob/master/rust/src/p0049_group_anagrams.rs)	
-5. Medium - [Top K Frequent Elements](https://github.com/brpandey/leetcode/blob/master/rust/src/p0347_top_k_frequent_elements.rs)
-6. Medium - [Product of Array Except Self](https://github.com/brpandey/leetcode/blob/master/rust/src/p0238_product_of_array_except_self.rs)	
-7. Medium - [Valid Sudoku](https://github.com/brpandey/leetcode/blob/master/rust/src/p0036_valid_sudoku.rs)	
-8. Medium - [Encode and Decode Strings](https://github.com/brpandey/leetcode/blob/master/rust/src/p0271_encode_and_decode_strings.rs)	
-9. Medium - [Longest Consecutive Sequence](https://github.com/brpandey/leetcode/blob/master/rust/src/p0128_longest_consecutive_sequence.rs)
+1. [Contains Duplicate](https://github.com/brpandey/leetcode/blob/master/rust/src/p0217_contains_duplicate.rs) 217 E
+2. [Valid Anagram](https://github.com/brpandey/leetcode/blob/master/rust/src/p0242_valid_anagram.rs) 242 E
+3. [Two Sum](https://github.com/brpandey/leetcode/blob/master/rust/src/p0001_two_sum.rs) 1 E
+4. [Group Anagrams](https://github.com/brpandey/leetcode/blob/master/rust/src/p0049_group_anagrams.rs)	49 E
+5. [Top K Frequent Elements](https://github.com/brpandey/leetcode/blob/master/rust/src/p0347_top_k_frequent_elements.rs) 347 M
+6. [Product of Array Except Self](https://github.com/brpandey/leetcode/blob/master/rust/src/p0238_product_of_array_except_self.rs)	238 M
+7. [Valid Sudoku](https://github.com/brpandey/leetcode/blob/master/rust/src/p0036_valid_sudoku.rs)	36 M
+8. [Encode and Decode Strings](https://github.com/brpandey/leetcode/blob/master/rust/src/p0271_encode_and_decode_strings.rs)	271 M
+9. [Longest Consecutive Sequence](https://github.com/brpandey/leetcode/blob/master/rust/src/p0128_longest_consecutive_sequence.rs) 128 M
 
 ## Two Pointers
 
-1. Easy - [Valid Palindrome](https://github.com/brpandey/leetcode/blob/master/rust/src/p0125_valid_palindrome.rs)
-2. Medium - [Two Sum II Input Array Is Sorted](https://github.com/brpandey/leetcode/blob/master/rust/src/p0167_two_sum_ii.rs)
-3. Medium - [3Sum](https://github.com/brpandey/leetcode/blob/master/rust/src/p0015_3sum.rs)
-4. Medium - [Container With Most Water](https://github.com/brpandey/leetcode/blob/master/rust/src/p0011_container_most_water.rs)
-5. Hard - [Trapping Rain Water](https://github.com/brpandey/leetcode/blob/master/rust/src/p0042_trapping_rain_water.rs)
+1. [Valid Palindrome](https://github.com/brpandey/leetcode/blob/master/rust/src/p0125_valid_palindrome.rs) 125 E
+2. [Two Sum II Input Array Is Sorted](https://github.com/brpandey/leetcode/blob/master/rust/src/p0167_two_sum_ii.rs) 167 M
+3. [3Sum](https://github.com/brpandey/leetcode/blob/master/rust/src/p0015_3sum.rs) 15 M
+4. [Container With Most Water](https://github.com/brpandey/leetcode/blob/master/rust/src/p0011_container_most_water.rs) 11 M
+5. [Trapping Rain Water](https://github.com/brpandey/leetcode/blob/master/rust/src/p0042_trapping_rain_water.rs) 42 H
 
 ## Sliding Window
 > [Playlist](https://www.youtube.com/watch?v=1pkOgXD63yU&list=PLot-Xpze53leOBgcVsJBEGrHPd_7x_koV)
@@ -63,22 +66,22 @@ pub fn best_time_to_buy_sell(nums: &[i32]) -> i32 {
     }
 ```
 
-1. [Best Time to Buy and Sell a Stock](https://github.com/brpandey/leetcode/blob/master/rust/src/p0121_best_time_to_buy_sell.rs)
-2. [Longest Substring Without Repeating Characters](https://github.com/brpandey/leetcode/blob/master/rust/src/p0003_longest_substr_no_repeat.rs)
-3. [Longest Repeating Character Replacement](https://github.com/brpandey/leetcode/blob/master/rust/src/p0424_longest_repeating_char_replacement.rs)
-4. Permutation in String - Leetcode 567
-5. [Minimum Window Substring](https://github.com/brpandey/leetcode/blob/master/rust/src/p0076_minimum_window_substring.rs)
-6. [Sliding Window Maximum - Monotonic Queue](https://github.com/brpandey/leetcode/blob/master/rust/src/p0239_sliding_window_maximum.rs)
+1. [Best Time to Buy and Sell a Stock](https://github.com/brpandey/leetcode/blob/master/rust/src/p0121_best_time_to_buy_sell.rs) 121 E
+2. [Longest Substring Without Repeating Characters](https://github.com/brpandey/leetcode/blob/master/rust/src/p0003_longest_substr_no_repeat.rs) 3 M
+3. [Longest Repeating Character Replacement](https://github.com/brpandey/leetcode/blob/master/rust/src/p0424_longest_repeating_char_replacement.rs) 424 M
+4. Permutation in String [567](https://leetcode.com/problems/permutation-in-string/) M
+5. [Minimum Window Substring](https://github.com/brpandey/leetcode/blob/master/rust/src/p0076_minimum_window_substring.rs) 76 H
+6. [Sliding Window Maximum - Monotonic Queue](https://github.com/brpandey/leetcode/blob/master/rust/src/p0239_sliding_window_maximum.rs) 239 H
 
 ## Stack
 
-1. Easy - Valid Parentheses [Problem](https://leetcode.com/problems/valid-parentheses/)
-2. Medium - Min Stack [Problem](https://leetcode.com/problems/min-stack/)
-3. Medium - Evaluate Reverse Polish Notation [Problem](https://leetcode.com/problems/evaluate-reverse-polish-notation/)
-4. Medium - [Generate Parentheses](https://github.com/brpandey/leetcode/blob/master/rust/src/p0022_generate_parens.rs)	
-5. Medium - [Daily Temperatures](https://github.com/brpandey/leetcode/blob/master/rust/src/p0739_daily_temperatures.rs)
-6. Medium - [Car Fleet](https://github.com/brpandey/leetcode/blob/master/rust/src/p0853_car_fleet.rs)
-7. Hard - Largest Rectangle In Histogram [Problem](https://leetcode.com/problems/largest-rectangle-in-histogram/)
+1. Valid Parentheses [20](https://leetcode.com/problems/valid-parentheses/) E
+2. Min Stack [155](https://leetcode.com/problems/min-stack/) M
+3. Evaluate Reverse Polish Notation [150](https://leetcode.com/problems/evaluate-reverse-polish-notation/) M
+4. [Generate Parentheses](https://github.com/brpandey/leetcode/blob/master/rust/src/p0022_generate_parens.rs) 22	M
+5. [Daily Temperatures](https://github.com/brpandey/leetcode/blob/master/rust/src/p0739_daily_temperatures.rs) 739 M
+6. [Car Fleet](https://github.com/brpandey/leetcode/blob/master/rust/src/p0853_car_fleet.rs) 853 M
+7. Largest Rectangle In Histogram [84](https://leetcode.com/problems/largest-rectangle-in-histogram/) H
 
 ## Binary Search
 > [Playlist](https://www.youtube.com/playlist?list=PLot-Xpze53leNZQd0iINpD-MAhMOMzWvO)
@@ -109,80 +112,76 @@ pub fn best_time_to_buy_sell(nums: &[i32]) -> i32 {
         return -1
     }
  ```
-1. [Binary search](https://github.com/brpandey/leetcode/blob/master/rust/src/p0704_binary_search.rs)
-2. Search a 2D Matrix [Problem](https://leetcode.com/problems/search-a-2d-matrix/)
-3. [Koko eating bananas](https://github.com/brpandey/leetcode/blob/master/rust/src/p0875_koko_eating_bananas.rs)
-4. [Find minimum in rotated sorted array](https://github.com/brpandey/leetcode/blob/master/rust/src/p0153_find_minimum_in_rotated_sorted_array.rs)
-5. [Search in rotated sorted array](https://github.com/brpandey/leetcode/blob/master/rust/src/p0033_search_in_rotated_sorted_array.rs)
-6. [Time based key value store](https://github.com/brpandey/leetcode/blob/master/rust/src/p0981_time_based_key_value_store.rs)
-7. [Median two sorted arrays](https://github.com/brpandey/leetcode/blob/master/rust/src/p0004_median_two_sorted_arrays.rs)
+1. [Binary search](https://github.com/brpandey/leetcode/blob/master/rust/src/p0704_binary_search.rs) E
+2. Search a 2D Matrix [74](https://leetcode.com/problems/search-a-2d-matrix/) M
+3. [Koko eating bananas](https://github.com/brpandey/leetcode/blob/master/rust/src/p0875_koko_eating_bananas.rs) 875 M
+4. [Find minimum in rotated sorted array](https://github.com/brpandey/leetcode/blob/master/rust/src/p0153_find_minimum_in_rotated_sorted_array.rs) 153 M
+5. [Search in rotated sorted array](https://github.com/brpandey/leetcode/blob/master/rust/src/p0033_search_in_rotated_sorted_array.rs) 33 M
+6. [Time based key value store](https://github.com/brpandey/leetcode/blob/master/rust/src/p0981_time_based_key_value_store.rs) 981 M
+7. [Median two sorted arrays](https://github.com/brpandey/leetcode/blob/master/rust/src/p0004_median_two_sorted_arrays.rs) 4 H
 
 ## Linked List
 
-1. Reverse Linked List	
-2. Merge Two Sorted Lists	
-3. Linked List Cycle	
-4. Reorder List	
-5. Remove Nth Node From End of List	
-6. Copy List With Random Pointer	
-7. Add Two Numbers	
-8. Find The Duplicate Number	
-9. LRU Cache	
-10. Merge K Sorted Lists	
-11. Reverse Nodes In K Group
+1. [Reverse Linked List](https://github.com/brpandey/leetcode/blob/master/rust/src/p0206_reverse_linked_list.rs) 206 E
+2. [Merge Two Sorted Lists](https://github.com/brpandey/leetcode/blob/master/rust/src/p0021_merge_two_sorted_lists.rs) 21 E	
+3. [Linked List Cycle](https://github.com/brpandey/leetcode/blob/master/rust/src/p0141_linked_list_cycle.rs)	141 E
+4. [Reorder List](https://github.com/brpandey/leetcode/blob/master/rust/src/p0143_reorder_list.rs) 143 M	
+5. [Remove Nth Node From End of List](https://github.com/brpandey/leetcode/blob/master/rust/src/p0019_remove_nth_list.rs) 19 M
+6. Copy List With Random Pointer	[138](https://leetcode.com/problems/copy-list-with-random-pointer/) M
+7. [Add Two Numbers](https://github.com/brpandey/leetcode/blob/master/rust/src/p0002_add_two_numbers.rs) M
+8. [Find The Duplicate Number](https://github.com/brpandey/leetcode/blob/master/rust/src/p0287_find_the_duplicate_number.rs) M
+9. [LRU Cache](https://github.com/brpandey/leetcode/blob/master/rust/src/p0146_lru_cache.rs) M
+10. [Merge K Sorted Lists](https://github.com/brpandey/leetcode/blob/master/rust/src/p0023_merge_k_sorted_lists.rs) H
+11. Reverse Nodes In K Group [25](https://leetcode.com/problems/reverse-nodes-in-k-group/) H
 
-## Trees
+## Trees (DFS & BFS)
 > [Playlist](https://www.youtube.com/watch?v=OnSn2XEQ4MY&list=PLot-Xpze53ldg4pN6PfzoJY7KsKcxF1jg&index=2&t=0s)
 
-> Topics
-> - Breadth First Search (BFS)
-> - Depth First Search (DFS)
-
-1. Easy - [Invert Binary Tree - DFS](https://github.com/brpandey/leetcode/blob/master/rust/src/p0226_invert_binary_tree.rs)
-2. Easy - [Maximum Depth of Binary Tree](https://github.com/brpandey/leetcode/blob/master/rust/src/p0104_maximum_depth_of_binary_tree.rs)
-3. Easy - Diameter of a Binary Tree [Problem](https://leetcode.com/problems/diameter-of-binary-tree/)
-4. Easy - Balanced Binary Tree [Problem](https://leetcode.com/problems/balanced-binary-tree/)
-5. Easy - [Same Tree](https://github.com/brpandey/leetcode/blob/master/rust/src/p0100_same_tree.rs)
-6. Easy - [Subtree of Another Tree](https://github.com/brpandey/leetcode/blob/master/rust/src/p0572_subtree_of_another_tree.rs)
-7. Medium - [Lowest Common Ancestor of a Binary Search Tree](https://github.com/brpandey/leetcode/blob/master/rust/src/p0235_lowest_common_ancestor_of_a_binary_tree.rs)
-8. Medium - [Binary Tree Level Order Traversal - BFS](https://github.com/brpandey/leetcode/blob/master/rust/src/p0102_binary_tree_level_order_traversal.rs)
-9. Medium - Binary Tree Right Side View - BFS [Problem](https://leetcode.com/problems/binary-tree-right-side-view/)
-10. Medium - Count Good Nodes In Binary Tree [Problem](https://leetcode.com/problems/count-good-nodes-in-binary-tree/)
-11. Medium - [Validate Binary Search Tree - DFS](https://github.com/brpandey/leetcode/blob/master/rust/src/p0098_validate_binary_search_tree.rs)
-12. Medium - [Kth Smallest Element in a BST](https://github.com/brpandey/leetcode/blob/master/rust/src/p0230_kth_smallest_element_in_bst.rs)
-13. Medium - [Construct Binary Tree from Inorder and Preorder Traversal](https://github.com/brpandey/leetcode/blob/master/rust/src/p0105_construct_binary_tree_from_preorder_and_inorder_traversal.rs)
-14. Hard - [Binary Tree Maximum Path Sum](https://github.com/brpandey/leetcode/blob/master/rust/src/p0124_binary_tree_max_path_sum.rs)
-15. Hard - [Serialize and Deserialize Binary Tree - Preorder Traversal](https://github.com/brpandey/leetcode/blob/master/rust/src/p0297_serialize_and_deserialize_binary_tree.rs)
+1. [Invert Binary Tree - DFS](https://github.com/brpandey/leetcode/blob/master/rust/src/p0226_invert_binary_tree.rs) 226 E
+2. [Maximum Depth of Binary Tree](https://github.com/brpandey/leetcode/blob/master/rust/src/p0104_maximum_depth_of_binary_tree.rs) 104 E
+3. Diameter of a Binary Tree [543](https://leetcode.com/problems/diameter-of-binary-tree/) E
+4. Balanced Binary Tree [110](https://leetcode.com/problems/balanced-binary-tree/) E
+5. [Same Tree](https://github.com/brpandey/leetcode/blob/master/rust/src/p0100_same_tree.rs) 100 E
+6. [Subtree of Another Tree](https://github.com/brpandey/leetcode/blob/master/rust/src/p0572_subtree_of_another_tree.rs) 572 E
+7. [Lowest Common Ancestor of a Binary Search Tree](https://github.com/brpandey/leetcode/blob/master/rust/src/p0235_lowest_common_ancestor_of_a_binary_tree.rs) 235 M
+8. [Binary Tree Level Order Traversal - BFS](https://github.com/brpandey/leetcode/blob/master/rust/src/p0102_binary_tree_level_order_traversal.rs) 102 M
+9. Binary Tree Right Side View - BFS [199](https://leetcode.com/problems/binary-tree-right-side-view/) M
+10. Count Good Nodes In Binary Tree [1448](https://leetcode.com/problems/count-good-nodes-in-binary-tree/) M
+11. [Validate Binary Search Tree - DFS](https://github.com/brpandey/leetcode/blob/master/rust/src/p0098_validate_binary_search_tree.rs) 98 M
+12. [Kth Smallest Element in a BST](https://github.com/brpandey/leetcode/blob/master/rust/src/p0230_kth_smallest_element_in_bst.rs) 230 M
+13. [Construct Binary Tree from Inorder and Preorder Traversal](https://github.com/brpandey/leetcode/blob/master/rust/src/p0105_construct_binary_tree_from_preorder_and_inorder_traversal.rs) 105 M
+14. [Binary Tree Maximum Path Sum](https://github.com/brpandey/leetcode/blob/master/rust/src/p0124_binary_tree_max_path_sum.rs) 124 H
+15. [Serialize and Deserialize Binary Tree - Preorder Traversal](https://github.com/brpandey/leetcode/blob/master/rust/src/p0297_serialize_and_deserialize_binary_tree.rs) 297 H
 
 
 # Tries
-1. Medium - [Implement Trie (Prefix Tree)](https://github.com/brpandey/leetcode/blob/master/rust/src/p0208_implement_trie.rs)
-2. Medium - [Design Add and Search Words Data Structure](https://github.com/brpandey/leetcode/blob/master/rust/src/p0211_add_and_search_word.rs)
-3. Hard - [Word Search II - Backtracking Trie](https://github.com/brpandey/leetcode/blob/master/rust/src/p0212_word_search_ii.rs)
+1. [Implement Trie (Prefix Tree)](https://github.com/brpandey/leetcode/blob/master/rust/src/p0208_implement_trie.rs) 208 M
+2. [Design Add and Search Words Data Structure](https://github.com/brpandey/leetcode/blob/master/rust/src/p0211_add_and_search_word.rs) 211 M
+3. [Word Search II - Backtracking Trie](https://github.com/brpandey/leetcode/blob/master/rust/src/p0212_word_search_ii.rs) 212 H
 
 
 # Heap / Priority Queue
-1. Easy - Kth Largest Element In a Stream	
-2. Easy - Last Stone Weight	
-3. Medium - K Closest Points to Origin	
-4. Medium - [Kth Largest Element In An Array](https://github.com/brpandey/leetcode/blob/master/rust/src/p0215_kth_largest_element_in_array.rs)
-5. Medium - [Task Scheduler](https://github.com/brpandey/leetcode/blob/master/rust/src/p0621_task_scheduler.rs)	
-6. Medium - Design Twitter	
-7. Hard - [Find Median From Data Stream](https://github.com/brpandey/leetcode/blob/master/rust/src/p0295_find_median_from_data_stream.rs)
+1. Kth Largest Element In a Stream [703](https://leetcode.com/problems/kth-largest-element-in-a-stream/) E
+2. Last Stone Weight [1046](https://leetcode.com/problems/last-stone-weight/) E
+3. K Closest Points to Origin	[973](https://leetcode.com/problems/k-closest-points-to-origin/) M
+4. [Kth Largest Element In An Array](https://github.com/brpandey/leetcode/blob/master/rust/src/p0215_kth_largest_element_in_array.rs) 215 M
+5. [Task Scheduler](https://github.com/brpandey/leetcode/blob/master/rust/src/p0621_task_scheduler.rs) 621 M
+6. Design Twitter	[355](https://leetcode.com/problems/design-twitter/) M
+7. [Find Median From Data Stream](https://github.com/brpandey/leetcode/blob/master/rust/src/p0295_find_median_from_data_stream.rs) 295 H
 
 
-## Backtracking
+## **Backtracking**
 > [Playlist](https://www.youtube.com/watch?v=pfiQ_PS1g8E&list=PLot-Xpze53lf5C3HSjCnyFghlW0G1HHXo)
 
-1. [Subsets - Backtracking](https://github.com/brpandey/leetcode/blob/master/rust/src/p0078_subsets.rs)
-2. [Combination Sum - Backtracking](https://github.com/brpandey/leetcode/blob/master/rust/src/p0039_comb_sum_i.rs)
-3. [Permutations](https://github.com/brpandey/leetcode/blob/master/rust/src/p0046_permutations.rs)
-4. Subsets II [Problem](https://leetcode.com/problems/subsets-ii/)
-5. [Combination Sum II - Backtracking](https://github.com/brpandey/leetcode/blob/master/rust/src/p0040_combination_sum_ii.rs)
-6. [Word Search - Backtracking](https://github.com/brpandey/leetcode/blob/master/rust/src/p0079_word_search.rs)
-7. Palindrome Partitioning - Backtracking - Leetcode 131 
-8. [Letter Combinations of a Phone Number - Backtracking](https://github.com/brpandey/leetcode/blob/master/rust/src/p0017_letter_comb_phone.rs)
-9. [N-Queens - Backtracking](https://github.com/brpandey/leetcode/blob/master/rust/src/p0051_n_queens.rs)
+1. [Subsets](https://github.com/brpandey/leetcode/blob/master/rust/src/p0078_subsets.rs) 78 M
+2. [Combination Sum](https://github.com/brpandey/leetcode/blob/master/rust/src/p0039_comb_sum_i.rs) 39 M
+3. [Permutations](https://github.com/brpandey/leetcode/blob/master/rust/src/p0046_permutations.rs) 46 M
+4. Subsets II [90](https://leetcode.com/problems/subsets-ii/) M
+5. [Combination Sum II](https://github.com/brpandey/leetcode/blob/master/rust/src/p0040_combination_sum_ii.rs) 40 M
+6. [Word Search](https://github.com/brpandey/leetcode/blob/master/rust/src/p0079_word_search.rs) 79 M
+7. Palindrome Partitioning [131](https://leetcode.com/problems/palindrome-partitioning/) M
+8. [Letter Combinations of a Phone Number](https://github.com/brpandey/leetcode/blob/master/rust/src/p0017_letter_comb_phone.rs) 17 M
+9. [N-Queens](https://github.com/brpandey/leetcode/blob/master/rust/src/p0051_n_queens.rs) 51 H
 
 
 ## Graphs
@@ -196,35 +195,28 @@ pub fn best_time_to_buy_sell(nums: &[i32]) -> i32 {
 > - Minimum Spanning tree **Kruskal**
 > - Topological Sort
 
-1. Medium - [Number of Islands](https://github.com/brpandey/leetcode/blob/master/rust/src/p0200_number_of_islands.rs)
-2. Medium - [Clone Graph - Depth First Search](https://github.com/brpandey/leetcode/blob/master/rust/src/p0133_clone_graph.rs)
-3. Medium - Max Area of Island - Leetcode 695
-4. Medium - [Pacific Atlantic Water Flow](https://github.com/brpandey/leetcode/blob/master/rust/src/p0417_pacific_atlantic_water_flow.rs)
-5. Medium - Surrounded Regions - Graph - Leetcode 130
-6. Medium - Rotting Oranges - Leetcode 994
-7. Medium - Walls and Gates - Multi-Source BFS - Leetcode 286 
-8. Medium - [Course Schedule - Graph Adjacency List](https://github.com/brpandey/leetcode/blob/master/rust/src/p0207_course_schedule.rs)
-9. Medium - [Course Schedule II - Topological Sort](https://github.com/brpandey/leetcode/blob/master/rust/src/p0210_course_schedule_ii.rs)
-10. Medium - Redundant Connection - Union Find - Leetcode 684
-11. Medium - [Number of Connected Components in an Undirected Graph - Union Find](https://github.com/brpandey/leetcode/blob/master/rust/src/p0323_number_of_connected_components_in_undirected_graph.rs)
-12. Medium - [Graph Valid Tree](https://github.com/brpandey/leetcode/blob/master/rust/src/p0261_graph_valid_tree.rs)
-13. Hard - [Word Ladder - Breadth First Search](https://github.com/brpandey/leetcode/blob/master/rust/src/p0127_word_ladder.rs)
+1. [Number of Islands](https://github.com/brpandey/leetcode/blob/master/rust/src/p0200_number_of_islands.rs) 200 M
+2. [Clone Graph - Depth First Search](https://github.com/brpandey/leetcode/blob/master/rust/src/p0133_clone_graph.rs) 133 M
+3. Max Area of Island - [695](https://leetcode.com/problems/max-area-of-island/) M
+4. [Pacific Atlantic Water Flow](https://github.com/brpandey/leetcode/blob/master/rust/src/p0417_pacific_atlantic_water_flow.rs) 417 M
+5. Surrounded Regions - [130](https://leetcode.com/problems/surrounded-regions/) M
+6. Rotting Oranges - [994](https://leetcode.com/problems/rotting-oranges/) M
+7. Walls and Gates - Multi-Source BFS [286](https://leetcode.com/problems/walls-and-gates/) M
+8. [Course Schedule - Graph Adjacency List](https://github.com/brpandey/leetcode/blob/master/rust/src/p0207_course_schedule.rs) 207 M
+9. [Course Schedule II - Topological Sort](https://github.com/brpandey/leetcode/blob/master/rust/src/p0210_course_schedule_ii.rs) 210 M
+10. Redundant Connection - Union Find [684](https://leetcode.com/problems/redundant-connection/) M
+11. [Number of Connected Components in an Undirected Graph - Union Find](https://github.com/brpandey/leetcode/blob/master/rust/src/p0323_number_of_connected_components_in_undirected_graph.rs) 323 M
+12. [Graph Valid Tree](https://github.com/brpandey/leetcode/blob/master/rust/src/p0261_graph_valid_tree.rs) 261 M
+13. [Word Ladder - Breadth First Search](https://github.com/brpandey/leetcode/blob/master/rust/src/p0127_word_ladder.rs) 127 H
 
 
-Advanced Graphs
-- [Word Search - Backtracking](https://github.com/brpandey/leetcode/blob/master/rust/src/p0079_word_search.rs)
-- Island Perimeter - Graph - Leetcode 463 
-- [Word Search II - Backtracking Trie](https://github.com/brpandey/leetcode/blob/master/rust/src/p0212_word_search_ii.rs)
-- Prim's Algorithm - Minimum Spanning Tree - Min Cost to Connect all Points - Leetcode 1584
-- Count Sub Islands - DFS - Leetcode 1905
-- Longest Increasing Path in a Matrix - Leetcode 329
-
-1. Medium - Min Cost to Connect All Points [Problem](https://leetcode.com/problems/min-cost-to-connect-all-points/)
-2. Medium - [Network Delay Time - Dijkstra's algorithm](https://github.com/brpandey/leetcode/blob/master/rust/src/p0743_network_delay_time.rs)
-3. Medium - [Cheapest Flights within K Stops - Bellman-Ford](https://github.com/brpandey/leetcode/blob/master/rust/src/p0787_cheapest_flights_within_k_stops.rs)
-4. Hard - Reconstruct Itinerary - Leetcode 332
-5. Hard - Swim in Rising Water - Dijkstra's Algorithm - Leetcode 778
-6. Hard - [Alien Dictionary - Topological Sort](https://github.com/brpandey/leetcode/blob/master/rust/src/p0269_alien_dictionary.rs)
+## Advanced Graphs
+1. Min Cost to Connect All Points [Problem](https://leetcode.com/problems/min-cost-to-connect-all-points/) M
+2. [Network Delay Time - Dijkstra's algorithm](https://github.com/brpandey/leetcode/blob/master/rust/src/p0743_network_delay_time.rs) 743 M
+3. [Cheapest Flights within K Stops - Bellman-Ford](https://github.com/brpandey/leetcode/blob/master/rust/src/p0787_cheapest_flights_within_k_stops.rs) 787 M
+4. Reconstruct Itinerary - [332](https://leetcode.com/problems/reconstruct-itinerary/) H
+5. Swim in Rising Water - Dijkstra's Algorithm - [778](https://leetcode.com/problems/swim-in-rising-water/) H
+6. [Alien Dictionary - Topological Sort](https://github.com/brpandey/leetcode/blob/master/rust/src/p0269_alien_dictionary.rs) 269 H
 
 
 ## Dynamic Programming 1-D
@@ -233,19 +225,19 @@ Advanced Graphs
 > Topics
 > > Fibonacci Numbers, 0/1 Knapsack, Unbounded Knapsack, Palindrome, LCS - Longest common subsequence
 
-1. Easy - (Fibonacci) [Climbing Stairs](https://github.com/brpandey/leetcode/blob/master/rust/src/p0070_climbing_stairs.rs)
-2. Easy - (Fibonacci) Min Cost Climbing Stairs [Problem](https://leetcode.com/problems/min-cost-climbing-stairs/)
+1. E - (Fibonacci) [Climbing Stairs](https://github.com/brpandey/leetcode/blob/master/rust/src/p0070_climbing_stairs.rs)
+2. E - (Fibonacci) Min Cost Climbing Stairs [Problem](https://leetcode.com/problems/min-cost-climbing-stairs/)
 3. (Fibonacci) [House Robber](https://github.com/brpandey/leetcode/blob/master/rust/src/p0198_house_robber.rs)
 4. (Fibonacci) House Robber II
 - (Fibonacci) [Fibonacci Number](https://github.com/brpandey/leetcode/blob/master/rust/src/p0509_fibonacci_number.rs)
-5. Medium - (Palindrome) [Longest Palindromic Substring](https://github.com/brpandey/leetcode/blob/master/rust/src/p0005_longest_palindrome_substring.rs)
-6. Medium - (Palindrome) [Palindromic Substrings](https://github.com/brpandey/leetcode/blob/master/rust/src/p0647_palindromic_substrings.rs)
-7. Medium - Decode Ways
-8. Medium - (Unbounded Knapsack) [Coin Change](https://github.com/brpandey/leetcode/blob/master/rust/src/p0322_coin_change.rs)
-9. Medium - Maximum Product Subarray
-10. Medium - Word Break
-11. Medium - (LCS) [Longest Increasing Subsequence](https://github.com/brpandey/leetcode/blob/master/rust/src/p0300_longest_increasing_subsequence.rs)
-12. Medium - (0/1 Knapsack) [Partition Equal Subset Sum](https://github.com/brpandey/leetcode/blob/master/rust/src/p0416_partition_equal_subset_sum.rs)
+5. M - (Palindrome) [Longest Palindromic Substring](https://github.com/brpandey/leetcode/blob/master/rust/src/p0005_longest_palindrome_substring.rs)
+6. M - (Palindrome) [Palindromic Substrings](https://github.com/brpandey/leetcode/blob/master/rust/src/p0647_palindromic_substrings.rs)
+7. M - Decode Ways
+8. M - (Unbounded Knapsack) [Coin Change](https://github.com/brpandey/leetcode/blob/master/rust/src/p0322_coin_change.rs)
+9. M - Maximum Product Subarray
+10. M - Word Break
+11. M - (LCS) [Longest Increasing Subsequence](https://github.com/brpandey/leetcode/blob/master/rust/src/p0300_longest_increasing_subsequence.rs)
+12. M - (0/1 Knapsack) [Partition Equal Subset Sum](https://github.com/brpandey/leetcode/blob/master/rust/src/p0416_partition_equal_subset_sum.rs)
 
 
 ## Dynamic Programming 2-D
@@ -253,20 +245,20 @@ Advanced Graphs
 > Topics
 > > Fibonacci Numbers, 0/1 Knapsack, Unbounded Knapsack, Palindrome, LCS - Longest common subsequence
 
-1. Medium - Unique Paths	
-2. Medium - (LCS) [Longest Common Subsequence](https://github.com/brpandey/leetcode/blob/master/rust/src/p1143_longest_common_subsequence.rs)
-3. Medium - Best Time to Buy And Sell Stock With Cooldown	
-4. Medium - Unbounded Knapsack -- [Coin Change II](https://github.com/brpandey/leetcode/blob/master/rust/src/p0518_coin_change_ii.rs)
-5. Medium - Zero / One Knapsack -- [Target Sum](https://github.com/brpandey/leetcode/blob/master/rust/src/p0494_target_sum.rs)
-6. Medium - Interleaving String	
-7. Hard - Longest Increasing Path In a Matrix	
-8. Hard - LCS - Distinct Subsequences	
-9. Hard - LCS - Edit Distance	
-10. Hard - Burst Balloons	
-11. Hard - Regular Expression Matching
+1. M - Unique Paths	
+2. M - (LCS) [Longest Common Subsequence](https://github.com/brpandey/leetcode/blob/master/rust/src/p1143_longest_common_subsequence.rs)
+3. M - Best Time to Buy And Sell Stock With Cooldown	
+4. M - Unbounded Knapsack -- [Coin Change II](https://github.com/brpandey/leetcode/blob/master/rust/src/p0518_coin_change_ii.rs)
+5. M - Zero / One Knapsack -- [Target Sum](https://github.com/brpandey/leetcode/blob/master/rust/src/p0494_target_sum.rs)
+6. M - Interleaving String	
+7. H - Longest Increasing Path In a Matrix	
+8. H - LCS - Distinct Subsequences	
+9. H - LCS - Edit Distance	
+10. H - Burst Balloons	
+11. H - Regular Expression Matching
 
 
-## Greedy (All Medium Problems)
+## Greedy (All M Problems)
 
 1. Maximum Subarray	
 2. [Jump Game](https://github.com/brpandey/leetcode/blob/master/rust/src/p0055_jump_game.rs)
@@ -279,30 +271,31 @@ Advanced Graphs
 
 ## Intervals
 
-1. Easy - Meeting Rooms   	
-2. Medium - Insert Interval	
-3. Medium - Merge Intervals	
-4. Medium - Non Overlapping Intervals	
-5. Medium - Meeting Rooms II   	
-6. Hard - Minimum Interval to Include Each Query
+1. E - Meeting Rooms   	
+2. M - Insert Interval	
+3. M - Merge Intervals	
+4. M - Non Overlapping Intervals	
+5. M - Meeting Rooms II   	
+6. H - Minimum Interval to Include Each Query
 
 ## Math & Geometry
 
-1. Easy - Happy Number	
-2. Easy - Plus One	
-3. Medium - Rotate Image	
-4. Medium - Spiral Matrix	
-5. Medium - Set Matrix Zeroes	
-6. Medium - Pow(x, n)	
-7. Medium - Multiply Strings	
-8. Medium - Detect Squares
+1. E - Happy Number	
+2. E - Plus One	
+3. M - Rotate Image	
+4. M - Spiral Matrix	
+5. M - Set Matrix Zeroes	
+6. M - Pow(x, n)	
+7. M - Multiply Strings	
+8. M - Detect Squares
 
 ## Bit Manipulation
 
-1. Easy - Single Number	
-2. Easy - Number of 1 Bits	
-3. Easy - Counting Bits	
-4. Easy - Reverse Bits	
-5. Easy - Missing Number	
-6. Medium - Sum of Two Integers	
-7. Medium - Reverse Integer
+1. E - Single Number	
+2. E - Number of 1 Bits	
+3. E - Counting Bits	
+4. E - Reverse Bits	
+5. E - Missing Number	
+6. M - Sum of Two Integers	
+7. M - Reverse Integer
+
