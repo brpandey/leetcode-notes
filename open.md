@@ -66,7 +66,7 @@
 4. Reconstruct Itinerary [332](https://leetcode.com/problems/reconstruct-itinerary/) H
 5. Swim in Rising Water [778](https://leetcode.com/problems/swim-in-rising-water/) SP1 H
 
-### Dynamic Programming 2D - 3
+### Dynamic Programming 2D - 2
 3. **Best Time to Buy And Sell Stock With Cooldown** [309](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/) 309 M
 6. *Interleaving String* [97](https://leetcode.com/problems/interleaving-string/) M
 7. *Longest Increasing Path In a Matrix* [329](https://leetcode.com/problems/longest-increasing-path-in-a-matrix/) H
@@ -77,8 +77,8 @@
 ### Bit Manipulation - 1
 1. **Single Number** [136](https://leetcode.com/problems/single-number/) E
 
-### Math & Geometry
-1. Happy Number [202](https://leetcode.com/problems/happy-number/) E
+### Math & Geometry - 1
+1. *Happy Number* [202](https://leetcode.com/problems/happy-number/) E
 2. Plus One [66](https://leetcode.com/problems/plus-one/) E
 6. Pow(x, n) [50](https://leetcode.com/problems/powx-n/) M
 7. Multiply Strings [43](https://leetcode.com/problems/multiply-strings/) M
