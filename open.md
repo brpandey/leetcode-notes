@@ -1,5 +1,5 @@
 > Open Problems 
-> - Remaining problems from neetcode 150
+> - Remaining problems from [neetcode 150](https://neetcode.io/practice)
 
 ### Arrays & Hashing - 0
 
