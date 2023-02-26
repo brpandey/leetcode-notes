@@ -96,3 +96,97 @@ flowchart LR
         result
     }
  ```
+ 
+ [Example](https://github.com/brpandey/leetcode/blob/master/rust/src/p0242_valid_anagram.rs)
+
+ ```rust
+     // assert_eq!(true, Solution::is_anagram("anagram".to_string(), "nagaram".to_string()));
+
+     pub fn is_anagram(s: String, t: String) -> bool {
+
+        // Reduce string to source map
+        let mut source = s.as_bytes().iter().fold(HashMap::new(), |mut acc, b| {
+            *acc.entry(b).or_insert(0) += 1;
+            acc
+        });
+
+        // Update source map, decrementing counts based on bytes seen in t
+        for b in t.as_bytes() {
+            if !source.contains_key(b) {
+                return false
+            }
+
+            source.entry(b).and_modify(|e| *e -= 1); 
+        }
+
+        let result = source.into_values().sum();
+        //let result = source.into_iter().map(|(_,v)| v).sum();
+
+        if 0 == result { true } else { false }
+    }
+ ```
+   
+Using the HashMap entry api to insert a default value or update an existing value using *.and_modify().or_insert()*   
+
+[entry](https://doc.rust-lang.org/stable/std/collections/struct.HashMap.html#method.entry)
+
+```rust
+pub fn entry(&mut self, key: K) -> Entry<'_, K, V>
+Gets the given key’s corresponding entry in the map for in-place manipulation.
+
+Examples
+use std::collections::HashMap;
+
+let mut letters = HashMap::new();
+
+for ch in "a short treatise on fungi".chars() {
+    letters.entry(ch).and_modify(|counter| *counter += 1).or_insert(1);
+}
+
+assert_eq!(letters[&'s'], 2);
+assert_eq!(letters[&'t'], 3);
+assert_eq!(letters[&'u'], 1);
+assert_eq!(letters.get(&'y'), None);
+```
+
+[and_modify](https://doc.rust-lang.org/stable/std/collections/hash_map/enum.Entry.html#method.and_modify)
+
+ ```rust
+pub fn and_modify<F>(self, f: F) -> Self
+where
+    F: FnOnce(&mut V),
+Provides in-place mutable access to an occupied entry before any potential inserts into the map.
+
+Examples
+use std::collections::HashMap;
+
+let mut map: HashMap<&str, u32> = HashMap::new();
+
+map.entry("poneyland")
+   .and_modify(|e| { *e += 1 })
+   .or_insert(42);
+assert_eq!(map["poneyland"], 42);
+
+map.entry("poneyland")
+   .and_modify(|e| { *e += 1 })
+   .or_insert(42);
+assert_eq!(map["poneyland"], 43);
+```
+
+[or_insert](https://doc.rust-lang.org/stable/std/collections/hash_map/enum.Entry.html#method.or_insert)
+
+```rust
+pub fn or_insert(self, default: V) -> &'a mut V
+Ensures a value is in the entry by inserting the default if empty, and returns a mutable reference to the value in the entry.
+
+Examples
+use std::collections::HashMap;
+
+let mut map: HashMap<&str, u32> = HashMap::new();
+
+map.entry("poneyland").or_insert(3);
+assert_eq!(map["poneyland"], 3);
+
+*map.entry("poneyland").or_insert(10) *= 2;
+assert_eq!(map["poneyland"], 6);
+```
