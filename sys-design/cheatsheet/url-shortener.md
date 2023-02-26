@@ -12,12 +12,6 @@ At a high level, the URL shortener executes the following operations:
 
 ---
 
----
-
----
-
-## Terminology
-
 The following terminology might be useful for you:
 
 - Microservices: designing software that is made up of small independent services, which have a specific purpose
@@ -28,10 +22,6 @@ The following terminology might be useful for you:
 - Encryption: secure encoding of data using a key to protect the confidentiality of data
 - Hashing: a one-way summary of data that cannot be reversed and is used to validate the integrity of data
 - Bloom filter: a memory-efficient probabilistic data structure to check whether an element is present in a set
-
----
-
----
 
 ---
 
@@ -49,33 +39,6 @@ The reasons to shorten a URL are the following:
 - some instant messaging services limit the count of characters on the URL
 
 ---
-
----
-
----
-
-## Further system design learning resources
-
-Books are a powerful medium to gather new knowledge. Check out the following books to set yourself up for success in the system design interview:
-
-- [Designing Data-Intensive Applications](https://amzn.to/40tlRDt) by Martin Kleppmann
-- [System Design Interview — An insider’s guide Volume 1](https://amzn.to/3G0MN5o) by Alex Xu
-- [System Design Interview — An insider’s guide Volume 2](https://amzn.to/3BKMngO) by Alex Xu
-- [Hacking the System Design Interview](https://amzn.to/3FGPjft) by Stanley Chiang
-
----
-
-<a href="https://forms.gle/1bDAVExKKL1CRVSS7" target="_blank">
-  <img src="https://i.imgur.com/3YLVY0k.png"/>
-</a>
-
----
-
----
-
----
-
-## Questions to ask the Interviewer
 
 ### Candidate
 
@@ -98,10 +61,6 @@ Books are a powerful medium to gather new knowledge. Check out the following boo
 5. Most of the shortened URLs will be accessed only once after the creation
 6. General public
 7. At most 9 characters
-
----
-
----
 
 ---
 
@@ -138,12 +97,6 @@ Books are a powerful medium to gather new knowledge. Check out the following boo
 - The user registers an account
 - The user sets the visibility of the short URL
 
----
-
----
-
----
-
 ## High-Level Design
 
 ### Encoding
@@ -179,9 +132,6 @@ The **time complexity** of base conversion is O(k), where k is the number of cha
 
 In summary, a 7-character base62 encoded output satisfies the system requirement.
 
----
-
----
 
 ### Write path
 
