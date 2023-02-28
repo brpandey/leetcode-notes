@@ -62,12 +62,57 @@
     range notation - reverse w/ enumeration! inclusive 1 to inclusive 4 (2,2)
     range notation - reverse w/ enumeration! inclusive 1 to inclusive 4 (3,1)
     */
-    
+```
+
+Iterate through a matrix
+```rust
+    // Traverse through a matrix / board
+    pub fn is_valid_sudoku(board: Vec<Vec<&str>>) -> bool {
+        let rows: usize = board.len();
+        let cols: usize = board[0].len();
+
+        let mut row_sets = vec![HashSet::new(); rows];
+        let mut col_sets = vec![HashSet::new(); cols];
+
+        for r in 0..rows {
+            for c in 0..cols {
+                // references are copy types so we're fine
+                let val = board[r][c];
+
+                if val == "." { 
+                    continue 
+                }
+        //...
+        }
+     }
+     
+     /*
+      // board1 len is number of rows
+      // board1[0].len is the length of first row => giving num of cols
+          let board1 = vec![
+            vec!["5","3",".",".","7",".",".",".","."],
+            vec!["6",".",".","1","9","5",".",".","."],
+            vec![".","9","8",".",".",".",".","6","."],
+            vec!["8",".",".",".","6",".",".",".","3"],
+            vec!["4",".",".","8",".","3",".",".","1"],
+            vec!["7",".",".",".","2",".",".",".","6"],
+            vec![".","6",".",".",".",".","2","8","."],
+            vec![".",".",".","4","1","9",".",".","5"],
+            vec![".",".",".",".","8",".",".","7","9"]];
+     */
+        
+```
+
+While loop 
+
+```rust
     let values = vec![3, 4];
     
     // while loop iteration doesn't explicitly handling de-sugaring and calling iter.next()
     // so must do this explicitly
     let mut iter = values.iter();
+    
+    1)
     while let Some(a) = iter.next() {
         println!("while value is {}", *a);
     }
@@ -77,7 +122,27 @@
     while value is 4
     */
     
-    println!("");
+    2)
+    while !stack.is_empty() && stack[stack.len() - 1].0 < t {
+        let (_v, v_index) = stack.pop().unwrap();
+        result[v_index] = (i - v_index) as i32;
+    }
+    
+    3)
+    while r < nums.len() {
+        max_jumped = 0;
+        for i in l..=r {
+            max_jumped = std::cmp::max(max_jumped, nums[i] as usize + i);
+        }
+    }
+```
+    
+Rust for loop iteration styles: 
+* into_iter (consume)
+* iter_mut (&mut v)
+* iter (&v)
+
+```rust
 
     /**** Rust iter for loop styles: into_iter (consume), iter_mut (&mut v), iter (&v) ****/
     
@@ -129,8 +194,8 @@
     assert_eq!(iter.next(), Some(4));
     assert_eq!(iter.next(), Some(6));
     assert_eq!(iter.next(), None);
-    Run
-    If you’re doing some sort of side effect, prefer *for* to map():
+    
+    //If you’re doing some sort of side effect, prefer *for* to map():
 
     // don't do this:
     (0..2).map(|x| println!("A {x}")); // it won't even execute, as it is lazy. Rust will warn you about this.
@@ -167,7 +232,7 @@
     assert_eq!(sum, 6);
  ```
  
- fold - example 2: [ 347 top_k_frequent_elements](https://github.com/brpandey/leetcode/blob/master/rust/src/p0347_top_k_frequent_elements.rs)
+ Fold: [ 347 top_k_frequent_elements](https://github.com/brpandey/leetcode/blob/master/rust/src/p0347_top_k_frequent_elements.rs)
  ```rust    
     // Given count values, store in another hashmap which is indexed by counts, 
     // values being the collection of keys with that count
