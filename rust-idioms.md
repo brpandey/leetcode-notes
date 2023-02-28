@@ -118,3 +118,142 @@
        |                ^^^^^^^^^^^^ value borrowed here after move
     */
 ```
+
+[Iterator - map]()
+```rust
+    let a = [1, 2, 3];
+
+    let mut iter = a.iter().map(|x| 2 * x);
+
+    assert_eq!(iter.next(), Some(2));
+    assert_eq!(iter.next(), Some(4));
+    assert_eq!(iter.next(), Some(6));
+    assert_eq!(iter.next(), None);
+    Run
+    If you’re doing some sort of side effect, prefer *for* to map():
+
+    // don't do this:
+    (0..2).map(|x| println!("A {x}")); // it won't even execute, as it is lazy. Rust will warn you about this.
+
+    // Instead, use for:
+    for x in 0..2 {
+        println!("B {x}");
+    }
+
+    println!("");
+
+    // Or also:
+    (0..2).for_each(|x| println!("C {x}"))
+    
+    /* Output
+    
+        B 0
+        B 1
+
+        C 0
+        C 1
+    */
+```
+
+[Iterator - fold](https://doc.rust-lang.org/stable/std/iter/trait.Iterator.html#method.fold)
+```rust
+    // Fold
+    
+    let a = [1, 2, 3];
+
+    // the sum of all of the elements of the array
+    let sum = a.iter().fold(0, |acc, &x| acc + x);
+
+    assert_eq!(sum, 6);
+ ```
+ 
+ fold - example 2: [ 347 top_k_frequent_elements](https://github.com/brpandey/leetcode/blob/master/rust/src/p0347_top_k_frequent_elements.rs)
+ ```rust    
+    // Given count values, store in another hashmap which is indexed by counts, 
+    // values being the collection of keys with that count
+    let mut flipped_counts = counts.into_iter().fold(HashMap::new(), |mut acc, (k,v)| {
+        //acc.entry(v).and_modify(|x: &mut Vec<&i32>| x.push(k)).or_insert(vec![k]);
+        acc.entry(v).or_insert_with(|| vec![]).push(k);
+        acc
+    });
+ ```
+ 
+ [Iterator - sum](https://doc.rust-lang.org/stable/std/iter/trait.Iterator.html#method.sum)
+ ```rust
+    let a = [1, 2, 3];
+    let sum: i32 = a.iter().sum();
+
+    assert_eq!(sum, 6);
+ ```
+ 
+ [Iterator - zip](https://doc.rust-lang.org/stable/std/iter/trait.Iterator.html#method.zip)
+ ```rust
+    let a1 = [1, 2, 3];
+    let a2 = [4, 5, 6];
+
+    let mut iter = a1.iter().zip(a2.iter());
+
+    assert_eq!(iter.next(), Some((&1, &4)));
+    assert_eq!(iter.next(), Some((&2, &5)));
+    assert_eq!(iter.next(), Some((&3, &6)));
+    assert_eq!(iter.next(), None);
+ ```
+ 
+ [Iterator - rev](https://doc.rust-lang.org/stable/std/iter/trait.Iterator.html#method.rev)
+ ```rust
+    let a = [1, 2, 3];
+
+    let mut iter = a.iter().rev();
+
+    assert_eq!(iter.next(), Some(&3));
+    assert_eq!(iter.next(), Some(&2));
+    assert_eq!(iter.next(), Some(&1));
+
+    assert_eq!(iter.next(), None);
+ ```
+ 
+ ### String Handling Examples
+
+ * [String - as_bytes](https://doc.rust-lang.org/std/string/struct.String.html#method.as_bytes) -> &[u8]
+ * [String - into_bytes](https://doc.rust-lang.org/std/string/struct.String.html#method.into_bytes) -> Vec<u8>
+ * [String - bytes](https://doc.rust-lang.org/std/string/struct.String.html#method.bytes) -> Bytes (an iterator over the bytes of a string slice)
+    
+ ```rust
+    // or
+    pub fn as_bytes(&self) -> &[u8] {
+        // Returns a byte slice of this String’s contents.
+
+        // The inverse of this method is from_utf8.
+
+        // Examples
+        // Basic usage:
+
+        let s = String::from("hello");
+
+        assert_eq!(&[104, 101, 108, 108, 111], s.as_bytes());
+    }
+```
+   
+```rust
+    pub fn is_anagram(s: String, t: String) -> bool {
+        // Reduce string to source map
+        let mut source = s.as_bytes().iter().fold(HashMap::new(), |mut acc, b| {
+            acc.entry(b).and_modify(|c| *c += 1).or_insert(1);
+            acc
+        });
+    
+        // Update source map, decrementing counts based on bytes seen in t
+        for b in t.as_bytes() {
+            if !source.contains_key(b) {
+                return false
+            }
+
+            source.entry(b).and_modify(|e| *e -= 1); 
+        }
+
+        let result = source.into_values().sum();
+        //let result = source.into_iter().map(|(_,v)| v).sum();
+    
+        if 0 == result { true } else { false }
+    }
+```
