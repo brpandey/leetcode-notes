@@ -112,7 +112,7 @@ While loop
     // so must do this explicitly
     let mut iter = values.iter();
     
-    1)
+    // 1)
     while let Some(a) = iter.next() {
         println!("while value is {}", *a);
     }
@@ -122,19 +122,41 @@ While loop
     while value is 4
     */
     
-    2)
+    // 2)
+    // https://github.com/brpandey/leetcode/blob/5df8127017ff45b250136ab770844fa6b7fac867/rust/src/p0739_daily_temperatures.rs#L65
     while !stack.is_empty() && stack[stack.len() - 1].0 < t {
         let (_v, v_index) = stack.pop().unwrap();
         result[v_index] = (i - v_index) as i32;
     }
     
-    3)
+    // 3)
     while r < nums.len() {
         max_jumped = 0;
         for i in l..=r {
             max_jumped = std::cmp::max(max_jumped, nums[i] as usize + i);
         }
     }
+    
+    // 4) bfs style
+    // https://github.com/brpandey/leetcode/blob/5df8127017ff45b250136ab770844fa6b7fac867/rust/src/p0200_number_of_islands.rs#L97
+    
+       while !backlog.is_empty() {
+            let current = backlog.pop_front().unwrap();
+
+            // check peers (see if they're on the same island as us! may day! may day!)
+            for offset in sequence {
+                // Add offset into current to get peer locations (connected components)
+                peer = (current.0 + offset.0, current.1 + offset.1);
+
+                // If not already visited and safe to visit,
+                // Enqueue to backlog and mark as visited
+                if visitable(peer) && !visited[peer.0 as usize][peer.1 as usize] {
+                    visited[peer.0 as usize][peer.1 as usize] = true;
+                    backlog.push_back(peer);
+                }
+            }
+        }
+    
 ```
     
 Rust for loop iteration styles: 
