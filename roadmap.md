@@ -37,25 +37,6 @@ flowchart TD
 ### E) Sliding Window ~~5~~
 > [Playlist](https://www.youtube.com/watch?v=1pkOgXD63yU&list=PLot-Xpze53leOBgcVsJBEGrHPd_7x_koV)
 
-```rust
-pub fn best_time_to_buy_sell(nums: &[i32]) -> i32 {
-        if nums.len() < 1 { return 0 }
-        let (mut sell, mut min_buy);
-        let mut profit_max = 0;
-
-        min_buy = nums[0];
-
-        // 7,1,5,3,6,4, first iter sell = 1, min_buy 7, second iter sell = 5, min_buy 1
-        for i in 1..nums.len() {
-            sell = nums[i]; // enumerate through the list with sell being current element
-            profit_max = cmp::max(sell - min_buy, profit_max); // keep highest
-            min_buy = cmp::min(sell, min_buy) // keep lowest buy stock
-        }
-
-        profit_max
-    }
-```
-
 1. [Best Time to Buy and Sell a Stock](https://github.com/brpandey/leetcode/blob/master/rust/src/p0121_best_time_to_buy_sell.rs) 121 E
 2. [Longest Substring Without Repeating Characters](https://github.com/brpandey/leetcode/blob/master/rust/src/p0003_longest_substr_no_repeat.rs) 3 M
 3. [Longest Repeating Character Replacement](https://github.com/brpandey/leetcode/blob/master/rust/src/p0424_longest_repeating_char_replacement.rs) 424 M
@@ -76,31 +57,6 @@ pub fn best_time_to_buy_sell(nums: &[i32]) -> i32 {
 ### D) Binary Search ~~6~~
 > [Playlist](https://www.youtube.com/playlist?list=PLot-Xpze53leNZQd0iINpD-MAhMOMzWvO)
 
-```rust
-    pub fn search(nums: Vec<i32>, target: i32) -> i32 {
-        let mut pivot;
-
-        let mut lo = 0;
-        let mut hi = nums.len() - 1;  // 5
-
-        while lo < hi {
-
-            pivot = lo + (hi - lo) / 2; // 2.5 or 2
-
-            if nums[pivot] == target {
-                return pivot as i32
-            }
-
-            if target < nums[pivot] {
-                hi = pivot - 1
-            } else {
-                lo = pivot + 1
-            }
-        }
-
-        return -1
-    }
- ```
 1. [Binary search](https://github.com/brpandey/leetcode/blob/master/rust/src/p0704_binary_search.rs) 704 E
 2. Search a 2D Matrix [74](https://leetcode.com/problems/search-a-2d-matrix/) M
 3. [Koko eating bananas](https://github.com/brpandey/leetcode/blob/master/rust/src/p0875_koko_eating_bananas.rs) 875 M
