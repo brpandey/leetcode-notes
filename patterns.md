@@ -289,6 +289,57 @@ impl TreeNode {
 > DFS, BFS, Union Find - UF, Topological Sort - TS, Minimum Spanning Tree (prim / kruskal) - MST, 
 > Shortest Path (source to all vertices - dijkstra) SP1, Shortest Path (from every vertex to every other vertex - floyd warshall) SP2
 
+[210 course schedule ii](https://github.com/brpandey/leetcode/blob/master/rust/src/p0210_course_schedule_ii.rs)
+```rust
+ // n is the number of courses or vertices
+    // prerequisites are a well-formed list of edges
+    pub fn course_schedule_ii(n: u16, edges: &Vec<[u16; 2]>) -> Vec<u16> {
+        let mut result = Vec::new();
+        let mut count: u16 = 0;
+        let mut in_degrees = vec![0; n as usize];
+
+        // Set the in degrees of the vertices
+        // NOTE: If prerequisites is [[1,0]], the graph looks like: 0 -> 1 or SRC -> DEST or [[DEST, SRC]]
+        // Essentially the second or dst element of the edge is what the edge is pointing to so increment
+        // that vertex's indegree count
+        for e in edges {
+            in_degrees[e[DST] as usize] += 1;
+        }
+
+        let mut queue: VecDeque<u16> = VecDeque::new();
+
+        // Find all the vertices which have an in degree of 0 (meaning no dependencies or back arrows) and seed the queue
+        for i in 0..in_degrees.len() {
+            if in_degrees[i] == 0 {
+                queue.push_back(i as u16);
+            }
+        }
+
+        // process the in degrees of the vertices
+        while !queue.is_empty() {
+            let current = queue.pop_front().unwrap(); // remove from the queue and update indegree count(s)
+            result.push(current); // every time we dequeue, add it to our results list (as it now has no prereqs or dependencies anymore)
+            count += 1;
+
+            // loop through the "graph" again search for if the vertex with nothing pointing at it has directed edges towards
+            // destination vertices (atleast 1 must exist)
+            for e in edges {
+                // if current is equal to the edge src vertex, and since we've removed current from the queue already,
+                // decrement the edge dest's vertex indegree, since we no longer have a vertex pointing towards it
+                if current == e[SRC] {
+                    in_degrees[e[DST] as usize] -= 1;
+                    // if the edge destination vertex has no vertices pointing to it, add it to the queue
+                    if in_degrees[e[DST] as usize] == 0 {
+                        queue.push_back(e[DST]);
+                    }
+                }
+            }
+        }
+
+        if n == count { return result } else { return vec![0] };
+    }
+```
+
 
 ### L) Dynamic Programming 1-D 
 > [Playlist](https://www.youtube.com/watch?v=g0npyaQtAQM&list=PLot-Xpze53lcvx_tjrr_m2lgD2NsRHlNO)
