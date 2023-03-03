@@ -340,6 +340,81 @@ impl TreeNode {
     }
 ```
 
+[200 number of islands](https://github.com/brpandey/leetcode/blob/master/rust/src/p0200_number_of_islands.rs)
+```rust
+// Identify all the connected components using breadth-first-search to this current start location
+    // (we have already tagged this as a single island)
+    pub fn bfs(matrix: &Vec<Vec<char>>, visited: &mut Vec<Vec<bool>>, sequence: &Vec<(i32, i32)>, start: (i32, i32), size: (i32, i32)) {
+
+        // Essentially, find the connected components related to the current location and add them
+        // to the backlog queue for processing until there are no more connected components
+
+        let mut backlog: VecDeque<(i32, i32)> = VecDeque::new();
+        backlog.push_back(start); // seed our queue
+
+        // Closure captures matrix and size
+        // Safe to visit?
+        // Check if positions are valid on the board
+        // Check if we're on land '1' or water '0'
+        let visitable = |(r, c)| {
+            if r >= 0 && r < size.0 && c >= 0 && c < size.1 &&
+                matrix[r as usize][c as usize] == '1' {
+                    return true
+                } else {
+                    return false
+                }
+        };
+
+        let mut peer;
+
+        while !backlog.is_empty() {
+            let current = backlog.pop_front().unwrap();
+
+            // check peers (see if they're on the same island as us! may day! may day!)
+            for offset in sequence {
+                // Add offset into current to get peer locations (connected components)
+                peer = (current.0 + offset.0, current.1 + offset.1);
+
+                // If not already visited and safe to visit,
+                // Enqueue to backlog and mark as visited
+                if visitable(peer) && !visited[peer.0 as usize][peer.1 as usize] {
+                    visited[peer.0 as usize][peer.1 as usize] = true;
+                    backlog.push_back(peer);
+                }
+            }
+        }
+    }
+```
+
+[417 pacific atlantic water flow](https://github.com/brpandey/leetcode/blob/master/rust/src/p0417_pacific_atlantic_water_flow.rs)
+```rust
+ // DFS explores the heights grid space, marking if reachable from given ocean
+    pub fn dfs(row: i32, col: i32, prev: i32, reachable: &mut HashSet<(i32, i32)>, heights: &Vec<Vec<i32>>, max: (i32, i32))  {
+
+        let (max_rows, max_cols) = max;
+        let (r, c) = (row as usize, col as usize);
+
+        // Make sure hasn't been processed before
+        // Ensure current height >= prev property is true otherwise return (climbing up the hill )
+        // Sanity check the row/col values
+        if reachable.contains(&(row,col)) || row < 0 || row >= max_rows || col < 0 || col >= max_cols || heights[r][c] < prev {
+            return
+        }
+
+        // Reaching this point indicates that the current cell is reachable from an ocean
+        // Since heights[row][col] >= prev
+
+        // reachable is either atlantic or pacific
+        reachable.insert((row, col));
+
+        // search in the four directions around cells N, S, W, E (see if next ocean is reachable)
+        Solution::dfs(row-1, col, heights[r][c], reachable, heights, max);
+        Solution::dfs(row+1, col, heights[r][c], reachable, heights, max);
+        Solution::dfs(row, col-1, heights[r][c], reachable, heights, max);
+        Solution::dfs(row, col+1, heights[r][c], reachable, heights, max);
+    }
+```
+
 
 ### L) Dynamic Programming 1-D 
 > [Playlist](https://www.youtube.com/watch?v=g0npyaQtAQM&list=PLot-Xpze53lcvx_tjrr_m2lgD2NsRHlNO)
