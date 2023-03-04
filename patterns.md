@@ -283,6 +283,62 @@ impl TreeNode {
 ### J) **Backtracking** 
 > [Playlist](https://www.youtube.com/watch?v=pfiQ_PS1g8E&list=PLot-Xpze53lf5C3HSjCnyFghlW0G1HHXo)
 
+[39 comb sum i](https://github.com/brpandey/leetcode/blob/master/rust/src/p0039_comb_sum_i.rs)
+```rust
+    pub fn recurse(index: usize, target: i32, cand: &Vec<i32>, sequence: &mut Vec<i32>, result: &mut Vec<Vec<i32>>) {
+        // print A - potential comb
+
+        if target == 0 {
+            // print B - winning
+            result.push(sequence.clone());
+            return
+        }
+
+        for i in index..cand.len() {
+            if target < cand[i] {
+                // print C - won't work
+                return // no valid path possible return early -- backtrack
+            }
+
+            let value = cand[i];
+ ----->     sequence.push(value);
+            Solution::recurse(i, target - value, cand, sequence, result);
+ ----->     sequence.pop();
+        }
+    }
+```
+
+[46 permutations](https://github.com/brpandey/leetcode/blob/master/rust/src/p0046_permutations.rs)
+```rust
+pub fn dfs(nums: &mut Vec<i32>, start: usize, res: &mut Vec<Vec<i32>>){
+        if (start+1) as usize == nums.len(){
+            res.push(nums.clone());
+            return;
+        }
+
+        for i in start..nums.len(){
+            Solution::swap(nums, i, start);
+            Solution::dfs(nums, start+1, res);
+            Solution::swap(nums, i, start); // undo previous swap
+        }
+    }
+```
+
+[78 subsets](https://github.com/brpandey/leetcode/blob/master/rust/src/p0078_subsets.rs)
+```rust
+    pub fn generate(index: usize, nums: &[i32], subset: &mut Vec<i32>, result: &mut Vec<Vec<i32>>) {
+        // Print - Add
+        result.push(subset.clone());
+
+        for i in index..nums.len() {
+            subset.push(nums[i]);
+            // Print - Push
+            Solution::generate(i + 1, nums, subset, result);
+            subset.pop();
+            // Print - Pop
+        }
+    }
+```
 
 ### K) Graphs 
 > [Playlist](https://www.youtube.com/watch?v=EgI5nU9etnU&list=PLot-Xpze53ldBT_7QA8NVot219jFNr_GI&index=1&t=0s)
@@ -421,12 +477,108 @@ impl TreeNode {
 > Fibonacci Numbers (FIB), 0/1 Knapsack (01K), Unbounded Knapsack (UNK), Palindrome (PAL), Longest common subsequence (LCS)
 > [Fibonacci Number](https://github.com/brpandey/leetcode/blob/master/rust/src/p0509_fibonacci_number.rs) FIB 509 E
 
+[139 word break](https://github.com/brpandey/leetcode/blob/master/rust/src/p0139_word_break.rs)
+```rust
+    pub fn word_break(s: String, word_dict: Vec<String>) -> bool {
+        let slen = s.len(); // e.g. 7
+        let mut dp = vec![false; slen+1]; // vec size 8, extra space for base case
+        dp[slen] = true;  // this is base case, always set to true (e.g. s[7])
+
+        for i in (0..slen).rev() { // start from string end
+            for w in word_dict.iter() { // loop through dict
+                let wlen = w.len();
+
+                if i + wlen <= slen && // don't overshoot str len
+                    &s[i..(i+wlen)] == w { // ensure s substring is word w
+                        dp[i] = dp[i + wlen]; // chain together values, only works in the end if these are true
+                    }
+
+                if dp[i] {
+                    break
+                }
+            }
+        }
+
+        return dp[0]
+    }
+```
 
 ### M) Intervals 
-### N) Greedy 
+
+[252 meeting rooms i](https://github.com/brpandey/leetcode/blob/master/rust/src/p0252_meeting_rooms_i.rs)
+```rust
+pub fn meeting_rooms_i(input: &mut Vec<[u8; 2]>) -> bool {
+        let n = input.len();
+
+        // Sort vector time slots by start time so we can efficiently compare them
+        input.sort_by(|i1, i2| i1[0].cmp(&i2[0]));
+
+        // loop through vector grabbing the next two items at a time
+        for i in 0..n-1 {
+            let first = input[i];
+            let second = input[i+1];
+
+            // test for any overlaps, if so, we can't make all meetings if there is an overlap in meeting time
+            // end1 > start2
+            if first[1] > second[0] { return false };
+        }
+
+        return true;
+    }
+```
+
+### N) Greedy
+
+[53 max subarray](https://github.com/brpandey/leetcode/blob/master/rust/src/p0053_max_subarray.rs)
+```rust
+   pub fn max_subarray(nums: &[i32]) -> i32 {
+        // Kadane's algorithm -> https://medium.com/@rsinghal757/kadanes-algorithm-dynamic-programming-how-and-why-does-it-work-3fd8849ed73d
+        let acc = nums
+            .iter()
+            .fold((i32::min_value(), 0), |(mut global_max, mut local_max), &x| {
+                // the local_maximum at index i is the maximum of nums[i] or x
+                // and the sum of nums[i] or x and local_maximum at index i-1.
+                local_max = cmp::max(x, x + local_max);
+                global_max = cmp::max(local_max, global_max);
+
+                (global_max, local_max)
+            });
+
+        acc.0
+    }
+```
+
 ### P) Dynamic Programming 2-D 
 
 > Fibonacci Numbers (FIB), 0/1 Knapsack (01K), Unbounded Knapsack (UNK), Palindrome (PAL), Longest common subsequence (LCS)
+
+[62 unique paths](https://github.com/brpandey/leetcode/blob/master/rust/src/p0062_unique_paths.rs)
+```rust
+    pub fn unique_paths(m: usize, n: usize) -> i32 {
+        let row: Vec<i32> = vec![0 as i32; n];
+        let mut dp: Vec<Vec<i32>> = vec![row; m]; // m rows of vecs size n (col)
+
+        dp[0][0] = 1;
+
+        // first row, initialize all col values to 1
+        for col in 0..n {
+            dp[0][col] = 1
+        }
+
+        // first col, initialize all row values to 1
+        for row in 0..m {
+            dp[row][0] = 1
+        }
+
+        for r in 1..m {
+            for c in 1..n {
+                dp[r][c] = dp[r-1][c] + dp[r][c-1]
+            }
+        }
+
+        dp[m-1][n-1]
+    }
+```
 
 ### Q) Bit Manipulation 
 
