@@ -280,6 +280,57 @@ impl TreeNode {
 
 ### I) Heap / Priority Queue 
 
+[295 find median from data stream](https://github.com/brpandey/leetcode/blob/master/rust/src/p0295_find_median_from_data_stream.rs#L66)
+[621 task scheduler](https://github.com/brpandey/leetcode/blob/master/rust/src/p0621_task_scheduler.rs)
+```rust
+pub fn task_scheduler(tasks: Vec<&str>, n: i32) -> i32 {
+        let mut time: i32 = 0;
+
+        // collect tasks into HashMap, incrementing count for each key
+        let task_counts: HashMap<&str, u16> =
+            tasks.into_iter().fold(HashMap::new(), |mut acc, t| {
+                acc.entry(t).and_modify(|c| *c += 1).or_insert(1);
+                acc
+            });
+
+        // flip the pair so that the binary heap tuple has the count first in the tuple
+        // tuple ord comparison looks at the first element of the tuple
+        let mut max_heap: BinaryHeap<(u16, &str)> =
+            BinaryHeap::from_iter(task_counts.into_iter().map(|(ta, c)| (c, ta)));
+
+        // (task name, count, wait-time)
+        let mut waitq: VecDeque<(&str, u16, i32)> = VecDeque::new();
+
+        // if we've just started waitq is empty and max_heap is not empty
+        // if everything is waiting and no tasks are active, then max heap is empty and wait queue is not empty
+        while !max_heap.is_empty() || !waitq.is_empty() {
+            // if there's a matching task_tup on the wait queue
+            // transfer it over to the binary heap as waiting is finished
+            // and task can be actively considered
+            if let Some((_, _, ti)) = waitq.front() {
+                if *ti == time {
+                    let (ta, c, _) = waitq.pop_front().unwrap();
+                    max_heap.push((c, ta));
+                }
+            }
+
+            time += 1;
+
+            // grab next available task
+            if let Some((mut c, ta)) = max_heap.pop() {
+                // consume a task  print!("{} -> ", &ta);
+                // now that we've "consumed" a task, decrement the number of its occurrences
+                c -= 1;
+                if c > 0 { // push only tasks that are remaining onto the wait queue
+                    waitq.push_back((ta, c, time + n))
+                }
+            } // else consume idle, print!("idle -> ");
+        }
+
+        time
+    }
+```
+
 ### J) **Backtracking** 
 > [Playlist](https://www.youtube.com/watch?v=pfiQ_PS1g8E&list=PLot-Xpze53lf5C3HSjCnyFghlW0G1HHXo)
 
@@ -548,6 +599,86 @@ pub fn meeting_rooms_i(input: &mut Vec<[u8; 2]>) -> bool {
     }
 ```
 
+[763 partition labels](https://github.com/brpandey/leetcode/blob/master/rust/src/p0763_partition_labels.rs)
+```rust
+pub fn partition_labels(s: String) -> Vec<i32> {
+        let mut map = HashMap::with_capacity(26);
+        let mut result = vec![];
+
+        for (i, b) in s.bytes().enumerate().rev() {
+            map.entry(b).or_insert(i);
+        }
+
+        let mut window_size = 0;
+        let mut window_end = 0;
+
+        for (i, b) in s.bytes().enumerate() {
+            // grab character last index
+            let last = *map.get(&b).unwrap();
+
+            // if last index is past window end, update
+            // window end (not done with current window yet)
+            if last > window_end {
+                window_end = last
+            }
+
+            window_size += 1;
+            
+            if window_end == i {
+                result.push(window_size);
+                window_size = 0;
+                window_end = 0;
+            }
+
+
+        }
+
+        result
+    }
+```
+
+### O) Advanced Graphs
+
+[787 find cheapest flights within k stops](https://github.com/brpandey/leetcode/blob/master/rust/src/p0787_cheapest_flights_within_k_stops.rs)
+```rust
+pub fn find_cheapest_price(n: i32, flights: Vec<Vec<i32>>, src: i32, dst: i32, k: i32) -> i32 {
+        let mut prices = vec![INFINITY; n as usize];
+        prices[src as usize] = 0;
+
+        let mut new_prices: Vec<i32>;
+
+        // use bellman ford algorithm
+        // update destination prices to new_prices list given values from original prices
+        // upon each k iteration set new_prices to prices
+
+        for _i in 0..k+1 {
+
+            new_prices = prices.clone();
+
+            // iterate through all edges in flights directed graph (vec of vec)
+            for edge in &flights {
+                let (s, d, p) = (edge[0] as usize, edge[1] as usize, edge[2]);
+
+                // lookup the source in the prices vec, if it is "infinity" ignore
+                // because we aren't able to optimize for its destination if source is infinity still
+                if prices[s] == INFINITY { continue }
+
+                if prices[d] > prices[s] + p {
+                    new_prices[d] = prices[s] + p;
+                }
+            }
+
+            prices = new_prices;
+        }
+
+        if prices[dst as usize] == INFINITY { // meaning there's no path to dest, return -1
+            -1
+        } else {
+            prices[dst as usize]
+        }
+    }
+```
+
 ### P) Dynamic Programming 2-D 
 
 > Fibonacci Numbers (FIB), 0/1 Knapsack (01K), Unbounded Knapsack (UNK), Palindrome (PAL), Longest common subsequence (LCS)
@@ -580,6 +711,114 @@ pub fn meeting_rooms_i(input: &mut Vec<[u8; 2]>) -> bool {
     }
 ```
 
+[494 target sum](https://github.com/brpandey/leetcode/blob/master/rust/src/p0494_target_sum.rs)
+```rust
+pub fn find_target_sum_ways(nums: Vec<i32>, target: i32) -> i32 {
+        let mut cache: HashMap<(usize, i32), i32> = HashMap::new();
+        Self::dfs(0, 0, &nums, target, &mut cache)
+    }
+
+    pub fn dfs(index: usize, sum: i32, nums: &[i32], target: i32, 
+               cache: &mut HashMap<(usize, i32), i32>) -> i32 {
+
+        // Has this key already been precomputed? if so, return precomputed result
+        if cache.contains_key(&(index, sum)) {
+            return *cache.get(&(index, sum)).unwrap()
+        }
+
+        // If we've exhausted the path
+        if index == nums.len() {
+            // if matching, a single solution has been found
+            if sum == target { return 1 } else { return 0 }
+        }
+
+        // If the path hasn't been exhausted yet,
+        // Build up the cache for key (index, total) by exploring left and right paths
+        let value = 
+            Self::dfs(index + 1, sum + nums[index], nums, target, cache) +
+            Self::dfs(index + 1, sum - nums[index], nums, target, cache);
+    
+        cache.insert((index, sum), value);
+
+        return cache[&(index, sum)]
+    }
+```
+
 ### Q) Bit Manipulation 
 
 ### R) Math & Geometry 
+
+[48 rotate image](https://github.com/brpandey/leetcode/blob/master/rust/src/p0048_rotate_image.rs)
+```rust
+pub fn run(matrix: &mut Vec<Vec<i16>>) {
+        let size = matrix.len();
+
+        if matrix[0].len() != size {
+            panic!("matrix is not square");
+        }
+        // See Notes
+
+        // Note: column is dependent on row so we have separate for loops
+        for r in 0..size/2 { // Essentially how many squares (nested concentric squares including outer square)
+            for c in r..(size-1-r) { // Start 1 col in extra on every depth essentially shaving off two from the sides each depth
+
+                // Basically these are the transitions for the first cyle for input 1)
+                /*
+                1 ----> 3
+                ^       |
+                |       V
+                7 <---- 9
+                 */
+
+                // 1) Create a hole at the top left corner where 1 originally is
+                let mut hole = (r, c);
+                let temp = matrix[hole.0][hole.1];
+
+                // 2) Since we are shifting image clockwise by 90, move the closest thing into the hole
+                // and then replace that with its antecedent and so on, so basically fill 1's place with 7,
+                // fill 7's place with 9, fill 9's place with 3, and fill 3's place with temp
+                // destination = f(source)
+
+                // Closure for generating shift sequences
+                // size is captured in the closure
+                let shift = |(r,c): (usize, usize)| -> (usize, usize) {
+                    (c as usize, size-1-r as usize)
+                };
+
+                // Shift values between 2d Vector locations
+                let apply_shift = |m: &mut Vec<Vec<i16>>, src: (usize, usize), dest: (usize, usize)| {
+                    m[dest.0][dest.1] = m[src.0][src.1];
+                };
+
+                // Create an iterator of shifts, the first three (given 4 sides of a square)
+                // Seq           1    2    3    4
+                // Cycle 1: 1 -> 3 -> 9 -> 7 -> 1
+
+                // Cycle 2: 2 -> 6 -> 8 -> 4 -> 2
+                // Assume 0 is the location of 1 or (r,c)
+
+                let cycle = (1..4).scan(hole, |state, _x| {
+                    *state = shift(*state);
+                    Some(*state)
+                }).collect::<Vec<_>>(); // We collect it so that we have a finite collection one that we can reverse
+
+                // We are reversing cycle because to fill the hole
+                // we shift in a counter-clockwise fashion (since 1's spot is empty, move 7 in, since 7 is empty move 9 in, etc..)
+                // This is opposite of the clockwise rotation
+
+                // Reverse beomes: 3    2    1
+                //                 7 -> 9 -> 3
+
+                // The source data now shifted becomes a new hole for the next source
+                // 1st iteration: 1 is a hole, it now has 7's contents,
+                // 2nd: 7 is now a hole, it now has 9's contents,
+                // 3rd: 9 is now a hole, it now has 3's contents
+
+                for &source in cycle.iter().rev() {
+                    apply_shift(matrix, source, hole);
+                    hole = source;
+                }
+
+                matrix[hole.0][hole.1] = temp; // 3 is a hole and it now has 1's original contents
+            }
+```
