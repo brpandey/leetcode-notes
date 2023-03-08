@@ -683,6 +683,8 @@ pub fn find_cheapest_price(n: i32, flights: Vec<Vec<i32>>, src: i32, dst: i32, k
 
 > Fibonacci Numbers (FIB), 0/1 Knapsack (01K), Unbounded Knapsack (UNK), Palindrome (PAL), Longest common subsequence (LCS)
 
+[Explanation - 518 coin change 2](https://github.com/brpandey/markdown-notes/blob/main/leetcode/p0518_coin_change_2.md)
+
 [62 unique paths](https://github.com/brpandey/leetcode/blob/master/rust/src/p0062_unique_paths.rs)
 ```rust
     pub fn unique_paths(m: usize, n: usize) -> i32 {
