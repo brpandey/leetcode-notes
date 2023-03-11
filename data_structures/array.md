@@ -1,11 +1,11 @@
 Array
 
-| Operations | Time Complexity |
-|------------|-----------------|
-| Insert End | O(1) |
-| Remove End | O(1) |
-| Insert Mid | O(n) | (must move elements - expand)
-| Remove Mid | O(n) | (must move elements - shrink)
+| Operations | Time Complexity | Notes | 
+|------------|-----------------| --- |
+| Insert End | O(1) | |
+| Remove End | O(1) | |
+| Insert Mid | O(n) | (must move elements - expand) |
+| Remove Mid | O(n) | (must move elements - shrink) |
 
 [Array](https://doc.rust-lang.org/std/primitive.array.html), [Slice](https://doc.rust-lang.org/std/primitive.slice.html#), [Index](https://doc.rust-lang.org/std/ops/trait.Index.html#), [IndexMut](https://doc.rust-lang.org/std/ops/trait.IndexMut.html)
 * [] - index operator - index trait
