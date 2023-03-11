@@ -2,7 +2,8 @@ Hash Map
 
 * Also: [HashSet](https://doc.rust-lang.org/std/collections/struct.HashSet.html#)
   * A hash set is implemented as a HashMap where the value is (). 
-  * Methods: contains, union(&other).collect(), get, difference(&other).collect(), intersection(&other).collect()
+  * Methods: **contains**, difference, get, insert, intersection, is_empty, iter, len, remove, retain, union
+  * Set aggregation methods need collect: let intersection: HashSet<_> = a.intersection(&b).collect();
 * Note: Where n is the number of items and m is the size
 
 | Operations | Time Complexity Best | Avg Complexity | Worse Case |
@@ -15,7 +16,7 @@ Hash Map
 
 [HashMap](https://doc.rust-lang.org/std/collections/struct.HashMap.html), [Entry](https://doc.rust-lang.org/std/collections/hash_map/enum.Entry.html)
 * Important methods: 
-   * capacity, clear, contains_key, entry, get, get_mut, insert, into_keys, into_values, is_empty, iter, iter_mut, keys, len, new, remove, reserve, values, values_mut, with_capacity, 
+   * capacity, clear, contains_key, entry, get, get_mut, insert, into_keys, into_values, is_empty, iter, iter_mut, keys, len, new, remove, reserve, retain, values, values_mut, with_capacity, 
 ```rust
 use std::collections::HashMap;
 
