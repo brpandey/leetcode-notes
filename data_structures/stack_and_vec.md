@@ -60,7 +60,7 @@ Stack
 | Top (right) | O(1) | // v.last() or v.get(v.len-1) |
 | Push (right) | O(1) | // adds to back |
 | Pop (right) | O(1) |  // removes last element |
-| Access with index | O(n) | |
+| Access with index | O(1) | [index operator complexity](https://doc.rust-lang.org/std/vec/)|
 | Remove with index | O(n) | |
 | Search | O(n) | |
 
