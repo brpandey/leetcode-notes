@@ -4,9 +4,100 @@ Hash Map
 
 | Operations | Time Complexity Best | Avg Complexity | Worse Case |
 |------------|-----------------|----------------| -----------|
+| Access | O(1) | O(n/m) | O(log n) or even O(n)
 | Insert | O(1) | O(n/m) | O(log n) or even O(n)
 | Remove | O(1) | O(n/m) | O(log n) or even O(n)
-| Contains or Search / Worse Case | O(1) | O(n/m) | O(log n) or even O(n)
+| Contains Key | O(1) | O(n/m) | O(log n) or even O(n)
+
+
+[HashMap](https://doc.rust-lang.org/std/collections/struct.HashMap.html), [Entry](https://doc.rust-lang.org/std/collections/hash_map/enum.Entry.html)
+* Important methods: 
+   * capacity, clear, contains_key, entry, get, get_mut, insert, into_keys, into_values, is_empty, iter, iter_mut, keys, len, new, remove, reserve, values, values_mut, with_capacity, 
+```rust
+use std::collections::HashMap;
+
+// Type inference lets us omit an explicit type signature (which
+// would be `HashMap<String, String>` in this example corresponding to book title and review).
+let mut book_reviews = HashMap::new();
+
+// Review some books. insert into hashmap key value pairs e.g. title, review
+book_reviews.insert(
+    "Adventures of Huckleberry Finn".to_string(),
+    "My favorite book.".to_string(),
+);
+
+book_reviews.insert(
+    "Pride and Prejudice".to_string(),
+    "Very enjoyable.".to_string(),
+);
+book_reviews.insert(
+    "The Adventures of Sherlock Holmes".to_string(),
+    "Eye lyked it alot.".to_string(),
+);
+
+// Check for a specific one.
+// When collections store owned values (String), they can still be
+// queried using references (&str).
+if !book_reviews.contains_key("Les Misérables") {
+    println!("We've got {} reviews, but Les Misérables ain't one.",
+             book_reviews.len());
+}
+
+// oops, this review has a lot of spelling mistakes, let's delete it.
+book_reviews.remove("The Adventures of Sherlock Holmes");
+
+// Look up the values associated with some keys.
+let to_find = ["Pride and Prejudice", "Alice's Adventure in Wonderland"];
+for &book in &to_find {
+    match book_reviews.get(book) {
+        Some(review) => println!("{book}: {review}"),
+        None => println!("{book} is unreviewed.")
+    }
+}
+
+// Look up the value for a key (will panic if the key is not found).
+println!("Review for Jane: {}", book_reviews["Pride and Prejudice"]);
+
+// Iterate over everything.
+for (book, review) in &book_reviews {
+    println!("{book}: \"{review}\"");
+}
+
+// A HashMap with a known list of items can be initialized from an array:
+
+let solar_distance = HashMap::from([
+    ("Mercury", 0.4),
+    ("Venus", 0.7),
+    ("Earth", 1.0),
+    ("Mars", 1.5),
+]);
+
+//HashMap implements an Entry API, which allows for complex methods of getting, setting, updating and removing keys and their values:
+
+// type inference lets us omit an explicit type signature (which
+// would be `HashMap<&str, u8>` in this example).
+
+let mut player_stats = HashMap::new();
+
+fn fixed_value() -> u8 { 42 }
+
+// insert a key only if it doesn't already exist
+player_stats.entry("health").or_insert(100);
+
+// insert a key using a function that provides a new value only if it
+// doesn't already exist
+player_stats.entry("defence").or_insert_with(fixed_value);
+
+// UPDATE
+// update a key, guarding against the key possibly not being set
+let stat = player_stats.entry("attack").or_insert(100);
+*stat += fixed_value();
+
+// UPDATE
+// modify an entry before an insert with in-place mutation
+player_stats.entry("mana").and_modify(|v| *v += 200).or_insert(100);
+```
+
 
 * If the hashing function is not good and doesn't spread keys uniformly, the hash map bucket entries could degrade into a single linked list, better to use a balanced bst so worse case is O(log n)
 * HashMap is an unordered collection
