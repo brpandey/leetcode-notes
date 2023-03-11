@@ -1,11 +1,12 @@
-Linked List
+Linked List - [rust](https://doc.rust-lang.org/std/collections/struct.LinkedList.html#)
 
-| Operations | Time Complexity |
-|------------|-----------------|
-| Insert End with Tail ptr / else | O(1)  / O(n)          |
-| Remove End with Tail ptr / else | O(1)  / O(n)          |
-| Insert Mid with Mid ptr / else | O(1)  / O(n)          |
-| Remove Mid with Mid ptr / else | O(1)  / O(n)          |
+| Operations | with pointer, Time Complexity | regular Time Complexity | 
+|------------|-----------------|-----------------|
+| Access or Search  | - | O(n) |
+| Insert End | with tail ptr, O(1) | O(n) |
+| Remove End | with tail ptr, O(1) | O(n) |
+| Insert Mid | with mid ptr, O(1)  | O(n) |
+| Remove Mid | with mid ptr, O(1)  | O(n) |
 
 ```mermaid
 flowchart LR
