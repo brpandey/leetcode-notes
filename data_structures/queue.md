@@ -1,14 +1,46 @@
 Queue
 
-also Deque
-
 | Operations | Time Complexity |
 |------------|-----------------|
+| Front/Peek top/left | O(1) |
 | Push front (left) | O(1) |
-| Pop front (left) | O(1) |
-| Push back (right) | O(1) |
+| dequeue/Pop front (left) | O(1) |
+| enqueue/Push back (right) | O(1) |
 | Pop back (right) | O(1) |
+| Access with index | O(n) |
+| Search | O(n) |
+| Remove with index | O(n) |
 
+[VecDeque](https://doc.rust-lang.org/std/collections/struct.VecDeque.html)
+* methods:
+     *  capacity, clear, VecDeque::from (array or vec), front, front_mut, get, get_mut, insert, is_empty, iter, iter_mut, VecDeque::new, pop_back, pop_front, push_back, push_front, remove, reserve, swap
+```rust
+/*
+A double-ended queue implemented with a growable ring buffer.
+
+The “default” usage of this type as a queue is to use push_back 
+to add to the queue, and pop_front to remove from the queue. 
+extend and append push onto the back in this manner, 
+and iterating over VecDeque goes front to back.
+*/
+
+// A VecDeque with a known list of items can be initialized from an array:
+
+use std::collections::VecDeque;
+
+let deq = VecDeque::from([-1, 0, 1]);
+
+
+let mut d = VecDeque::new();
+d.push_back(1);
+d.push_back(2);
+
+assert_eq!(d.pop_front(), Some(1));
+assert_eq!(d.pop_front(), Some(2));
+assert_eq!(d.pop_front(), None);
+```
+
+Notes
 * Queues typically used to process a set of elements in the same order they were added
 * For example, 3, then 6, then 8, then 9 are added to queue and then processed in that order (first in first out - FIFO)
 
