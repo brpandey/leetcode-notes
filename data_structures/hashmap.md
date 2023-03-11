@@ -1,5 +1,8 @@
 Hash Map
 
+* Also: [HashSet](https://doc.rust-lang.org/std/collections/struct.HashSet.html#)
+  * A hash set is implemented as a HashMap where the value is (). 
+  * Methods: contains, union(&other).collect(), get, difference(&other).collect(), intersection(&other).collect()
 * Note: Where n is the number of items and m is the size
 
 | Operations | Time Complexity Best | Avg Complexity | Worse Case |
