@@ -36,7 +36,16 @@ Dr. Dean from Google reveals the length of typical computer operations in 2010 [
 | Read 1 MB sequentially from disk |	30,000,000 ns = 30 ms |
 | Send packet CA (California) ->Netherlands->CA |	150,000,000 ns = 150 ms |
 
-Table 2
+
+Scenario: You are sitting at your desk
+> CPU => Human Brain
+
+> RAM => Papers on Desk
+
+> Disk => Book on shelf in another room
+
+> Network Call => Local library
+
 
 Notes
 
