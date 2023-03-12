@@ -1,3 +1,5 @@
+#### Tell me a time when you made processes, software, systems better
+
 - anchoring to status, accomplishments (e.g. principal engineer)
 - compare levels - salary, responsibilities (e.g. levels.fyi )
 - hedge against risk (don't get down-leveled)
@@ -8,18 +10,21 @@
 
 - inherited software
   - e.g. provides a lot of data, but:
-    - buggy, lot of operational data
-    - uses a deprecated service that can be a security risk
+    - buggy, 
+    - lot of operational burden (people would restart when crashed, and go back to sleep), 
+    - security risk, uses a deprecated service that can be a security risk - log4j
+    - long time to migrate (1 month of effort we didn't have)
     - need to move clients off service
 
   - simple solutions
     - aligned with charter of team (no security vulnerable software or 3rd party dependencies)
     - unit tests/ integration tests
-    - when process crashes, people manually restart process (deep dive)
-    - decommission service
+    - worked with customer teams to migrate off
+    - deprecate and then decommissioned service
     - create a pass thru service
+    - async architecture is much simpler
 
-- summary: on balance => imperfect success
+- summary: on balance => imperfect success (avoid wrapping in too much of a bow) 
 
 
 - owned a backend service
