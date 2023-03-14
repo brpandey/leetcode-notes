@@ -2,6 +2,8 @@
 
 [ByteByteGo](https://www.youtube.com/watch?v=UC5xf8FbdJc)
 [CC](https://www.youtube.com/watch?v=WZjSFNPS9Lo)
+[sudoCode](https://www.youtube.com/watch?v=VBw703pjC3E)
+[Shiran](https://www.youtube.com/watch?v=-frNQkRz_IU)
 
 In a system design interview, sometimes you are asked to estimate system capacity or performance requirements using a back-of-the-envelope estimation. According to Jeff Dean, Google Senior Fellow, “back-of-the-envelope calculations are estimates you create using a combination of thought experiments and common performance numbers to get a good feel for which designs will meet your requirements” [1].
 
@@ -22,7 +24,7 @@ Although data volume can become enormous when dealing with distributed systems, 
 * 2^9  = 512
 * 2^10 = 1 024	≈ 10^3  = 1 KB
 * 2^11 = 2 048
-* 2^12 = 4 096
+* 2^12 = 4 096 <------------------ You should know up to here
 * 2^13 = 8 192
 * 2^14 = 16 384
 * 2^15 = 32 768
