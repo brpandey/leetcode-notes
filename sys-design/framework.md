@@ -81,11 +81,15 @@ Step 2 - Propose high-level design and get buy-in
 
 In this step, we aim to develop a high-level design and reach an agreement with the interviewer on the design. It is a great idea to collaborate with the interviewer during the process.
 
-    Come up with an initial blueprint for the design. Ask for feedback. Treat your interviewer as a teammate and work together. Many good interviewers love to talk and get involved.
+    Come up with an initial blueprint for the design. Ask for feedback. 
+    Treat your interviewer as a teammate and work together. Many good interviewers love to talk and get involved.
 
-    Draw box diagrams with key components on the whiteboard or paper. This might include clients (mobile/web), APIs, web servers, data stores, cache, CDN, message queue, etc.
+    Draw box diagrams with key components on the whiteboard or paper. 
+    This might include clients (mobile/web), APIs, web servers, data stores, cache, CDN, message queue, etc.
 
-    Do back-of-the-envelope calculations to evaluate if your blueprint fits the scale constraints. Think out loud. Communicate with your interviewer if back-of-the-envelope is necessary before diving into it.
+    Do back-of-the-envelope calculations to evaluate if your blueprint fits the scale constraints. 
+    Think out loud. 
+    Communicate with your interviewer if back-of-the-envelope is necessary before diving into it.
 
 If possible, go through a few concrete use cases. This will help you frame the high-level design. It is also likely that the use cases would help you discover edge cases you have not yet considered.
 
@@ -96,9 +100,12 @@ Let us use “Design a news feed system” to demonstrate how to approach the hi
 
 At the high level, the design is divided into two flows: feed publishing and news feed building.
 
-    Feed publishing: when a user publishes a post, corresponding data is written into cache/database, and the post will be populated into friends’ news feed.
+    Feed publishing: 
+        when a user publishes a post, corresponding data is written into cache/database, 
+        and the post will be populated into friends’ news feed.
 
-    Newsfeed building: the news feed is built by aggregating friends’ posts in a reverse chronological order.
+    Newsfeed building: the news feed is built by aggregating friends’ 
+    posts in a reverse chronological order.
 
 Figure 1 and Figure 2 present high-level designs for feed publishing and news feed building flows, respectively.
 
@@ -134,15 +141,22 @@ Step 4 - Wrap up
 
 In this final step, the interviewer might ask you a few follow-up questions or give you the freedom to discuss other additional points. Here are a few directions to follow:
 
-    The interviewer might want you to identify the system bottlenecks and discuss potential improvements. Never say your design is perfect and nothing can be improved. There is always something to improve upon. This is a great opportunity to show your critical thinking and leave a good final impression.
+    The interviewer might want you to identify the system bottlenecks and discuss potential improvements. 
+    Never say your design is perfect and nothing can be improved. 
+    There is always something to improve upon. 
+    This is a great opportunity to show your critical thinking and leave a good final impression.
 
-    It could be useful to give the interviewer a recap of your design. This is particularly important if you suggested a few solutions. Refreshing your interviewer’s memory can be helpful after a long session.
+    It could be useful to give the interviewer a recap of your design. 
+    This is particularly important if you suggested a few solutions. 
+    Refreshing your interviewer’s memory can be helpful after a long session.
 
     Error cases (server failure, network loss, etc.) are interesting to talk about.
 
-    Operation issues are worth mentioning. How do you monitor metrics and error logs? How to roll out the system?
+    Operation issues are worth mentioning. How do you monitor metrics and error logs? 
+    How to roll out the system?
 
-    How to handle the next scale curve is also an interesting topic. For example, if your current design supports 1 million users, what changes do you need to make to support 10 million users?
+    How to handle the next scale curve is also an interesting topic. 
+    For example, if your current design supports 1 million users, what changes do you need to make to support 10 million users?
 
     Propose other refinements you need if you had more time.
 
@@ -154,13 +168,17 @@ Dos
 
     Understand the requirements of the problem.
 
-    There is neither the right answer nor the best answer. A solution designed to solve the problems of a young startup is different from that of an established company with millions of users. Make sure you understand the requirements.
+    There is neither the right answer nor the best answer. 
+    A solution designed to solve the problems of a young startup is different 
+    from that of an established company with millions of users. 
+    Make sure you understand the requirements.
 
     Let the interviewer know what you are thinking. Communicate with your interview.
 
     Suggest multiple approaches if possible.
 
-    Once you agree with your interviewer on the blueprint, go into details on each component. Design the most critical components first.
+    Once you agree with your interviewer on the blueprint, 
+    go into details on each component. Design the most critical components first.
 
     Bounce ideas off the interviewer. A good interviewer works with you as a teammate.
 
@@ -172,13 +190,16 @@ Don’ts
 
     Don’t jump into a solution without clarifying the requirements and assumptions.
 
-    Don’t go into too much detail on a single component in the beginning. Give the high-level design first then drills down.
+    Don’t go into too much detail on a single component in the beginning. 
+    Give the high-level design first then drills down.
 
     If you get stuck, don't hesitate to ask for hints.
 
     Again, communicate. Don't think in silence.
 
-    Don’t think your interview is done once you give the design. You are not done until your interviewer says you are done. Ask for feedback early and often.
+    Don’t think your interview is done once you give the design. 
+    You are not done until your interviewer says you are done. 
+    Ask for feedback early and often.
 
 Time allocation on each step
 
