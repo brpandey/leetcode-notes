@@ -42,10 +42,10 @@ statistics are possible e.g.
       2. ![Short Url, User, Click Metric](imgs/0055.jpg)
 
 
-Given n different characters and string length is k, n^k possible strings that can be generated.  See two examples:
-      *  A binary string of length 3, has two values 0 or 1 for each binary value so 2^3 = 8, or 8 possible string values
-      *  For a short url using 26 letters (a-z) and 10 digits (0-9) => 36 characters
-      *  Given a length of 8, this would mean 36^8 ~ 2.8 billion possible short urls
+* Given n different characters and string length is k, n^k possible strings that can be generated.  See two examples:
+  *  A binary string of length 3, has two values 0 or 1 for each binary value so 2^3 = 8, or 8 possible string values
+  *  For a short url using 26 letters (a-z) and 10 digits (0-9) => 36 characters
+  *  Given a length of 8, this would mean 36^8 ~ 2.8 billion possible short urls
 
 Approaches - Generating short url generated id
 * Snowflake
@@ -68,7 +68,7 @@ Approaches - Generating short url generated id
         3. Non-scalable design ![Non-scalable](imgs/0056.jpg)
     2. This design is improved as it has a few additions to handle scalability e.g. 100 million mau (monthly active users)
         1. Workload split into read and write services, as they both scale independently, 200:1 r:w
-        2. Memory cache (Redis) added for frequently accessed generated short urls, storing long -> short mapping
+        2. Memory cache [Redis](https://redis.com/) added for frequently accessed generated short urls, storing long -> short mapping
         3. Load balancer has been added to distributed requests to web servers more uniformly
         4. Read replicas added to better handle read load
         5. Scalable design ![Scalable](imgs/0057.jpg)
