@@ -1,4 +1,4 @@
-## 26. newsfeed timeline
+## 26. Newsfeed & Timeline
 
 Design a newsfeed and timeline, such as those commonly used in Facebook, Twitter, and Instagram.
 
@@ -46,7 +46,7 @@ same group of ads or news articles be delivered to a group of users?
 * What is the limit of the number of items to be generated for the newsfeed and
 timeline?
 
-2. Define the data models
+### 2. Define the data models
 
 The entities Profile and User are repeated from the previous design question,
 
@@ -65,9 +65,9 @@ action could be hidden on the timeline through the visible attribute. A timeline
 size of 32 bytes; this also does not include the underlying item or media data in the object store.
 
 
-3. Make back-of-the-envelope estimates
+### 3. Make back-of-the-envelope estimates
 
-Users and Traffic
+#### Users and Traffic
 
 Estimate the additional costs of the newsfeed and timeline. The estimates for
 posts and media data from the previous design question remain the same.
@@ -80,7 +80,7 @@ request for the newsfeed. This means -15 billion newsfeed requests per month.
 timeline. This means ***-45 billion timeline requests per month.***
 * Assume each generated timeline has 30 items.
 
-QPS (Queries per second)
+#### QPS (Queries per second)
 
 * The number of newsfeed requests per second is:
     15 billion newsfeeds per month / (30 days* 24 hours * 60 minutes 60 seconds)
@@ -92,7 +92,7 @@ The number of timeline requests per second is:
 = -17.4k timelines per second
 = -520k timeline items per second
 
-Bandwidth Usage
+#### Bandwidth Usage
 
 Calculate the egress bandwidth only since the incoming requests for timelines and
 newsfeeds are relatively smaller sized. Assume the average size of a post with
@@ -104,7 +104,7 @@ an image or video was estimated to be 21.25 MB:
 * Outbound (egress) bandwidth for timelines = the number of timeline requests size of a post
   with image or video: 520k timeline items per second 21.25 MB = -11 TB per second
 
-Memory
+#### Memory
 
 Estimate the newsfeeds/timeline amount that are computed beforehand and kept memory:
 
@@ -116,7 +116,7 @@ in the next half hour, the memory usage of the cache is:
 This estimate contains memory usage for both the database and object storage; if images and
 videos are excluded because of CDN usage, the memory usage will be lower.
 
-Storage
+#### Storage
 
 In the previous question, we calculated that posts consume about 82 TB per year of database
 usage and 127 PB per year of object storage. Calculate the additional storage cost of timelines
@@ -130,7 +130,7 @@ and newsfeeds:
 Compared to the posts storage from before, these values are relatively small. This is because
 the newsfeed and timeline do not store the underlying posts but only the lists metadata that refer to the posts
 
-4. Propose a high-level system design
+### 4. Propose a high-level system design
 
 The diagram below adds the newsfeed, timeline, and fan-out services to the previous design. 
 
@@ -141,10 +141,10 @@ called through the Read and Write APIs.
 
 ![img2](imgs/0063.jpg)
 
-* additions include separating out the fan out service, consisting of the notification service and the 
+* Additions include separating out the fan out service, consisting of the notification service and the 
 search indexing service.
 
-5. Design components in detail
+### 5. Design components in detail
 The timeline service is similar to the newsfeed service but does not have the added complexity of aggregating items 
 from multiple sources and ranking items.
 
@@ -197,10 +197,12 @@ log in within the next hour.
   but these newsfeeds are updated at a lower frequency than those of path 3.
 * Lastly, users who are not expected to log in have their newsfeeds generated on-demand through path 1
 
+Hybrid Ranking Approach (Pre-generated & on-demand) ![](imgs/0065.jpg)
+
 This hybrid approach means that the system doesn't need to generate and update newsfeeds
 for all users, but only the users that have the highest probability of logging in.
 
-How is the ranking performed?
+#### How is the ranking performed?
 
 When the newsfeed was first introduced on social networking sites, items were arranged in
 reverse chronological order, with the newest posting first. Since then, the newsfeed has evolved
@@ -228,16 +230,18 @@ Feature engineering is the last step of a data engineering process called ETL. E
 transform, load) is a three-step process where data is extracted from multiple sources, cleaned
 transformed, and then loaded into a container where features and models can be analyzed.
 
+Target variable data optimization ![](imgs/0066.jpg)
+
 The updateNewsfeed method receives a request for each new item
 
 The newsfeed service updates the relevant newsfeeds in the cache/db after
 calculating the item's ranking score:
 
-7. Identify and solve potential scaling problems and bottlenecks
+### 7. Identify and solve potential scaling problems and bottlenecks
 
 Possible scaling and bottlenecks include:
 
-1. Users who follow a large number of users. Users who follow a large number of other
+1. **Users who follow a large number of users.** Users who follow a large number of other
 users could become potential scaling problems. The aggregator service is designed to
 merge items from multiple sources, and as the velocity of items from those sources
 increases, it means that the aggregator service is triggered more frequently. One
@@ -249,7 +253,7 @@ rank them together. This reduces the computational costs but also means that the
 are delays in updating newsfeeds. The pull model makes sense for users who follow a
 large number of other users since the updates will be batched.
 
-2. Poor prediction of when a user logs in. The hybrid design of combining pre
+2. **Poor prediction of when a user logs in.** The hybrid design of combining pre
 generated and on-demand newsfeeds depends on if the ranking service can correctly
 predict if a user will log in during the next hour. If there is poor prediction, the on
 demand newsfeed generation service can become overloaded, as more users need to
