@@ -18,17 +18,17 @@ statistics are possible e.g.
 * referrals
 * ad campaigns
 
-1. Clarify problem and scope use cases
-   1. Use Cases
+1. ### Clarify problem and scope use cases ###
+   1. #### Use Cases
       1. Create shortened url - Users enter long url and receive short url
       2. When accessed, short url redirects to orignal url ([redirect codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Redirections) 301 Permanent, 307 Temporary)
       3. Short url has configurable lifespan, with a default setting
       4. Url tracking possible, can be done in either real-time mode or offline/delayed processing
-   2. Requirements
+   2. #### Requirements
       1. High availability, if one server is down, that shouldn't stop the service from functioning properly
       2. Highly performant, with minimum latency
       3. Generated short URL must be unique and not have been generated before
-   3. Clarifying Questions
+   3. #### Clarifying Questions
       1. How many anticipated users of service?
       2. What should the default lifespan for the generated url be? A few hours? A few days? A few months? Years?
       3. Is anonymous access important?
@@ -37,7 +37,7 @@ statistics are possible e.g.
       6. Who is the intended end user? Should ad campaign/referral linking features be added?
       7. What should the max length of the shortened url generated token be?
 
-2. Data model
+2. ### Data model
       1. Short url record ~ 544 bytes, User record ~ 88 bytes, Click metric ~ 160 bytes
       2. ![Short Url, User, Click Metric](imgs/0055.jpg)
 
@@ -52,7 +52,7 @@ Approaches - Generating short url generated id
 * Cryptographic Hash
 * GUID generator
 
-3. Back-of-the-envelope Calculations
+3. ### Back-of-the-envelope Calculations
     1. Assume 100 million (10^8) MAU - monthly active users that creates urls
     2. Assume read heavy workload - writes are infrequent.  
        1. Most people just accessing short urls, not creating them.
@@ -61,7 +61,7 @@ Approaches - Generating short url generated id
     4. Number of created short urls: 100 million MAU * 3 urls = 300 million (3 * 10^8) writes
     5. Number of reads per month: 300 million MAU * 200 read/write ratio = 20 billion reads/month
 
-4. High-level design
+4. ### High-level design
     1. This design doesn't handle scalability
         1. Without a load balancer, client connections will be unevenly distributed
         2. The database is a single point of failure (SPOF), even if web servers are added, as requests are passed to same DB
@@ -74,7 +74,7 @@ Approaches - Generating short url generated id
         5. Scalable design ![Scalable](imgs/0057.jpg)
         6. As a takeaway, read requests don't require complex joins or relationship driven queries
            1. Just copy short url table and stick it in NoSQL key value database (cassandra, dynamo) and use token as PK
-6. Detailed design - Focusing on a new analytics service
+6. ### Detailed design - Focusing on a new analytics service
     1. High-level![](imgs/0058.jpg)
        * What metrics do we want to track, what metrics do we want to show the interested user
        * Which metrics are calculated real-time and which are delayed
@@ -124,7 +124,7 @@ Approaches - Generating short url generated id
            * No complex relationships within the data models
        * ![](imgs/0059.jpg)
 
-7. Identify potential scaling problems and bottlenecks
+7. ### Identify potential scaling problems and bottlenecks
    1. Some generated short urls can experience burst requests.
       * For example, a celebrity posts a short URL on their twitter feed and there may be millions of read requests in a short time. More than the 20:1 R:W ratio.  The database replica shard that holds the generated short url may become hot and be overloaded, dropping requests (Hotspotting [1](https://intmain.co/what-is-database-sharding-and-how-is-it-done/) [2](https://cloud.google.com/blog/products/databases/hotspots-and-performance-debugging-in-cloud-bigtable)).
       * Solution 1: Replicate database with read replicas and caches to distribute read requests
