@@ -1,4 +1,4 @@
-27. Design Question 4: Design a Search Service
+## 27. Design a Search Service
 
 Design the search service of a social networking application (Facebook, Twitter, Snapchat, and
 Instagram).
@@ -11,35 +11,35 @@ networking application is the social relevance of the results: the social networ
 to be customized based on the user's friends and activities.
 
 For example, on a web search engine, two users who search for a name such as 
-"John" will get mostly similar results the more well-known Johns of the world 
-and perhaps some local services that have " John" in their name.
+"Stanley" will get mostly similar results of the more well-known Stanleys of the world 
+and perhaps some local services that have "Stanley" in their name.
 
-However, two users who search for "John" on a social networking site will get different
-results: their friends or friends of friends named "John"
+However, two users who search for "Stanley" on a social networking site will get different
+results: their friends or friends of friends named "Stanley"
 
 ### 1. Clarify the problem and scope the use cases
-Use Cases:
+
+#### Use Cases:
 * A user types in keyword(s) in the search field.
 * A user receives results back that can include images, friends, people, places, and/or posts.
 * A user adds a post with a keyword. The post appears in the search results for those 
   keywords within some minutes interval.
 
-Requirements:
+#### Requirements:
 * Posts can have explicit keyword(s) by using hashtags.
 * Social relevance can be measured through friends, location, previous likes, and content.
 * Sorting and scoring of the search results should be based on how close they are to the entity on a social graph.
 * The service should have high availability, and search results should be returned in less than a second
 * New posts with keyword(s) should appear within the relevant seats hours of making the post.
 
-
-Clarifying questions to ask:
+#### Clarifying questions to ask:
 
 * Should the system be designed as a graph search or keyword index search?
 * Should the search allow for semantics, phrases, and natural language for example
 "friends in New York or" "pictures of a dog and me"
 * Does indexing need to be performed on the keywords or the entire search phrase?
 
-2. Define the data models
+### 2. Define the data models
 
 Before we define the data models, we'll need to first explain how the social graph search works
 from a high level:
@@ -163,7 +163,7 @@ and verticals. A search can be limited by depth and by the number of entities fo
 search does not need to traverse the entirety of the graph. After the top results from each index
 server are retrieved, they are combined using the query language.
 
-### How does NLP and keyword extraction work?
+#### How does NLP and keyword extraction work?
 
 NLP (natural language processing) applies a set of language, vocabulary, and grammar rules
 to extract keywords. The keyword extraction process involves linguistics and semantics, but
