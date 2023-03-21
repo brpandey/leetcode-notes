@@ -1,28 +1,28 @@
 ## 25. Design a Social Media Application with Post Sharing
 
-Modern applications such as Twitter or Instagram, operate on a tremendous scale: 
-they're able to serve millions or even billions of users and handle a peak
-burst throughput up to hundreds of billions of QPS. 
+> Modern applications such as Twitter or Instagram, operate on a tremendous scale: 
+> they're able to serve millions or even billions of users and handle a peak
+> burst throughput up to hundreds of billions of QPS. 
 
-They serve photos, make recommendations from machine learning algorithms, and push notifications.
+> They serve photos, make recommendations from machine learning algorithms, and push notifications.
 
-These applications are backed by hundreds or thousands of microservices and, hence, 
-it's not possible to design the entirety of a large application during an interview. 
+> These applications are backed by hundreds or thousands of microservices and, hence, 
+> it's not possible to design the entirety of a large application during an interview. 
 
-If you do receive a system design question that is broad, clarify which parts of the 
-application the interviewer wants you to focus on.
+> If you do receive a system design question that is broad, clarify which parts of the 
+> application the interviewer wants you to focus on.
 
-Design the scalable backend services of a social media application that shares posts. A sharable post consists
-of text, photos, and/or videos. This should efficiently scale those services to billions of users.
+> Design the scalable backend services of a social media application that shares posts. A sharable post consists
+> of text, photos, and/or videos. This should efficiently scale those services to billions of users.
 
-Instagram allows users to upload photos and videos to share publicly or privately with their followers. 
-Hashtags and geolocations can be added to posts, and users can filter content by tags and locations. Users
-can like photos, follow other users, add their own content, and mark posts to disappear after 24 hours.
+> Instagram allows users to upload photos and videos to share publicly or privately with their followers. 
+> Hashtags and geolocations can be added to posts, and users can filter content by tags and locations. Users
+> can like photos, follow other users, add their own content, and mark posts to disappear after 24 hours.
 
-Twitter alows users to post messages, aka tweets, that are publicly visible by default. 
-Tweets can consist of messages restricted to 280 characters, images, videos or a combination
-of them. Users can create tweets, like tweets, retweet another user's tweet, and follow
-other users.
+> Twitter alows users to post messages, aka tweets, that are publicly visible by default. 
+> Tweets can consist of messages restricted to 280 characters, images, videos or a combination
+> of them. Users can create tweets, like tweets, retweet another user's tweet, and follow
+> other users.
 
 ### 1. Clarify the problem and scope the use cases
 
