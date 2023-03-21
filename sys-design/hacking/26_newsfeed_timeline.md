@@ -1,23 +1,23 @@
 ## 26. Newsfeed & Timeline
 
-Design a newsfeed and timeline, such as those commonly used in Facebook, Twitter, and Instagram.
+> Design a newsfeed and timeline, such as those commonly used in Facebook, Twitter, and Instagram.
 
-#### What is a Newsfeed?
-A newsfeed is found on a user's homepage with a collection of posts from other users, news articles, ads, and other updates. Each
-newsfeed is also customized for a user, containing hopefully relevant content that the user would want to engage with.
+> #### What is a Newsfeed?
+> A newsfeed is found on a user's homepage with a collection of posts from other users, news articles, ads, and other updates. Each
+> newsfeed is also customized for a user, containing hopefully relevant content that the user would want to engage with.
 
-#### What is a Timeline?
-A timeline appears on a user's profile page, with a list of items
-belonging to that user: their posts, activities, and other updates. 
+> #### What is a Timeline?
+> A timeline appears on a user's profile page, with a list of items
+> belonging to that user: their posts, activities, and other updates. 
 
-A timeline is sorted in reverse chronological order, ***with the most recent updates shown at the top***.
+> A timeline is sorted in reverse chronological order, ***with the most recent updates shown at the top***.
 
-There is overlap between the items that appear in a timeline and those in a newsfeed; both can
-contain user updates and posts. A newsfeed, however, is more complex than a timeline because
-it contains items from multiple sources and is driven by ranking algorithms that determine
-the most relevant items for a target user. T
+> There is overlap between the items that appear in a timeline and those in a newsfeed; both can
+> contain user updates and posts. A newsfeed, however, is more complex than a timeline because
+> it contains items from multiple sources and is driven by ranking algorithms that determine
+> the most relevant items for a target user. T
 
-The data models and services definitions for posts stay the same as the previous question.
+> The data models and services definitions for posts stay the same as the previous question.
 
 ### 1. Clarify the problem and scope the use cases
 
