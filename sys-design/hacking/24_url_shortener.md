@@ -1,7 +1,7 @@
 ### 24. Design a URL Shortener
 
-Url Shortener simplifies and transforms a long URL to a shorter more compact url with just a domain name
-(e.g. tinyurl and bitly) and a compact URL path id token
+> Url Shortener simplifies and transforms a long URL to a shorter more compact url with just a domain name
+> (e.g. tinyurl and bitly) and a compact URL path id token
 
 Long Url
 > https://www.walmart.com/ip/Acer-Aspire-5-15-6-Full-HD-IPS-Display-11th-Gen-Intel-Core-i7-1165G7-12GB-DDR4-512GB-NVMe-SSD-Pure-Silver-Windows-11-Home-A515-56-79N0/2809390326
