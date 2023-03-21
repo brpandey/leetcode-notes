@@ -1,21 +1,20 @@
 ## 27. Design a Search Service
 
-Design the search service of a social networking application (Facebook, Twitter, Snapchat, and
-Instagram).
+> Design the search service of a social networking application (Facebook, Twitter, Snapchat, and Instagram).
 
-This functionality is often exposed externally with a search bar that appears at the
-top of a mobile app or website.
+> This functionality is often exposed externally with a search bar that appears at the
+> top of a mobile app or website.
 
-One of the differences between a search on a web search engine and a search on a social
-networking application is the social relevance of the results: the social network search needs
-to be customized based on the user's friends and activities.
+> One of the differences between a search on a web search engine and a search on a social
+> networking application is the social relevance of the results: the social network search needs
+> to be customized based on the user's friends and activities.
 
-For example, on a web search engine, two users who search for a name such as 
-"Stanley" will get mostly similar results of the more well-known Stanleys of the world 
-and perhaps some local services that have "Stanley" in their name.
+> For example, on a web search engine, two users who search for a name such as 
+> "Stanley" will get mostly similar results of the more well-known Stanleys of the world 
+> and perhaps some local services that have "Stanley" in their name.
 
-However, two users who search for "Stanley" on a social networking site will get different
-results: their friends or friends of friends named "Stanley"
+> However, two users who search for "Stanley" on a social networking site will get different
+> results: their friends or friends of friends named "Stanley"
 
 ### 1. Clarify the problem and scope the use cases
 
