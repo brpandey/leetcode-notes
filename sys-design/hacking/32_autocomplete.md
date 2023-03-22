@@ -257,7 +257,7 @@ sites or blogs), then online updating might be a suitable approach. But if the a
 for an established product where an incremental search will unlikely impact the results, then
 batch updating with MapReduce is the better approach.
 
-### 7. Identify and solve potential scaling problems and bott
+### 7. Identify and solve potential scaling problems and bottlenecks
 
 One possible scaling problem is that the computational cost of updating the trie on each search
 may be high. We proposed and discussed a solution by using an analytics service to process
