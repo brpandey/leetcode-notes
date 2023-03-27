@@ -1,4 +1,4 @@
-### Web Server (11)
+## Web Server (11)
 
 Before defining a web server, it's important to clarify the terms frontend and backend.
 
@@ -17,7 +17,7 @@ often contains services and controls resource access.
 
 ![](../imgs/0033.jpg)
 
-#### Description
+###  Description
 A web server is a frontend server that is stateless and responds to network requests over HTTP
 and other web protocols. They are commonly used to process and deliver webpages to clients
 such as web browsers. 
@@ -54,7 +54,6 @@ the first server that a request will touch in the request path.
   forwarded to the backend servers is unencrypted. Though TLS/SSL termination is
   often performed in the load balancer, the web server can perform this function as well.
 * TLS/SSL encryption: encrypt outbound traffic using a security certificate.
-
 * Server-side encryption: if data needs to be securely stored in a backend server of
   database, the web server encrypts the request payload server-side. This provides data
   security and privacy from other internal services. The web server similarly performs

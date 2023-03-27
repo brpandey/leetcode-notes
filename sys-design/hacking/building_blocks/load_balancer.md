@@ -12,7 +12,7 @@ increase the number of servers that can concurrently handle requests.
 Additionally, a load balancer adds failover protection because if a single server becomes unavailable,
 it routes the traffic to other online servers.
 
-![](imgs/0036.jpg)
+![](../imgs/0036.jpg)
 
 In a distributed system, the load balancer is often the first point of contact in the request path,
 acting as the reverse proxy. In the request path, it sits in front of the frontend web servers and
@@ -36,7 +36,7 @@ In the following diagram, load balancer 1 is placed in front of the web servers,
 to a server cluster to load balancer 2. This second load balancer helps distribute traffic evenly among
 servers in the cluster.
 
-![](imgs/0037.jpg)
+![](../imgs/0037.jpg)
 
 Load balancers increase the reliability of a system by managing concurrent connections. Each
 connection could contain one or more network sessions, which is the process of handling
@@ -80,7 +80,7 @@ In the following diagram, the load balancer maintains four TCP connections: two 
 and two with servers.  Meaning the set of tcp connections between client and load balancer, and load
 balancer and servers are different and don't overlap.
 
-![](imgs/0038.jpg)
+![](../imgs/0038.jpg)
 
 The load balancer routes each request independently so that a request from Client A could
 either be forwarded to Server A or Server B.
@@ -107,7 +107,7 @@ An L7 load balancer uses the metadata in requests to route video requests to spe
 servers that are designed to store and stream video data and also to route text requests
 to normal servers.
 
-![L7 Load balancer](imgs/0038.jpg)
+![L7 Load balancer](../imgs/0039.jpg)
 
 This request type-based load balancing allows systems to achieve high performance by
 optimized components around the request type. The downside of L7 load balancing is that it
