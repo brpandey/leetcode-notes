@@ -32,11 +32,11 @@ The diagram below shows the services that fall under the term "fan-out services"
 
 Some of the services and components:
 
-* Newsfeed: contains a list of:
+* Newsfeed: contains a list of display on the user's homepage:
   * news items
   * posts
   * ads customized per user
-  and is displayed on the homepage. See "Design a Newsfeed and Timeline" for a detailed design.
+  
   This newsfeed is computed before a user's login (online ranking may take too long), and
   copies of the newsfeed are kept in caches and read replicas so that they can be served
   on a user's login.
@@ -51,6 +51,7 @@ Some of the services and components:
   * their posts
   * activities
   * and other updates
+  
   A timeline is presented in reverse chronological order (newest on top) and is shown on a 
   user's profile. Like newsfeeds, timelines are computed before users navigate to a profile and 
   are kept in caches and read replicas.
@@ -80,7 +81,8 @@ One of the challenges of the fan-out service is to effectively scale a fan-out s
 considering new items and notifications need to be propagated to users quickly and
 without race conditions.
 
-Suppose the, new comment reply to a new post, following sequence of events happens:
+*New comment reply to a new post, received before original post is received*
+Suppose the following sequence of events happens:
 
 1. User A has tens of millions of followers makes a post. The fan-out services start to
    update millions of newsfeeds and send out notifications.
