@@ -1,25 +1,25 @@
 ## 25. Design a Social Media Application with Post Sharing
 
-> Modern applications such as Twitter or Instagram, operate on a tremendous scale: 
+> Modern applications such as Twitter or Instagram, operate on a tremendous scale:
 > they're able to serve millions or even billions of users and handle a peak
-> burst throughput up to hundreds of billions of QPS. 
+> burst throughput up to hundreds of billions of QPS.
 
 > They serve photos, make recommendations from machine learning algorithms, and push notifications.
 
-> These applications are backed by hundreds or thousands of microservices and, hence, 
-> it's not possible to design the entirety of a large application during an interview. 
+> These applications are backed by hundreds or thousands of microservices and, hence,
+> it's not possible to design the entirety of a large application during an interview.
 
-> If you do receive a system design question that is broad, clarify which parts of the 
+> If you do receive a system design question that is broad, clarify which parts of the
 > application the interviewer wants you to focus on.
 
 > Design the scalable backend services of a social media application that shares posts. A sharable post consists
 > of text, photos, and/or videos. This should efficiently scale those services to billions of users.
 
-> Instagram allows users to upload photos and videos to share publicly or privately with their followers. 
+> Instagram allows users to upload photos and videos to share publicly or privately with their followers.
 > Hashtags and geolocations can be added to posts, and users can filter content by tags and locations. Users
 > can like photos, follow other users, add their own content, and mark posts to disappear after 24 hours.
 
-> Twitter alows users to post messages, aka tweets, that are publicly visible by default. 
+> Twitter alows users to post messages, aka tweets, that are publicly visible by default.
 > Tweets can consist of messages restricted to 280 characters, images, videos or a combination
 > of them. Users can create tweets, like tweets, retweet another user's tweet, and follow
 > other users.
@@ -50,68 +50,80 @@ the size and length of the images and videos?
 * Should notifications be customized?
 
 ### 2. Define the data models
-```
-Profile
-profile_id: long (8 bytes) (PK)
-user_id: long (8 bytes)
-username: string (512 bytes)
-profile_type: int (4 bytes)
-profile_img_url: string (512 bytes)
-bio text: string (2048 bytes)
-update_timestamp: timestamp (8 bytes)
-created_timestamp: timestamp (8 bytes)
-num_followers: long (8 bytes)
 
-Post
-post_id: long (8 bytes) (PK)
-profile_id: long (8 bytes)
-created_timestamp: timestamp (8 bytes)
-text: string (2048 bytes)
-num_likes: long (8 bytes)
-num hearts: long (8 bytes)
-image_url: string (512 bytes)
-video_uri: string (512 bytes)
+```mermaid
+erDiagram
+    PROFILE }|--|{ USER : has
+    PROFILE ||--|{ EDGE : contains 
+    PROFILE ||--o{ ACTION : contains
+    PROFILE ||--|{ POST : contains
+    PROFILE {
+        u64 id PK
+        string user_id FK
+        string username
+        u32 profile_type
+        string profile_img_url
+        string bio_text
+        timestamp update_ts
+        timestamp created_ts
+        u64 num_followers
 
-User
-user_id: long (8 bytes) (PK)
-name: string (128 bytes)
-email: string (512 bytes)
-created_timestamp: timestamp (8 bytes)
-login_timestamp: timestamp (8 bylos)
+    }
+    USER {
+        u64 id PK 
+        string name
+        string email
+        timestamp created
+        timestamp login
+    }
+    POST ||--o{ ACTION : contains
+    POST {
+        u64 id PK 
+        u64 profile_id FK
+        timestamp created
+        string text
+        u64 num_likes
+        u64 num_hearts
+        string image_url
+        string video_url
+    }
+    EDGE {
+        u64 profile_id PK "CPK"
+        u64 target_profile_id PK "CPK"
+        u64 edge_type
+        timestamp created
+        bool is_pending
+        bool notification_on 
+    }
 
-Edge
-profile_id: long (8 bytes) (CPK)
-target profile id long (8 bytes) (CPK)
-edge_type: int (8 bytes)
-created_timestamp: timestamp (8 bytes)
-is pending boolean (1 bit)
-notification on: boolean (1 bit)
-
-Action
-profile_id: long (8 bytes) (CPK)
-post_id: long (8 bytes) (CPK)
-action type: int (4 bytes) (CPK)
-created_timestamp timestamp (8 bytes)
-comment text: string (2048 bytes)
+    ACTION {
+        u64 profile_id PK "CPK"
+        u64 post_id PK "CPK"
+        u32 action_type PK "CPK"
+        timestamp created 
+        string comment_text
+    }
 ```
 
 User and Profile are designed as separate entities. The User entity contains attributes
 that the user cannot change after initially creating the account, while the Profile entity
 contains fields that the user can change. Additionally, a Profile doesn't need to be a person
-it can be businesses, organizations, and clubs. 
+it can be businesses, organizations, and clubs.
 
-Splitting out the data models allows multiple users to manage a single profile for a business or a single person to manage multiple profiles. If all attributes are fully used, a Profile has a size of 3116 bytes, and a User has a size of 664 bytes.
+Splitting out the data models allows multiple users to manage a single profile for a business or a
+single person to manage multiple profiles. If all attributes are fully used, a Profile has a size of
+3116 bytes, and a User has a size of 664 bytes.
 
-The Post entity defines a post that could consist of text, an URL to an image, and/or an URL
-to a video; the underlying photos and videos are media files in object storage, A Post has a size
+The Post entity defines a post that could consist of text, an image URL, and/or a video URL;
+the underlying photos and videos are media files in object storage, A Post has a size
 of 3116 bytes, but this does not include the size of the image or video file(s) in object storage
 
-The Edge entity defines the relationship between two profiles in one direction. For example
-one profile can follow or block on the other; the type is defined by the attribute edge_type
-An Edge has a size of -32 bytes.
+The Edge entity defines the relationship between **two profiles** in one direction. For example
+one profile can **follow** or **block** on the other; the type is defined by the attribute edge_type
+An Edge has a size of ~32 bytes.
 
-The Action entity defines how a user can react to a Post; this could be actions such as "like",
-"heart," or "dislike." An Action has a size of 2076 bytes.
+The Action entity defines how a *User* can react to a *Post*; this **could be actions such as "like",
+"heart," or "dislike."** An Action has a size of 2076 bytes.
 
 ### 3. Make back-of-the-envelope estimates
 
@@ -122,15 +134,31 @@ The Action entity defines how a user can react to a Post; this could be actions 
 * Assume that there is a 20:1 read/write ratio for each post, which means about 10
 billion post reads per month. This includes reads from unregistered users.
 
+#### Back of the envelope Shortcuts
+
+seconds in month:
+* 30 days * 24 hours * 60 minutes * 60 seconds ~= 2.5 * 10<sup>6</sup> seconds or ~ 2*10<sup>6</sup> seconds
+
+seconds in day:
+* 24 hours * 60 minutes * 60 seconds = 86400 seconds or 10<sup>5</sup> seconds
+
+storage in powers of 10
+* (1 KB => 10<sup>3</sup> bytes, 1 MB => 10<sup>6</sup> bytes, 1 GB => 10<sup>9</sup> bytes, 1 TB => 10<sup>12</sup> bytes)
+
 #### QPS (Queries per second)
 
+
 * The number of write requests per second is:
-500 million posts per month / (30 days * 24 hours* 60 minutes * 60 seconds)
+500 million posts per month / (30 days * 24 hours* 60 minutes * 60 seconds
 = ~192 post writes per second
 
+*Shortcut => 500 * 10<sup>6</sup> / 2 * 10<sup>6</sup> => ~ 250 post wps*
+
 * The number of read requests per second is:
-10 billion posts per month / (30 days * 24 hours* 60 minutes * 60 seconds)
+10 billion posts per month / (30 days * 24 hours* 60 minutes * 60 seconds
 = ~3,800 post reads per second
+
+*Shortcut => 10 * 10<sup>9</sup> / 2 * 10<sup>6</sup> => 5,000 post rps*
 
 #### Storage
 
@@ -138,11 +166,13 @@ We can first estimate the storage size of each post, which will help with the ot
 Using the size calculated from the data models, we estimate:
 
 * 500 million posts per month* 3116 bytes per post
-= ~1.55 TB per month = ~18.7 TB per year
+
+*Shortcut => 500 * 10<sup>6</sup> 3*10<sup>3</sup> bps => 1500*10<sup>9</sup> => 1.5*10<sup>12</sup> or ~1.5 TB / month, 1.5 TB * 12 months = ~18 TB per year*
+
 * Assume that each post receives ~5 actions (comments, likes, etc.):
-500 million posts per month* 5 actions* 2076 bytes per
-= ~5.2 TB per month = ~62.3 TB per year
-action
+500 million posts per month * 5 actions * 2076 bytes per action = ~5.2 TB per month = ~62.3 TB per year
+
+*Shortcut => 5 * 10<sup>8</sup> * 5 * 2 * 10<sup>3</sup> = 50 * 10<sup>11</sup> or 5*10<sup>12</sup> or 5 TB / month or 60 TB / year*
 
 * Assume each user follows 200 other users (edges) and assume there is about 20%
 growth in users per year. Estimating Profile, User, and Edge Size:
@@ -163,7 +193,7 @@ Estimating for 10 years:
 * Object Store Usage = (120 PB +7.5 PB)* 10 years = 1275 PB
 
 The object store usage is an order of magnitude greater than database
-usage; this is expected as images and videos are large compared to text. 
+usage; this is expected as images and videos are large compared to text.
 
 #### Bandwidth Usage
 
@@ -190,7 +220,7 @@ requests of posts already in cache. Assuming about 75% of the reads are already 
     * 14.4 TB * 0.25 = ~3.6 TB
 
 Since both memory and bandwidth usage are high due to images and videos, a CDN is a type
-of cache that can help reduce both. 
+of cache that can help reduce both.
 
 ### 4. Propose a high-level system design
 

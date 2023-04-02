@@ -5,6 +5,18 @@
 [sudoCode](https://www.youtube.com/watch?v=VBw703pjC3E)
 [Shiran](https://www.youtube.com/watch?v=-frNQkRz_IU)
 
+#### Back of the envelope Shortcuts
+
+> Seconds in month:
+> * 30 days * 24 hours * 60 minutes * 60 seconds ~= 2.5 * 10<sup>6</sup> seconds or ~ 2*10<sup>6</sup> seconds
+
+> Seconds in day:
+> * 24 hours * 60 minutes * 60 seconds = 86400 seconds or 10<sup>5</sup> seconds
+
+> Storage in powers of 10
+> * (1 KB => 10<sup>3</sup> bytes, 1 MB => 10<sup>6</sup> bytes, 1 GB => 10<sup>9</sup> bytes, 1 TB => 10<sup>12</sup> bytes)
+
+
 In a system design interview, sometimes you are asked to estimate system capacity or performance requirements using a back-of-the-envelope estimation. According to Jeff Dean, Google Senior Fellow, “back-of-the-envelope calculations are estimates you create using a combination of thought experiments and common performance numbers to get a good feel for which designs will meet your requirements” [1].
 
 You need to have a good sense of scalability basics to effectively carry out back-of-the-envelope estimation. The following concepts should be well understood: power of two [2], latency numbers every programmer should know, and availability numbers.
@@ -167,8 +179,19 @@ Back-of-the-envelope estimation is all about the process. Solving the problem is
 * Commonly asked back-of-the-envelope estimations: 
    * QPS, peak QPS, storage, cache, number of servers, etc. You can practice these calculations when preparing for an interview. Practice makes perfect.
 
-Congratulations on getting this far! Now give yourself a pat on the back. Good job!
-Reference materials
+
+
+Common Monthly Active Users (MAU) and Daily Active Users (DAU) in millions aka 10<sup>6</sup>
+
+| Web Site | MAU  | DAU  |   
+| ---      | ---  | ---  |   
+| Facebook | 2800 | 1900 |   
+| YouTube  | 2300 | 1400 |  
+| Msg      | 1300 | 1100 |  
+| Twitter  |  500 | 200  |  
+| Reddit   |  400 | 50   |  
+| Uber     |  100 | 15   | 
+
 
 [1] J. Dean.Google Pro Tip: Use Back-Of-The-Envelope-Calculations To Choose The Best Design:
 http://highscalability.com/blog/2011/1/26/google-pro-tip-use-back-of-the-envelope-calculations-to-choo.html
