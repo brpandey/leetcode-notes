@@ -244,21 +244,27 @@ Possible scaling and bottlenecks include:
 1. **Users who follow a large number of users.** Users who follow a large number of other
 users could become potential scaling problems. The aggregator service is designed to
 merge items from multiple sources, and as the velocity of items from those sources
-increases, it means that the aggregator service is triggered more frequently. One
-possible solution is to consider the computational costs of a push vs. pull model.
+increases, it means that the aggregator service is triggered more frequently. 
+
+> One possible solution is to consider the computational costs of a push vs. pull model.
+
 A push model means that the aggregator service is triggered on each new item. This
-model provides the most updated newsfeeds since items are ranked when they are
-created. A pull model means that the aggregator service will batch multiple items and
+model provides the most updated newsfeeds since items are ranked when they are created. 
+
+A pull model means that the aggregator service will batch multiple items and
 rank them together. This reduces the computational costs but also means that there
-are delays in updating newsfeeds. The pull model makes sense for users who follow a
-large number of other users since the updates will be batched.
+are delays in updating newsfeeds. **The pull model makes sense for users who follow a
+large number of other users since the updates will be batched**.
 
 2. **Poor prediction of when a user logs in.** The hybrid design of combining pre
 generated and on-demand newsfeeds depends on if the ranking service can correctly
 predict if a user will log in during the next hour. If there is poor prediction, the on
 demand newsfeed generation service can become overloaded, as more users need to
-request on-demand newsfeeds. One potential solution to poor prediction is to have
-the ranking service pre-generate newsfeeds for most users but not update them
-if that newsfeed has stale items. The users will be able to navigate older items of the
-frequently. Users will get an old version of their newsfeed immediately on logif the
-newsfeed while the ranking service updates it with new items.
+request on-demand newsfeeds. 
+
+One potential solution to poor prediction is to have the ranking service pre-generate 
+newsfeeds for most users but not update them if that newsfeed has stale items. 
+
+Users will get an old version of their newsfeed immediately on login, even if the newsfeed
+has stale items. The users will be able to navigate older items of the newsfeed while the 
+ranking service updates it with new items.
