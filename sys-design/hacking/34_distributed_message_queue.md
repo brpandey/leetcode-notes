@@ -136,20 +136,21 @@ with an in-memory queue.
 
 Messages that need to be persisted to the database use the following data model:
 
-![](imgs/0096.jpg)
 
-```
-Message
-msg_id: long (8 bytes) (CPK)
-msg_type: long (8 bytes)
-payload: binary (256 KB)
-payload_type: string (128 bytes)
-queue_id: long (8 bytes) (CPK)
-parent_msg_id: long (8 bytes)
-child_msg_id: long (8 bytes)
-created timestamp: timestamp (8 bytes)
-expiration timestamp: timestamp (8 bytes)
-consumed timestamp: timestamp (8 bytes)
+```mermaid
+erDiagram
+    Message {
+        u64 msg_id "CPK"
+        u64 queue_id "CPK"
+        u64 msg_type
+        binary payload "256 KB"
+        string payload_type "128 bytes"
+        u64 parent_msg_id FK "self referential"
+        u64 child_msg_id FK "self referential"
+        timestamp created
+        timestamp expiration
+        timestamp consumed
+    }
 ```
 
 The size of a message is ~256 KB, and the attributes are:

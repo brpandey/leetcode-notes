@@ -54,24 +54,29 @@ The crawler generates a signature for cach page, allowing it to compare if the w
 been processed before. The child pages of a page and the graph of how URLs are connected
 can be generated with the parent_page_id and parent_url attributes.
 
-![](imgs/0099.jpg)
 
-```
-Page
-page_id: long (8 bytes) (PK)
-ut string (500 bytes)
-signature long (8 bytes)
-duplicate_page_id: long (8 bytes)
-updated_timestamp: timestamp (8 bytes)
-parent ut string(500 bytes)
-parent_page_id: long (8 bytes)
-contents: bytes (500 KB)
-Keyword
-keyword id: long (8 bytes) (CPK)
-page_id: timestamp (CPK)
-ranking: timestamp (8 bytes)
-keyword_text: string (100 bytes)
-updated_timestamp: timestamp (8 bytes)
+```mermaid
+   erDiagram
+       Page ||--}| Keyword : contains
+       
+       Page {
+           u64 id PK
+           string url "500 bytes"
+           u64 signature
+           u64 duplicate_page_id FK "self referential"
+           timestamp updated
+           string parent_url "500 bytes"
+           u64 parent_page_id FK "self referential"
+           bytes contents "500 KB"
+       }
+       
+       Keyword {
+           u64 id "CPK"
+           u64 page_id FK "CPK"
+           f64 ranking
+           string text "100 bytes"
+           timestamp updated
+       }
 ```
 
 ### Make back-of-the-envelope estimates

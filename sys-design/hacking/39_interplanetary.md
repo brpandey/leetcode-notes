@@ -122,18 +122,21 @@ that better fulfills these requirements.
 
 Data that needs to be persisted are stored as messages
 
-```
-Message
-msg_id: long (8 bytes) (PK)
-msg_type: long (8 bytes)
-payload: binary (256 kb)
-payload_type: string(128 bytes)
-retry_attempts: int(4 bytes)
-parent_msg_id: long (8 bytes)
-child_msg_id: long (8 bytes)
-created_timestamp timestamp (8 bytes)
-expiration_timestamp: timestamp (8 bytes)
-ack_timestamp: timestamp (8 bytes)
+```mermaid
+   erDiagram
+
+   Message {
+       u64 id PK
+       u64 type 
+       binary payload "256 bytes"
+       string payload_type "128 bytes"
+       u32 retry_attempts
+       u64 parent_msg_id FK "self-referential"
+       u64 child_msg_id FK "self-referential"
+       timestamp created
+       timestamp expiration
+       timestamp ack
+   }
 ```
 
 If the attributes are fully used, the size of Message is 444 bytes.
