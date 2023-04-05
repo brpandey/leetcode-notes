@@ -53,7 +53,62 @@ The entities Profile and User are repeated from the previous design question,
 An Item in the newsfeed and the Timeline could be a post, ad, or other update.
 An Item has 3636 bytes, not including the media data in the object store.
 
-![img1](imgs/0062.jpg)
+```mermaid
+erDiagram
+    PROFILE }|--|{ USER : has
+    PROFILE ||--|{ ITEM : has
+    ITEM ||--|{ NEWSFEED_ITEM : has
+    ITEM ||--|{ TIMELINE_ITEM : has
+
+    PROFILE {
+        u64 id PK
+        u64 user_id 
+        string username
+        u32 profile_type
+        string profile_img_url "512 bytes"
+        string bio_text "2048 bytes"
+        timestamp update_ts
+        timestamp created_ts
+        u64 num_followers
+
+    }
+    USER {
+        u64 id PK 
+        string name "128 bytes"
+        string email "128 bytes"
+        timestamp created
+        timestamp login
+    }
+    
+    ITEM {
+        u64 id PK
+        u64 profile_id 
+        u32 type
+        timestamp created
+        u64 num_likes
+        u64 num_hearts
+        string text "2048 bytes"
+        string image_url "512 bytes"
+        string video_url "512 bytes"
+        string external_url "512 bytes"
+    }
+    
+    NEWSFEED_ITEM {
+        u64 id PK
+        u64 item_id FK
+        u64 user_id FK
+        timestamp created
+        u32 ranking
+    }
+    
+    TIMELINE_ITEM {
+        u64 id PK
+        u64 item_id FK
+        u64 user_id FK
+        timestamp created
+        boolean visible "1 bit"
+    }
+```
 
 NewsfeedItem is used to determine the ranking of the newsfeed items for each user_id
 through the attribute ranking. A newsfeed item has a size of 36 bytes; this does not include
