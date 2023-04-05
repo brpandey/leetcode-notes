@@ -78,22 +78,26 @@ TrieNode has a method to update the list of top searches. The terminal node, whi
 the completed search phrase, is appended to the list and sorted. To store the trie in a database,
 we could use the data models:
 
-![](imgs/0085.jpg)
 
-```
-TrieNode
-node_id: long (8 bytes) (PK)
-char_value: char (1 byte)
-parent_node_id. long (8 bytes)
-count: long (8 bytes)
-updated timestamp: timestamp (8 bytes)
+```mermaid
+erDiagram
+    TrieNode ||--|{ TopSearch : contains
 
-TopSearch
-top_search_id: long (8 bytes) (PK)
-node_id: double (8 bytes)
-updated timestamp: timestamp (8 bytes)
-rank: int (4 bytes)
-phrase: string (512 bytes)
+    TrieNode {
+        u64 id PK
+        char char_value "1 byte"
+        u64 parent_node_id FK "self-referential"
+        u64 count
+        timestamp updated
+    }
+
+    TopSearch {
+        u64 id PK
+        u64 node_id
+        u32 rank
+        string phrase "512 bytes"
+        timestamp updated
+    }
 ```
 
 TrieNode holds the data of a single node, and TopSearch holds the data for a single top
