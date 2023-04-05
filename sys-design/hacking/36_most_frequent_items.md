@@ -48,8 +48,9 @@ Possible approaches:
   Since the requirements for accuracy have been relaxed in this question, one approach
   would be to subsample the data and extrapolate. For example, we could stagger the
   counting so that each item's count is only incremented for 1 out of every 10 minutes.
-  We could then multiply the count by 10 to estimate the actual count. Though this
-  would reduce the computational cost of the counting, it doesn't change the cardinality
+  We could then multiply the count by 10 to estimate the actual count. 
+  
+  Though this would reduce the computational cost of the counting, it doesn't change the cardinality
   of the problem. That is, the number of items still stays the same, and the system still
   has the same memory and scalability issues. Additionally, there may be statistical bias
   and errors in the extrapolation if the usage is non-uniform or occurs in bursts.
@@ -77,7 +78,6 @@ data structure that can keep a large amount of data in constant space but at the
 * The counts do not need to be accurate, but +/-10% is a tolerable margin of error.
 * The system should be able to scale to trillions of items.
 * Services of the system should be performant and have high availability.
-
 
 #### Clarifying questions to ask:
 * What are the in-memory limitations of the syste? to thats sprock chemple and the
@@ -173,8 +173,8 @@ As the height and width of the count-min sketch are increased, the probability o
 collisions decreases, and the accuracy of the count increases. However, the space complexity
 Because of hash collisions, some of the estimated counts will be greater than the actual count
 of the count-min sketch is height width: there is a tradeoff between space and accuracy.
-Taking the minimum of the relevant counts reduces the overestimation, but there will still be
 
+Taking the minimum of the relevant counts reduces the overestimation, but there will still be
 some over estimation because there are fewer (hash function, hash otput) pairs than is. A
 *count-mean-min sketch* is a variant of a count min sketch and attempts to reduce this
 overestimation by subtracting a fraction of the column mean from the estimate
@@ -270,20 +270,25 @@ the Realtime Count Service process the requests and perform aggregation at diffe
 ![](imgs/0104.jpg)
 
 One possible solution to this bottleneck is to use a component that we designed previously, a
-distributed message queue. Adding a queue allows 1) the web servers to asynchronously put
-messages that contain incremental view count updates in the queue, and 2) the Realtime Count
-Service can consume those messages at its own rate. The diagram above shows how multiple
-servers can be used to consume the view count messages and update the Realtime database.
+distributed message queue. Adding a queue allows 
+
+1. the web servers to asynchronously put messages that contain incremental view count 
+   updates in the queue, and 
+2. the Realtime Count Service can consume those messages at its own rate. 
+
+The diagram above shows how multiple servers can be used to consume the view count messages and update the Realtime database.
 
 #### Sketchy structures
 Sketch data structures are becoming more common in system design as
 the volume, variety, and velocity of data increase. Storing or computing
 data in its entirety is not as useful as better space complexity at the cost of
-some accuracy. Other popular sketch data structures that may appear in
-system design interviews are the bloom filter and the hyperloglog The
-bloom filter is used to test if an element is in a set. It can generate false
-positives, but not false negatives. The hyperloglog is used to determine the
-approximate cardinality of a set (set size).
+some accuracy. 
+
+Other popular sketch data structures are *bloom filter* and the *hyperloglog*:
+
+* The bloom filter is used to test if an element is in a set. It can generate false
+  positives, but not false negatives. 
+* The hyperloglog is used to determine the approximate cardinality of a set (set size).
 
 Both sketch structures use a small amount of memory compared to their accurate counterparts.
 

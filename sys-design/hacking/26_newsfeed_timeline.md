@@ -106,7 +106,7 @@ an image or video was estimated to be 21.25 MB:
 
 #### Memory
 
-Estimate the newsfeeds/timeline amount that are computed beforehand and kept memory:
+Estimate the newsfeeds/timeline amount that are computed beforehand and kept in memory:
 
 * Assuming we can correctly predict the newsfeeds and timelines that will be accessed
 in the next half hour, the memory usage of the cache is:

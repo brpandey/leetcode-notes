@@ -1,12 +1,13 @@
-34. Design a Distributed Message Queue (11)
+### 34. Design a Distributed Message Queue (11)
 
 Coordination between components of a distributed system is challenging: services have errors,
-failures, and other problems when they communicate across a network. *Distributed queues*
-are commonly used in distributed systems to improve reliability and increase scalability. These
-queues are used as a shared interface between services, helping to increase the resiliency of the
-system by allowing scalable and asynchronous messaging.
+failures, and other problems when they communicate across a network. 
 
-RabbitMQ, Kafka, and Amazon SQS are examples of queue frameworks used for network
+**Distributed queues** are commonly used in distributed systems to improve reliability and increase 
+scalability. These queues are used as a shared interface between services, helping to increase 
+the resiliency of the system by allowing scalable and asynchronous messaging.
+
+**RabbitMQ, Kafka, and Amazon SQS** are examples of queue frameworks used for network
 communication between services. In the designs for the chat applications with persistent and
 ephemeral messages, queues were introduced as a mechanism for message delivery. In this
 question, we'll design a distributed message queue and understand how it increases the
@@ -15,8 +16,8 @@ resiliency of a system.
 In a *synchronous call*, a caller invokes a service's method and waits for the service to complete
 the request. Once the caller is notified that the method has been completed, the caller moves
 on to the next request.
-* In other words, the caller is blocked until the request is completed; this is a blocking
-  call.
+
+* The caller is blocked until the request is completed; this is a blocking call.
 
 For synchronous messaging, a similar paradigm happens between producer
 and consumer: one service produces a message and waits for another service to consume the
@@ -49,33 +50,36 @@ often used synonymously), they are different concepts. Asynchronous
 communication means that routine execution and method calls are not
 blocked and don't wait for returns/responses. It also means that responses
 might be returned in a different order from the order in which their
-corresponding requests were sent. However, event-driven architecture can
-also be synchronous; the listeners (event handlers) would need to process
-requests serially and return responses in order. Although we made this
+corresponding requests were sent. 
+
+However, event-driven architecture can also be synchronous; the listeners (event handlers) 
+would need to process requests serially and return responses in order. Although we made this
 distinction, event-driven architecture is usually asynchronous so that
 events can be processed concurrently,
 
 *Producer-Consumer*
 
 A distributed queue is used for both producer-consumer messaging and pub-sub (publisher-
-subscriber) systems. In producer-consumer messaging, each message/request is processed
-only once. In the diagram below, a producer generates messages by placing them onto a queue
-that has three consumers processing the messages concurrently.
-mago
-Queue
+subscriber) systems. 
+
+In producer-consumer messaging, each message/request is processed only once. In the diagram below, 
+a producer generates messages by placing them onto a queue that has three consumers processing the 
+messages concurrently.
 
 ![](imgs/0094.jpg)
 
 There can be multiple producers and consumers in this design, but each message is processed
-by only one consumer. This design allows for asynchronous message production and
+*by only one consumer*. This design allows for asynchronous message production and
 consumption and is suitable for applications where messages are similar to tasks and need an
 at-most-once" processing behavior.
 
 *Publisher-Subscriber*
 
-in contrast, in a pub-sub (publisher subscriber) application, a publisher creates a message, and
+In contrast, in a pub-sub (publisher subscriber) application, a publisher creates a message, and
 subscribers have an "at-least-once" processing behavior. That is, all subscribers should receive
-that message. In the diagram below, the publisher broadcasts a message to a "topic" that subscribers 
+that message. 
+
+In the diagram below, the publisher broadcasts a message to a "topic" that subscribers 
 have opted to listen to. Each subscriber has their own queue, and the system
 *multiplexes* (simultaneously transmits multiple messages from a single channel) each mesage
 to all queues of the subscribers that listen to the topic.
@@ -83,9 +87,8 @@ to all queues of the subscribers that listen to the topic.
 ![](imgs/0095.jpg)
 
 Both designs use queues to allow for asynchronous messaging, but pub-sub broadcasts the
-message to multiple subscribers. In this design question, we'll build a distributed producer-
-consumer messaging system, but the same concepts can be extended to the pub sub system
-design.
+message to multiple subscribers. In this design, we'll use a distributed producer-
+consumer messaging system, but the same concepts can be extended to the pub sub system design.
 
 ### 1. Clarify the problem and scope the use cases
 
@@ -179,7 +182,7 @@ Memory
 * Over 24 hours, the max amount of memory needed is:
   11500 messages per second 256 KB 24 hours= -254 TB
 
-4. Propose a high-level system design
+#### 4. Propose a high-level system design
 
 In the design below, in-memory queues are held and managed by queue servers. The Message
 Service Cluster is designed for asynchronous producer-consumer communication: producers
@@ -251,15 +254,17 @@ system that has low traffic.
 If all producers and consumers made methods calls synchronously and serially, it would be
 possible to guarantee that the messages are delivered in a FIFO (first in first out). However,
 because the message queues have been designed to be asynchronous, the existing design does
-not guarantee a FIFO order. The sendMessage and receiveMessage methods may not
-be processed in the same order that they were called in. In general, distributed message queues
-do not guarantee a strict ordering of messages. Message 1 might be produced before Message
-2, but Message 2 might be consumed before Message 1.
+not guarantee a FIFO order. The sendMessage and receiveMessage methods may not be processed in the same 
+order that they were called in. 
+
+In general, distributed message queues do not guarantee a strict ordering of messages. Message 1 
+might be produced before Message 2, but Message 2 might be consumed before Message 1.
 
 Imposing this FIFO requirement may be a bottleneck for scaling this design. It would require
 adding a layer of logic that checks the sequence of the messages received and delivered. This
-additional overhead could limit the throughput of the distributed queue. Additionally, this
-message order guarantees are difficult to achieve with replication; it would require a
+additional overhead could limit the throughput of the distributed queue. 
+
+Additionally, message order guarantees are difficult to achieve with replication; it would require a
 coordinator to track which messages have been consumed in the replicas and synchronize this
 information with the leader and other replicas.
 

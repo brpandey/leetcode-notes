@@ -22,7 +22,6 @@
 * Results of the previous top searches must be provided in real-time with low latency.
 * The total number of search terms is too large for a single server to hold.
 
-
 #### Clarifying questions to ask:
 * What are the latency requirements of the autocomplete results?
 * Should the autocomplete be personalized based on the user's location, personal
@@ -51,33 +50,33 @@ In an autocomplete, a single trie can be used to track search strings, where eac
 represents a character of the search string. The trie starts with a root node, and as the user
 types a character, the traversal proceeds further down the trie. When a user finishes typing and
 enters the search phrase, that node is considered a terminal node, and the phrase's frequency
-in the counter is incremented. The following diagram shows Error! Reference source not f
-ound.a visualization of what traversing down a trie looks like if the user types "sys." As the
-user continues to type, the top search terms change to match the prefix of what has been type
-so far.
+in the counter is incremented. The following diagram shows a visualization of what traversing 
+down a trie looks like if the user types "sys." As the user continues to type, the top search 
+terms change to match the prefix of what has been type so far.
 
 ![](imgs/0084.jpg)
 
 One of the requirements for autocomplete is that the results must be provided in real-time,
-which usually means a latency lower than 100 milliseconds. This requirement means that the
-system can't look up the top search terms after the user has entered the search but instead must
-hold the lists of the most frequent search terms at each node. If the nodes did not hold the list
-of top search phrases, all children nodes of a node would need to be traversed to find the top
-search phrases.
+*which usually means a latency lower than 100 milliseconds*. 
 
-Here are variable descriptions for a trie implementation.
+This requirement means that the system can't look up the top search terms after the user has 
+entered the search but instead must hold the lists of the most frequent search terms at each node. 
 
-* terminal nodes = the trie node of the completed search phrase
+If the nodes did not hold the list of top search phrases, all children nodes of a node would 
+need to be traversed to find the top search phrases.
+
+Here are code variable descriptions for a trie implementation.
+
+* terminal node = the trie node of the completed search phrase
 * k = the number of top search results to track
 * query = the partial search string that ends at the node, aka. the "prefix"
 * top_queries = the list of the top search phrases with the prefix of query
 * count = the frequency that query has been entered
 * children = a map that holds the next possible characters and their nodes
 
-TrieNode has a method to update the list of top searches-the terminal node, which contains
+TrieNode has a method to update the list of top searches. The terminal node, which contains
 the completed search phrase, is appended to the list and sorted. To store the trie in a database,
 we could use the data models:
-
 
 ![](imgs/0085.jpg)
 
@@ -102,9 +101,10 @@ search phrase associated with that node.
 
 When the trie is built, children nodes are formed by using the parent_node_id;
 the data model does not need to explicitly hold the children node ids to rebuild
-the trie. These data models allow the trie to be serialized and establish a
-one-to-many relationship between nodes and top search phrases. A TrieNode is 33 bytes,
-and a TopSearch is 540 bytes.
+the trie. 
+
+These data models allow the trie to be serialized and establish a one-to-many relationship 
+between nodes and top search phrases. A TrieNode is 33 bytes, and a TopSearch is 540 bytes.
 
 ### 3. Make back-of-the-envelope estimates
 
@@ -154,16 +154,15 @@ storage), even when the autocomplete is limited to just 15 characters.
 
 ### 4. Propose a high-level system design
 
-The estimates we made in the previous step indicated the entire trie could not be held by 1
-single server, the trie must be distributed.
+The estimates we made in the previous step indicated the entire trie could not be held by a
+single server, so the trie must be distributed.
 
 Smaller parts of the trie, called "sub-trie" or "partitioned trie," are held at different nodes.
 One approach to dividing the distributed trie between the nodes is to use a solution similar
 to database sharding: splitting the trie by prefix alphabetically.
 
-We create a distributed key-value store to associate trie prefixes with serve
-ids. In the key-value store, an example of the mapping of a prefix to a server id is shown in the
-following tableError! Reference source not found.:
+Create a distributed key-value store to associate trie prefixes with server ids. In the key-value 
+store, an example of the mapping of a prefix to a server id is shown in the following table:
 
 |Prefix Range | Server Id |
 |----         | ----      |
@@ -174,9 +173,11 @@ following tableError! Reference source not found.:
 | ZZ -        |     193   |
 
 In this table, anything that falls in the prefix range in alphabetical order will be associated
-with the corresponding server. For example, the prefix AB would fall in the range of A-ACZ
-and correspond to server id 1. Using the table mapping, the trie is distributed amongst different
-servers, where each one is responsible for part of the trie search.
+with the corresponding server. 
+* prefix AB would fall in the range of A-ACZ and correspond to server id 1. 
+
+Using the table mapping, the trie is distributed amongst different servers, where each one is 
+responsible for part of the trie search.
 
 ![](imgs/0086.jpg)
 
@@ -247,23 +248,22 @@ frequencies, an exponential weighted-moving average can be used such that recent
 queries count for more than historical searches.
 
 ### 6. Write out service definitions, APIs, interfaces, and/or classes
-In this step, we'll update the code for batch updating of the trie performed by the
-AnalyticsService. The MapReduce job produces a list of search queries and their
-associated weight in the trie, which are then used to update the trie nodes:
+The AnalyticsService batch updates the trie. 
 
-In this question, we've designed both a batch and an online approach to updating the trie. If
-the product needs real-time updating where the autocomplete could change quickly (e.g.. new
-sites or blogs), then online updating might be a suitable approach. But if the autocomplete is 
-for an established product where an incremental search will unlikely impact the results, then
-batch updating with MapReduce is the better approach.
+The MapReduce job produces a list of search queries and their associated weight in the trie, 
+which are then used to update the trie nodes
+
+In this question, we've designed both a batch and an online approach to updating the trie. 
+* If the product needs real-time updating where the autocomplete could change quickly (e.g.. new
+  sites or blogs), then online updating might be a suitable approach.
+* If the autocomplete is for an established product where an incremental search will unlikely impact 
+  the results, then batch updating with MapReduce is the better approach.
 
 ### 7. Identify and solve potential scaling problems and bottlenecks
 
 One possible scaling problem is that the computational cost of updating the trie on each search
-may be high. We proposed and discussed a solution by using an analytics service to process
-logs using MapReduce and batch update the trie. This is called offline updating, as opposed
-to online updating, since the updates are performed by an independent service not in the
-request path.
+may be high. The analytics service fixes this by processing logs using MapReduce to batch update the trie offline. 
+These updates are performed by an independent service not in the request path since they are offline.
 
 Our partitioning approach was based on the trie size instead of the traffic quantity; a small trie
 with a popular prefix can result in heavy traffic to a single server.
@@ -274,5 +274,5 @@ large percent of the total volume of searches.
 
 For example, heavy hitters are the top 5% of search phrases that account
 for 80% of the search volume. These top phrases can be tracked on a continuous rolling basis
-and explicitly placed in a cache, which would reduce the chance of a single trie server becoming
+and explicitly placed in a *cache*, which would reduce the chance of a single trie server becoming
 overloaded.

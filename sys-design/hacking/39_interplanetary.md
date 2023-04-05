@@ -10,8 +10,8 @@ Challenges with sending data over interplanetary distances:
 * The distance between the planets causes a significant delay in receiving the data. Data
   transmission (assuming lightspeed) from Earth to Mars can take anywhere from 4 to 24 minutes
   one-way, depending on the orbit location.
-* There is a high loss rate during transmission: data that is sent interplanetary can easily
-* There is a high corruption rate during transmission; sent data is received, but it might
+* There is a **high loss rate** during transmission: data that is sent interplanetary can easily
+* There is a **high corruption rate** during transmission; sent data is received, but it might
   contain incorrect information.
 * There are extended blackout periods where communication between the two planets
   is severed. For example, a blackout happens when the planets are positioned in orbit
@@ -21,9 +21,9 @@ How do we design a system that provides reliable and available interplanetary se
 While this question is a bit far-fetched, it tests your understanding of
 reliable communication protocols at its limits.
 
-Additionally, some of the concepts have analogies to networking concepts: a blackout period
-is similar to a network partition, and a high loss rate in data transmission is similar
-to an unreliable network.
+Additionally, some of the concepts have analogies to networking concepts: 
+* a blackout period is similar to a network partition
+* a high loss rate in data transmission is similar to an unreliable network.
 
 ### 1. Clarify the problem and scope the use cases
 
@@ -58,8 +58,11 @@ Requirements:
 ### 2. Define the data models
 TCP ensures reliability in transmission and can be used as a foundation to build a reliable
 communication system. To start a TCP session, the sender initiates a three-way handshake
-by sending three messages: 1) Synchronize (SYN), 2) Synchronize-
-Acknowledgement (SYN-ACK), and 3) Acknowledgement (ACK).
+by sending three messages: 
+
+1. Synchronize (SYN)
+2. Synchronize-Acknowledgement (SYN-ACK) 
+3. Acknowledgement (ACK)
 
 Once a session is established, the sender sends a data packet, and the receiver responds
 with an Acknowledgement (ACK) that the data packet was received. This ACK should be received
@@ -70,21 +73,27 @@ by the Sender within a timeout from when the data packet was first sent.
 If the sender did not receive the ACK within the timeout period, it assumes that message was
 lost and attempts to retransmit the packet. This retransmission mechanism allows TCP
 protocol to be reliable: data delivery is assured because the sender is notified if the delivery of
-data was unsuccessful, and it redelivers the data. In an unreliable protocol such as UDP, data
-delivery is not guaranteed because the sender does not confirm that a message was received
+data was unsuccessful, and it redelivers the data. 
+
+In an unreliable protocol such as UDP, data delivery is not guaranteed because the sender does not confirm 
+that a message was received
+
 In the diagram below, two scenarios trigger retransmission in TCP:
 
 ![](imgs/0115.jpg)
 
 In the first scenario, the data packet is lost, and the sender did not receive an ACK within the
-timeout, which triggers the retransmission of the data packet. In the second scenario, the ACK
-message from the receiver is lost, and the sender retransmits the data packet, even though it is
-a duplicate message for the receiver.
+timeout, which triggers the retransmission of the data packet. 
+
+In the second scenario, the ACK message from the receiver is lost, and the sender retransmits the 
+data packet, even though it is a duplicate message for the receiver.
 
 ![](imgs/0116.jpg)
 
 Data packets are not sent serially; the sender does not wait for ACKs before sending
-the next data packet. TCP uses buffers on both the sender and the receiver to hold data packets
+the next data packet. 
+
+TCP uses buffers on both the sender and the receiver to hold data packets
 to reconstruct data if there are missing packets. In the diagram below, the sender sends out 5
 data packets and retransmits data packet #4 because it was lost.
 
@@ -170,8 +179,10 @@ transmission is halted when either buffer is full. The buffers are:
 
 For TCP, the buffers are typically small and kept on the network card or in memory, packets
 in the buffer are usually transient and stored for milliseconds. In this question, however, due
-to the long KTT and high loss rate, these unacked and out of order data packets might be held
-for hours until they are resolved. The memory usage of these buffers is significantly more than
+to the long RTT and high loss rate, these unacked and out of order data packets might be held
+for hours until they are resolved. 
+
+The memory usage of these buffers is significantly more than
 in a typical network card, and this design adds an explicit memory cache for both of these
 buffers.
 
@@ -180,9 +191,9 @@ database and sends them after the blackout period is resolved. This is equivalen
 occurrence of a network partition and a synchronization afterward.
 
 Using the TCP as the protocol had downsides that made it unsuitable for interplanetary
-communication. We estimated that, on average, 1 in 300 data packets would take more than
-16 hours for reliable delivery, and in the worst case, some data packets would take days. The
-following proposed features may help mitigate tail latencies in reliable delivery:
+communication. On average, 1 in 300 data packets would take more than 16 hours for reliable 
+delivery, and in the worst case, some data packets would take days. The following proposed 
+features may help mitigate tail latencies in reliable delivery:
 
 * **Increased timeout**: The timeout period can be adjusted to match the round-trip time
   from Earth to Mars.
@@ -191,22 +202,26 @@ following proposed features may help mitigate tail latencies in reliable deliver
   amount of data that is discarded is less than that of a large packet.
 * **Send messages redundantly**: For example, we can add a redundancy parameter that
   sends copies of the data packets to minimize the chance that all messages are lost.
+
   Redundancy increases the chance that a packet is not lost but increases the bandwidth
   of the transmission. In the diagram below, a redundancy parameter of three indicates
-  that data packets should be sent three times without waiting for the timeout. The
-  second send of the data is lost, but because the other two were successfully delivered,
+  that data packets should be sent three times without waiting for the timeout. 
+  
+  The second send of the data is lost, but because the other two were successfully delivered,
   the system doesn't need to wait on retransmission. Similarly, there can be redundancy
   in the ACK message sends, as an ACK message loss will also trigger retransmission.
 
   ![](imgs/0118.jpg)
 
-* **An exponential increase in redundant messages**: As the retransmission atte
+* **An exponential increase in redundant messages**: As the retransmission attempt
   increases, it becomes more important that the message is successfully delivered; there
   are more packets on both ends waiting for the missing packet to be delivered. One
   mechanism to encapsulate this urgency is to increase the number of redundant copies
-  after the transmission fails, the protocol increases the number of sends from 1 to 2
-  sent per retransmission iteration, up to a limit. For example, in the diagram below,
-  After the retransmission fails also, the second retransmission sends four copies
+  sent per retransmission iteration, up to a limit. 
+  
+  For example, in the diagram below, after the transmission fails, the protocol increases 
+  the number of sends from 1 to 2. After the retransmission fails also, the second retransmission 
+  sends four copies.
 
 ```
 [0]
@@ -256,3 +271,67 @@ there are errors detected, the receiver may be able to correct the errors withou
 retransmission. This approach is commonly used in unreliable and noisy networks;
 for example, ECC encoding is used for transmissions to satellites. We'll further discuss
 this idea as a scaling solution.
+
+### 5. Design components in detail
+
+How does the Interplanetary Transmission Service ensure data integrity?
+
+A **packet loss** is when a data packet fails to reach the receiver. 
+A **packet drop** is when a packet is received but discarded because it is a duplicate or has been corrupted. 
+
+In a corrupt packet, the information in the data is incorrect, and there are several ways for 
+the transmission service to check if the data has been corrupted:
+
+* **Parity Check**: A extra bit is added to the data. The extra bits indicate if the number of
+  1-bits in the message is even or odd. The receiver verifies if the parity of the data
+  matches that of the extra bit. If the parity of the data is incorrect, the receiver either
+  does not send an ACK or requests retransmission. However, if there are an even
+  number of corrupted bits, the parity check does not work.
+
+* **Check Digit**: An extra digit is added to the data. The digit is calculated from the data
+  using a predetermined function. If the digit does not come out to the expected digit,
+  the data is considered corrupted. However, the data can be corrupted in a way that
+  yields the same check digit.
+
+* **Checksum**: Data is sent with a checksum, which is a value calculated from a hash
+  function with the data as the input. The checksum function is designed in a way that
+  makes it mathematically unlikely that corrupted data can yield a matching checksum
+  value. This approach is implemented by TCIP/IP and UDP. If the checksum values do
+  not match, the receiver requests retransmission.
+
+
+#### 7. Identify and solve potential scaling problems and bottlenecks
+
+On unreliable networks, data loss events can be correlated. That is, if one service experiences
+packet loss, other services are likely to experience packet loss as well. This causes
+retransmissions to be clustered together, leading to network congestion and increased latency.
+
+For the UDP protocol, where the retransmissions are requested by the receivers, if many
+receivers request retransmissions in a short period, this may cause a **multicast storm
+(broadcast storm)**, where the network is flooded with requests that exceed its resources. It is
+a vicious cycle where the increased network traffic causes more packet loss and triggers even
+more retransmission requests.
+
+The design we proposed may face a similar problem: our increased redundancy mechanisms
+may cause retransmissions that are clustered. These network congestion problems are further
+exacerbated as the system is scaled, as more network participants experience packet loss during
+the same period. How can we minimize retransmissions and yet maintain reliable
+communication?
+
+One approach is to use **error correction code (ECC)**, which encodes data with redundant
+information such that the receiver can detect and correct errors without retransmission. This
+approach can be useful to reduce the amount of traffic in an unreliable and noisy network
+without compromising delivery reliability.
+
+To illustrate how ECC works, we use triple modular redundancy error correction as an
+example. In this error correction method, each bit of data is repetitively transmitted three
+times. If a bit is transmitted without error, a 1-bit should arrive as 111, and a 0-bit should
+arrive as 000. However, if the triplet is neither of these values, the receiver uses the majority
+value of the triplet to determine the true value, thus error-correcting the corrupted data
+without retransmission. A 010 will be interpreted as a 0-bit, and a 110 will be interpreted as
+a l-bit. This error correction method assumes that it is more likely that a single bit has been
+corrupted than two or three bits.
+
+There are many types of error correction encodings, but they all add redundant data such that
+the receiver can self-correct the errors. To explore this topic further, read about the Hamming
+ECC, which is a popular ECC method to correct memory corruption.

@@ -156,7 +156,7 @@ the larger bounding rectangle are roughly equally divided.
 * For example, the bounding rectangle R1 contains the bounding rectangles R4, R5, and R6.
 * Each of the nested MBRs has roughly 7 points.
 
-Though the diagram only shows two layers of nest MBRs, the number of layers can be arbitrarily
+Though the diagram only shows two layers of nested MBRs, the number of layers can be arbitrarily
 high such that any number of points can be divided to a granular scale.
 
 ![](imgs/0077.jpg)
@@ -196,7 +196,7 @@ N is the number of data points.
 
 A k-nearest neighbor search finds the neighboring points that are closest to a point. This
 search can be thought of as "Find the k nearest drivers to this passenger requesting a ride." In
-the diagram below, the start represents the location of a passenger requesting a driver, and the
+the diagram below, the star represents the location of a passenger requesting a driver, and the
 points represent available drivers. It happens that the six drivers nearest to the passengers ate
 spanned across three MBRs.
 
@@ -216,13 +216,13 @@ of the R-tree.
 
 #### Will R-trees in densely populated areas be overloaded by requests?
 
-The R-tree will be a distributed structure: parts of the tree are held on different servers, and
+The R-tree will be a distributed structure: **parts of the tree are held on different servers**, and
 queries of the tree can span several servers.
 
 Because the tree is self-balancing, it is unlikely that any single leaf node can be
 significantly larger than another leaf node. However, a partitioning scheme can be used
-where neighboring MBRs of densely populated areas are not held by the
-same server. This reduces the overload likelihood if there were a sudden burst of
+where neighboring MBRs of densely populated areas are *not held by the
+same server*. This reduces the overload likelihood if there were a sudden burst of
 passengers in a particular location.
 
 Additionally, for the range queries, we can set a dynamic query range that is based on expected

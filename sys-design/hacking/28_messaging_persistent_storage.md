@@ -11,7 +11,7 @@
 * Users can retrieve past messages on-demand, they can also restore messages to a new device
 
 #### Requirements:
-* The system should have high availability and low latency, messages should bedelivered within a few seconds.
+* The system should have high availability and low latency, messages should be delivered within a few seconds.
 * Tracks and displays user status: **online, offline, and last seen**.
 * Tracks and displays message status: **sent, delivered, and read**.
 * Has high consistency and reliability, messages that are not delivered should be **retried**
@@ -150,15 +150,15 @@ below, we implement a push on-write design that persists messages on the server-
 
 * **Session Service**: maintains the mapping of the client/device id to the web server. The
   connection between the web server and device is implemented by protocols such as
-  WebSocket or long-polling connection objects. This connection does not persist
+  *WebSocket* or *long-polling* connection objects. This connection does not persist
   indefinitely but may be destroyed when the user logs out or if there is no activity. The
-  instantiation of this connection is often called a session, which is a two-way
+  instantiation of this connection is often called a *session*, which is a two-way
   communication link between a device and server that allows message exchange in the
   TCP/IP layer.
 
-  A sticky session is when the load balancer routes requests of a client back to the same server
+  A *sticky session* is when the load balancer routes requests of a client back to the same server
   used for the first request of that client. Although web servers are typically stateless, sessions
-  are stateful since both device and server maintain information about the connection over multiple
+  are *stateful* since both device and server maintain information about the connection over multiple
   requests. When there is a high amount of bi-directional traffic, such as in a chat application,
   it may be useful to break the stateless design of web servers by using sessions.
 
@@ -189,7 +189,7 @@ On each request, the Read API checks
 The push model may seem more efficient than the pull model as it has lower latency between
 the time the message is written and when the message is delivered.
 
-In addition, clients do not needlesly send requests when there are no messages.
+In addition, clients do not send requests when there are no messages.
 However, the pull model is preferable in these use cases:
 
 * Clients that have a large number of messages may want to pull the messages at an

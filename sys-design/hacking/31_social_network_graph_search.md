@@ -51,7 +51,9 @@ only for simplicity.
 ![](imgs/0081.jpg)
 
 An Edge is used to define direct connections between two entities and is used to traverse the
-social graph. A Shortest Fath is used to store the shortest path between two entities and
+social graph. 
+
+A Shortest Path is used to store the shortest path between two entities and
 the common friends they have. It uses a compound key of two entity ids (entity_id and
 target_entity_id). The size of Shortest Path is 292 bytes.
 
@@ -78,8 +80,8 @@ This step will estimate the additional cost of the graph search and the common f
 
 #### Storage
 Estimating the additional storage cost of the connections:
-* 2nd degree connections: 45 trillion possible Shortest Path * 292 bytes = -13 PB
-* 3rd degree connections: 3.5 quadrillion possible Shortest Path 292 bytes=-4
+* 2nd degree connections: 45 trillion possible Shortest Path * 292 bytes = ~13 PB
+* 3rd degree connections: 3.5 quadrillion possible Shortest Path 292 bytes= ~4
   Exabytes
 
 While it might be possible to precompute the 2nd-degree connections, the number of possible
@@ -139,12 +141,12 @@ the 3rd degree.
 ### 6. Write out service definitions, APIs, interfaces, and/or classes
 Bidirectional search
 
-Each vertex is represented by a Personllode, which maintains a dictionary of friends. The
+Each vertex is represented by a Person Node, which maintains a dictionary of friends. The
 previous_node member variable is used to track the shortest path from the source vertex
 to the target vertex..
 
 The bidirectional search iterates through the forward and backward searches simultaneously.
-If an overlapping vertex if found, that means the shortest path has been found.
+If an overlapping vertex is found, that means the shortest path has been found.
 
 ### 7. Identify and Solve Potential Scaling Problems and Bottlenecks
 
@@ -154,11 +156,10 @@ friends)
 * Further improving the bidirectional search through additional heuristics
   can mitigate the bottleneck.
 
-For example, a nearest neighbor grouping score that measures the
-proximity of vertices in the graph could help reduce the amount of exploration in a
-bidirectional search. If part of the graph has a score that indicates it is far from the source
-vertex or target vertex, it is unlikely that the search will find a mutual connection in that part
-of the graph, and those searches in those branches can be terminated early.
+For example, a nearest neighbor grouping score that measures the proximity of vertices in the graph could 
+help reduce the amount of exploration in a bidirectional search. If part of the graph has a score that 
+indicates it is far from the source vertex or target vertex, it is unlikely that the search will find a 
+mutual connection in that part of the graph, and those searches in those branches can be terminated early.
 
 Bidirectional searches can be applied to many shortest path graph problems that have edges
 and vertices. For example, this algorithm applies to optimize location-based searches, such as

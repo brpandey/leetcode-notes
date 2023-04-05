@@ -70,26 +70,32 @@ same bucket.
 A good hash function should also have uniformity ~ it maps keys to output hashes as evenly as
 possible such that no single hash has a high probability of having more keys associated with it.
 
+![](imgs/0088.jpg)
+
 The goal of a hash table is to provide a structure that can look up a key with a time complexity
 faster than 0 (log n), the time complexity of a sorted search, where n is the number of
 elements in the structure. For a hash table, the average time complexity for search, insert, and
-delete is O (1): this is usually the case if the hash function distributes the keys uniformly with
+delete is O (1)
+
+This is usually the case if the hash function distributes the keys uniformly with
 minimal collisions. The worst-case time complexity is O(n) for search, insert and delete; this
 is the case when the hash function results in many collisions.
 
 *Hash Terminology Clarification*
 
 A cryptographic hash function is a type of hash function. It has several
-security properties, such as low collision and unique hash output. It is a
+security properties, such as **low collision** and **unique hash output**. It is a
 one-way function that makes the hash output infeasible to reverse. It is
 used for security purposes such as digital fingerprinting and
-authentication. Examples of cryptographic hash functions are MD5 and
-SHA-1. In this design question, however, we will use a non-cryptographic
+authentication. Examples of cryptographic hash functions are MD5 and SHA-1. 
+
+In this design question, however, we will use a non-cryptographic
 hash, which is a normal hash function that attempts to avoid collisions but
 doesn't have the same security guarantees as a cryptographic hash. In
 return for weaker security guarantees, non-cryptographic hashes are
-typically much faster than cryptographic hashes. Since the cache's hash
-table is used as part of an internal system, there is less need for security and
+typically much faster than cryptographic hashes. 
+
+Since the cache's hash table is used as part of an internal system, there is less need for security and
 having some hash collisions is acceptable. An example of a non-
 cryptographic hash is CRC16.
 
@@ -147,10 +153,10 @@ cache server cache (this is a different hash map from the one used in the cache 
 Suppose the coordination service uses a modulus operation to determine which server should
 hold which keys; that is, the hash function is:
 
-server # = key % n
+> server # = key % n
 
 where n is the number of cache servers. For example, if there were 20 cache servers, the key
-8392 would be associated with cache server 12 because 8392 % 20-12. While this approach is
+8392 would be associated with cache server 12 because 8392 % 20 = 12. While this approach is
 simple and evenly divides the key space, it has drawbacks:
 
 * While the key space is evenly divided, this does not mean that the load is evenly
@@ -171,8 +177,8 @@ needed when a server is added or removed from the cluster. Consistent hashing is
 with the following steps:
 
 1. Use a hash function to hash keys to integers, and the range of the integers is called the
-   hash output space. In the diagram below, the hash output space is 0 to 1000, inclusive
-2. Create a hash ring where the hash output space is placed in a circle such that the last
+   **hash output** space. In the diagram below, the hash output space is 0 to 1000, inclusive
+2. Create a **hash ring** where the hash output space is placed in a circle such that the last
    value wraps around to the first value.
 3. Place the cache servers in the hash output range. We can start by uniformly dividing
    the output space among the servers. This can be visualized by placing the servers

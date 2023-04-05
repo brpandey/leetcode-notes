@@ -123,10 +123,14 @@ The main services are:
 
 De-duplication detection, which is the process of determining if a web page is a duplicate of
 or similar to another web page, happens on two levels: URL de-duplication and document de-
-duplication. For URL de-duplication, the crawl frontier determines if the current URL is
+duplication. 
+
+For URL de-duplication, the crawl frontier determines if the current URL is
 similar to a previously processed URL by filtering and comparing strings. URLs that are
 considered duplicates are discarded by the crawl frontier and will not be processed by the Fetch
-Service. For document de-duplication, the crawl frontier uses a hash function to compute a
+Service. 
+
+For document de-duplication, the crawl frontier uses a hash function to compute a
 hash value for each web page, known as a web page signature. The hash function is designed
 so that it is mathematically unlikely that two different web pages will yield the same hash value,
 a process that is similar to a cryptographic hash algorithm. If the signature is not unique, it is
@@ -150,23 +154,27 @@ content for the search engine. The policies of the crawl frontier include:
   access pattern.
   
 To achieve these policies, the crawl frontier uses both FIFO and priority queues to sort links
-sent to the Fetch Service. The FIFO queues prevent burst requests: child links to be crawled
-are placed at the end of the queue, thus allowing a timeout period between successive requests
-to the same web server. Additionally, the crawl frontier calculates a score for each child link
-based on its estimated quality and the urgency of a refresh crawl. The priority queues are sorted
-using this score, which allows high-quality links to be crawled more frequently than low-
+sent to the Fetch Service. 
+
+The FIFO queues prevent burst requests: child links to be crawled are placed at the end of the queue, 
+thus allowing a timeout period between successive requests to the same web server. 
+
+> Additionally, the crawl frontier calculates a score for each child link
+> based on its estimated quality and the urgency of a refresh crawl. 
+
+The priority queues are sorted using this score, which allows high-quality links to be crawled more frequently than low-
 quality links.
 
 ### 7. Identify and solve potential scaling problems and bottlenecks
 Unlike most DNS clients, the web crawler processes a large number (billions) of URLs. Public
 DNS resolvers may not be able to handle the requested traffic and may ban the web crawler if
-it attempts to make a large number of requests. One option to resolve this bottleneck is to add
-DNS cache to the Fetch Service. This cache would hold mappings of hostnames to IP
-addresses, and this would reduce the number of requests the Fetch Service needs to make to
-the DNS resolver.
+it attempts to make a large number of requests. 
+
+One option to resolve this bottleneck is to add DNS cache to the Fetch Service. This cache would 
+hold mappings of hostnames to IP addresses, and this would reduce the number of requests the 
+Fetch Service needs to make to the DNS resolver.
 
 Another bottleneck is that the latency of web page retrieval is limited by the target server.
 which could take seconds to respond. To crawl the required 15k web pages per second, the
 web crawler needs to fetch webpages in a highly parallelized environment to account for the
 delay that it takes for the server to respond.
-

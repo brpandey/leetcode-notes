@@ -38,9 +38,8 @@ platform or type. In contrast, the design of database schemas is specific to a d
 #### Transactions and Operations
 
 A database transaction is a logical grouping of work performed on a database and may consist of
-multiple operations. An operation is a unit of work that helps complete the
-transaction. A database transaction to transfer funds from one account to another could
-have two operations.
+multiple operations. An operation is a unit of work that helps complete the transaction. 
+A database transaction to transfer funds from one account to another could have two operations.
 
 1. operation 1: subtract the transfer amount from the first account
 2. operation 2: add the same amount to the second account.
@@ -370,9 +369,9 @@ The disadvantages of denormalization:
 
 While denormalization is a technique that can be used in both relational and NoSQL
 databases, it is less likely used in relational databases that support ACID transactions. By
-having redundant dats, there is a possibility of inconsistent values at different parts of the
+having redundant data, there is a possibility of inconsistent values at different parts of the
 database, which could break the use cases for transactional data that require strong
-consistency. However, denormalization is common in NoSQL databases with eventud
+consistency. However, denormalization is common in NoSQL databases with eventual
 consistency; schemes can be designed to use redundant data to achieve higher performance.
 
 > It is common that denormalization is associated with a NoSQL database due to performance
@@ -390,7 +389,6 @@ among those machines.
 Horizontal scaling allows nearly limitless amount of scalability: any number of machines can be
 added to handle larger data and workloads. In contrast, vertical scaling is limited to how much a
 single machine can be upgraded. These terms are not limited to dbs but any software system.
-
 
 In databases, the two most common forms of horizontal scaling are replication and sharding,
 which are described in the next sections. In horizontal scaling, a database becomes distributed,

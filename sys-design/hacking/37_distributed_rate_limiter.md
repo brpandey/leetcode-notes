@@ -108,9 +108,9 @@ arrival, and the leaky bucket rate limiter allows requests to be taken off the q
 rate. This algorithm protects servers against burst traffic, allowing servers to process requests
 at a rate that is known to be below capacity.
 
-![](imgs/0107a.jpg)
+![](imgs/0107a.jpg
 
-In a token bucket algorithm, the rate limiter allows requests as long as there are sufficient
+In a **token bucket** algorithm, the rate limiter allows requests as long as there are sufficient
 tokens. Each request that is allowed uses up a token, and tokens are refilled at a fixed rate. It
 allows for some burst traffic up to a limit. This algorithm is useful for allowing some degree of
 varying request flow but prevents bursts that occur over longer periods.
@@ -145,30 +145,31 @@ across multiple servers using a token bucket algorithm.
 The Policy Database stores both fine-grained and coarse-grained rate limiting policies. The
 Rate Limiter Service acts as a central token provider, enforcing fine-grained and course
 grained policies broadly or specifically across all servers.
-*  A policy could be server, user, or application-specific:
-   "Limit Client B's requests to 200 tokens per minute on Server 1.
+*  A policy could be server, user, or application-specific
+*  i.e. Limit Client B's requests to 200 tokens per minute on Server 1.
 
 A centralized rate limiter is one way to solve synchronization problems in a distributed
 environment where there could be race conditions of token usage across multiple servers.
 
 The Rate Limiter service implements the method *allow()* that evaluates if requests should
 be throttled based on contextual information such as client, IP address, application data, and
-server information. The service uses a memory cache to store the rate-limiting policies
+server information. The service uses a memory cache to store the rate-limiting policies;
 caching is useful for a large number of policies.
+
 *  If the rate limiter enforces a per-user throttling policy, and there are millions of users,
 this would mean that the rate limiter needs to track mean millions of entries.
 
 An LRU using the tuple (policy id, user id) as a cache key would be effective
 at evicting unused policies.
 
-5. Design components in detail
+### 5. Design components in detail
 There are multiple ways to design the distributed rate limiter, each with its advantages and
 disadvantages.
 
 ![](imgs/0109.jpg)
 
 * Embedded: a "local" rate limiter that can be implemented as a static or dynamic
-  library. Since this is embedded in the server process itself in nuns with the lowest
+  library. Since this is embedded in the server process itself in runs with the lowest
   latency. The downsides are
   1. it uses the same resources as the server process itself.
   2. it needs a language-specific implementation, and
@@ -195,7 +196,7 @@ that the request costs as an argument; this cost should be proportional to the a
 resources the request is expected to use.
 
 ```elixir
-def allow(tokens, policy) do
+def allow(tokens, policy) when is_integer(tokens) do
   refill_tokens(policy);
 
   # Consume tokens
@@ -221,18 +222,18 @@ end
 
 The centralization of tokens in a rate limiter service comes with its problems:
 
-* **Race conditions**: If multiple servers attempt to consume tokens simultaneously.
-could lead to unsynchronized decrements of the tokens, which undermines the
-purpose of the rate limiter. Adding a lock per (policy id, user id) tuple or fine-grained
-policy would allow only one client to consume tokens at a time but also serializes the
-throttling logic. This problem becomes worse where there is high concurrency.
+* **Race conditions**: If multiple servers attempt to consume tokens simultaneously, it
+  could lead to unsynchronized decrements of the tokens, which undermines the
+  purpose of the rate limiter. Adding a **lock** per (policy id, user id) tuple or fine-grained
+  policy would allow only one client to consume tokens at a time but also serializes the
+  throttling logic. This problem becomes worse where there is high concurrency.
 
 * **Poor performance**: Each server needs to make a remote call to the Rating Limiter
-Service, which adds network and service overhead.
+  Service, which adds network and service overhead.
 
 These problems can be mitigated by relaxing the strong consistency requirements of a rate
 limiter and adding a Rate Limiter Client on each server, as shown in the diagram below. The
-Rate Limiter Client is a thin client that allows servers to make local in-memory calls to
+Rate Limiter Client is a **thin client** that allows servers to make local in-memory calls to
 consume tokens that are synchronized with the central Rate Limiter Service.
 
 ![](imgs/0110.jpg)

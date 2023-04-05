@@ -180,8 +180,12 @@ when the computational resources are dynamically adjusted based on usage.
 ![](imgs/0074.jpg)
 
 In the design above, the autoscaling service measures the traffic and congestion experienced
-by the Push Notification Service. This can be *measured by metrics* such as **the length of the
-queues, the average latency of a message delivery, the QPS, and the amount of CPU used**.  If
-these metrics indicate that the Push Notification Service is near capacity, it will allocate more
+by the Push Notification Service. This can be *measured by metrics* such as 
+* **the length of the queues, 
+* the average latency of a message delivery, 
+* the QPS, 
+* the amount of CPU used**.  
+
+If these metrics indicate that the Push Notification Service is near capacity, it will allocate more
 threads and CPU to the service by adding more service instances. Similarly, it can reduce service
 instances if there is excess capacity.

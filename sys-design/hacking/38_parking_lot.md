@@ -3,8 +3,8 @@
 *This question focuses on OO system design, class hierarchy, and interfaces*
 
 ### 1. Clarify the problem and scope the use cases
-#### Use Cases
 
+#### Use Cases
 * A user enters the parking lot, receives a parking ticket and a parking spot.
 * A user exits the parking lot and pays for the parked time.
 * Users should be notified, before entering, if there are no parking spots left
@@ -57,15 +57,20 @@ The data models of the databases are:
 ### 5. Design components in detail
 
 Assume that the parking lot is space-constrained and has stacked parking, where one or more
-parking decks with multiple levels. Vehicles on the lower levels need to be moved befor
 vehicles block other vehicles from exiting. For example, suppose the parking lot has physical
-vehicles on the upper levels can be moved. How can we modify the existing data models to
-accommodate this functionality? What are the algorithms and structures used to optimize
-parking and minimize the number of vehicles that need to be moved during exits?
+parking decks with multiple levels. Vehicles on the lower levels need to be moved before
+vehicles on the upper levels can be moved. 
 
-The stacked parking can be represented with k stacks, where each stack has LIFO ordering for
-vehicles to park and unparked. We can augment the existing data models by adding an
-expected_exit_timestamp attribute to ParkedVehicle, and parent_spot_id and child spot id to ParkingSpot. 
+How can we modify the existing data models to accommodate this functionality? What are the 
+algorithms and structures used to optimize parking and minimize the number of vehicles that 
+need to be moved during exits?
+
+The stacked parking can be represented with k stacks, where each stack has LIFO (stack) ordering for
+vehicles to park and unparked. 
+
+We can augment the existing data models by adding an expected_exit_timestamp attribute to 
+ParkedVehicle, and parent_spot_id and child spot id to ParkingSpot. 
+
 The expected time for the vehicle to exit can be used to determine the ordering in which 
 vehicles should be parked and stacked
 
@@ -91,29 +96,28 @@ entrances and exits, and a time buffer for vehicles that don't exit at the expec
 
 ### 6. Write out service definitions, APIs, interfaces, and/or classes
 
-The diagram below outlines the class hierarchy and includes the subclasses of Parkinglot
-Vehicle and Ticket. This is just one possible class hierarchy design, the fields and
-methods of classes are open-ended. You may notice that the fields of the dasses overlap with
-the attributes of the data models created in the previous steps. This is a recurring pattern in
-class hierarchy design and data modeling; the states of the objects often overlap with the data
-that is persisted to a database.
+The diagram below outlines a possible class hierarchy and includes the subclasses of ParkingLot,
+Vehicle, and Ticket. 
+
+The fields of the types overlap with the attributes of the data models created in the previous 
+steps as states of the objects often overlap with the data that is persisted to a database.
 
 ![Class Hierarchy](imgs/0112b.jpg)
 
-When designing a class hierarchy, think about answering:
-* What are the subclasses for the main classes? Are there any abstract classes?
-* What are the main methods and state variables for a class?
-* How do classes interact?
+When designing a type hierarchy, think about answering:
+* What are the submodules for the main module? Are there any interfaces?
+* What are the main methods and state variables?
+* How do types interact?
 
 ### 7. Identify and solve potential scaling problems and bottlenecks
 
-The QPS and the traffic of the system for this parking lot are low compared to the pena
-systems that we designed. But suppose that this system doesn't just manage a single parking
-lot, but all the parking lots in the world. The system may face burst wouge because peak heves
-of parking lots are clustered together. The following points could be used to see the systeme
+The QPS and the traffic of the system for this parking lot are low compared to previous systems. 
+But suppose that this system doesn't just manage a single parking lot, but all the parking lots in 
+the world. The system may face burst usage because peak hours of parking lots are clustered together. 
+The following points could be used to scale the systems
 
 * Adding memory caches may not be helpful since the entering and exiting of a vehicle
   are typically one-time requests.
-* Create database keys to avoid hotspots. A parking lot id maybe a poor choice to use a
-  a database key since the requests of a single parking lot may be dustered temporally
+* Create database keys to avoid hotspots. A parking lot id maybe a poor choice to use as
+  a database key since the requests of a single parking lot may be clustered temporally
 * Add autoscaling resources to the entrance and exit services during peak hours
