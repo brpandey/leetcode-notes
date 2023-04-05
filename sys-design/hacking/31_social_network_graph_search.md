@@ -48,7 +48,50 @@ The Profile data model is a sub-type of Entity; entities can be people,
 businesses, groups, and interests. This question assumes that a Profile refers to a person
 only for simplicity.
 
-![](imgs/0081.jpg)
+
+```mermaid
+erDiagram
+  Entity ||--|{ Edge : has
+  Entity ||--o{ ShortestPath : has
+  Entity ||--|| Profile : has
+   
+  Edge {
+    u64 id PK
+    u64 type
+    u64 entity_id
+    u64 target_entity_id
+    timestamp created
+  }
+    
+  Entity {
+    u64 id PK
+    u32 type
+    timestamp created
+  }
+  
+  ShortestPath {
+    u64 entity_id "CPK"
+    u64 target_entity_id "CPK"
+    u64 degrees_apart 
+    u32 num_common_friends
+    string common_friends "128 bytes"
+    string shortest_path "128 bytes"
+    timestamp updated
+  }
+  
+  Profile {
+    u64 id PK
+    u64 entity_id
+    u64 user_id
+    string username "512 bytes"
+    u32 profile_type
+    string profile_img_url "512 bytes"
+    string bio_text "2048 bytes"
+    timestamp update
+    timestamp created
+    u64 num_followers
+  }
+```
 
 An Edge is used to define direct connections between two entities and is used to traverse the
 social graph. 
