@@ -38,8 +38,37 @@ statistics are possible e.g.
       7. What should the max length of the shortened url generated token be?
 
 2. ### Data model
-      1. Short url record ~ 544 bytes, User record ~ 88 bytes, Click metric ~ 160 bytes
-      2. ![Short Url, User, Click Metric](imgs/0055.jpg)
+      Short url record ~ 544 bytes, User record ~ 88 bytes, Click metric ~ 160 bytes
+
+```mermaid
+  erDiagram
+    USER ||--|{ SHORT_URL: creates
+    SHORT_URL ||--|{ CLICK_METRIC: has
+    
+    SHORT_URL {
+        u64 id PK
+        timestamp created
+        timestamp expire
+        u64 user_id FK
+        string original_url "512 bytes"
+    }
+    
+    USER {
+        u64 id PK 
+        string name
+        string email "64 bytes"
+        timestamp created
+        timestamp updated
+    }
+    
+    CLICK_METRIC {
+        u64 id PK
+        u64 url_id
+        timestamp clicked
+        string user_ip "ipv6"
+        string metric_type "64 bytes - CPK?"
+    }
+```
 
 
 * Given n different characters and string length is k, n^k possible strings that can be generated.  See two examples:
