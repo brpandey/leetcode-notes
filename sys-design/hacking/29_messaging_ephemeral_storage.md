@@ -46,45 +46,59 @@ temporarily?
 ### 2. Define the data models
 The data models are similar to the previous question with some additional attributes:
 
+
+```mermaid
+erDiagram
+    MESSAGE }|--|| USER : belongs
+    MESSAGE }|--|| CONVERSATION : belongs
+    USER ||--|{ CONVERSATION_MEMBER : has 
+    CONVERSATION ||--|{ CONVERSATION_MEMBER : has 
+
+    MESSAGE {
+        u64 id PK
+        u64 user_id FK 
+        u64 convo_id FK
+        string text "2048 bytes"
+        string image_url "512 bytes"
+        string video_url "512 bytes"
+        u32 status
+        u32 state
+        timestamp created
+        timestamp expiration "new"
+        timestamp delivered "new"
+        timestamp read "new"
+    }
+
+    CONVERSATION {
+        u64 id PK "convo_id"
+        string convo_name "512 bytes"
+        string profie_image_url "512 bytes"
+        string bio_text "256 bytes"
+        timestamp created
+        timestamp update
+    }
+
+    USER {
+        u64 user_id PK
+        string username "64 bytes"
+        string name "64 bytes"
+        string email "64 bytes"
+        timestamp created
+        timestamp last_login
+        string profile_image_url "512 bytes"
+        string bio_text "256 bytes"
+    }
+
+    CONVERSATION_MEMBER {
+        u64 user_id "CPK"
+        u64 convo_id "CPK"
+        bool notification_on "(1 bit)"
+        bool is_owner "(1 bit)"
+        timestamp created
+        timestamp last_login
+    }
 ```
-Message
-msg id long (8 bytes) (PK)
-user_id long (8 bytes)
-convo id long (8 bytes)
-created_timestamp timestamp (8 bytes)
-text string (2040 bytes)
-image url string (512 bytes)
-video url string (512 bytos)
-status int (4 bytes)
-state int (4 bytes)
-expiration timestamp: timestamp (8 bytes)
-delivered timestamp timestamp (8 bytes)
-read_timestamp timestamp (8 bytes)
 
-Conversation
-convo_id long (long) (PK)
-convo_name string (512 bytes)
-profile_image_url string (512 bytes)
-created_timestamp timestamp (8 bytes)
-
-User
-user id, long (16 bytes) (PK)
-usernane, string (64 bytes)
-email: string (64 bytes)
-created timestamp: timestamp (8 bytes)
-last login timestamp: Smestamp (8 bytes)
-real name: string (64 bytes)
-profile image url string (512 bytes)
-bio text string 256 bytes)
-
-Conversation Member
-user_id long (8 bytes) (CPK)
-convo_id long (8 bytes) (CPK)
-notification_on boolean (1 bit)
-is owner boolean (1 bit)
-created_timestamp: timestamp (8 bytes)
-last login timestamp timestamo (0 bytes)
-```
 
 The expiration, delivered, and read timestamps are new attributes that will be used by servers
 to delete messages on the client and server. 

@@ -31,61 +31,67 @@
 
 2. Define the data models
 
-![](imgs/0075.jpg)
-
-```
-Passenger
-passenger, id: long (8 bytes) (PK)
-created_timestamp: timestamp (8 bytes)
-last timestamp: timestamp (8 bytes)
-primary location: string (128 bytes)
-status: int (4 bytes)
-image_url: string(256 bytes)
-rating double (3 bytes)
-bio: string (512 bytes)
-email: string (64 bytes)
-latitude: double (8 bytes)
-longitude: double (8 bytes)
-
-Trip
-trip_id: long (8 bytes) (PK)
-passenger_id: long (8 bytes)
-driver_id: long (6 bytes)
-start_timestamp: timestamp (8 bytes)
-end timestamp: timestamp (8 bytes)
-trip minutes: double (6 bytes)
-trip price: double (3 bytes)
-tip: double (8 bytes)
-surge pricing double (8 bytes)
-num passengers: int (4 bytes)
-distance double (8 bytes)
-start latitude: double (8 bytes)
-start longitude double (8 bytes)
-end latitude: double (8 bytes)
-end longitude: double (byles)
-
-Driver
-driver_id: long (8 bytes) (PK)
-created_timestamp: timestamp (8 bytes)
-last timestamp: timestamp (8 bytes)
-primary location: string (128 bytes)
-status: int (4 bytes)
-image_url: string (256 bytes)
-rating: double (8 bytes)
-bio: string (512 bytes)
-email: string (64 bytas)
-latitude: double (8 bytes)
-longitude: double (8 bytes)
-license number:string (15 bytes)
-vehicle type: int (4 bytes)
-vehicle color: string(8 bytes)
-
-TripReview
-trip_id: long (8 byles) (CPK)
-trip review_id long (8 bytes) (CPK)
-rating: double (8 bytes)
-review text: string(512 bytes)
-timestamp timestamp (8 bytes)
+```mermaid
+erDiagram
+  Passenger ||--|{ Trip : takes
+  Passenger {
+    u64 id PK
+    string email "64 bytes"
+    f64 rating
+    string bio "512 bytes"
+    string image_url "256 bytes"
+    u32 status
+    string primary_location "128 bytes"
+    f64 latitude
+    f64 longitude
+    timestamp created
+    timestamp last
+  }
+    
+  Trip ||--|| TripReview : receives
+  Trip {
+    u64 id PK
+    u64 passenger_id FK
+    u64 driver_id FK
+    timestamp start
+    timestamp end
+    f64 minutes
+    f64 price
+    f64 tip
+    f64 surge_pricing
+    u32 num_passengers
+    f64 distance
+    f64 start_latitude
+    f64 start_longitude
+    f64 end_latitude
+    f64 end_longitude
+  }
+  
+  TripReview {
+    u64 id "CPK"
+    u64 trip_id "CPK"
+    f64 rating
+    string review_text "512 bytes"
+    timestamp created
+  }
+  
+  Driver ||--|{ Trip : administers
+  Driver {
+    u64 id PK
+    u32 status
+    f64 rating
+    string bio "512 bytes"
+    string email "64 bytes"
+    string license_number "15 bytes"
+    string image_url "256 bytes"
+    u32 vehicle_type
+    string vehicle_color
+    timestamp created
+    timestamp last
+    string primary_location "128 bytes"
+    f64 latitude
+    f64 longitude
+  }
 ```
 
 These data models do not track the real-time telemetry measurements of an in-progress trip.

@@ -38,10 +38,11 @@ erDiagram
     MESSAGE {
         u64 id PK
         u64 user_id FK 
-        u64 convo_id FK
+        u64 convo_id FK "fk for conversation"
         string text "2048 bytes"
         string image_url "512 bytes"
         string video_url "512 bytes"
+        u32 status
     }
 
     MESSAGE_REACTION {
