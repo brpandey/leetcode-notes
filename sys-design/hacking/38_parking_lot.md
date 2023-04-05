@@ -28,9 +28,74 @@ Clarifying questions to ask:
 
 ### 2. Define the data models
 
-The data models of the databases are:
+The db data models
 
-![](imgs/0111.jpg)
+```mermaid
+erDiagram
+
+   ParkingLot ||--|{ ParkingSpot : contains
+   ParkingLot ||--|{ Entrance_Exit : has
+   Entrance_Exit ||--|{ Ticket : gives-takes
+   ParkedVehicle ||--|| Ticket : gets
+   Vehicle ||--|| ParkedVehicle : belongs
+   
+   ParkingLot {
+       u64 lot_id PK
+       u32 capacity
+       u32 spots_available
+       u32 lot_type
+       timestamp last
+       f64 open_time
+       f64 close_time
+   }
+   
+   ParkingSpot {
+       u64 id PK
+       u64 lot_id
+       f64 max_height
+       f64 max_width
+       f64 max_length
+       bool is_occupied "1 bit"
+       string lot_location "10 bytes"
+   }
+   
+   Entrance_Exit {
+       u64 id "CPK"
+       u64 lot_id FK "CPK"
+       f64 max_height
+       f64 max_width
+       timestamp last
+       bool is_open
+   }
+   
+   Ticket {
+       u64 id "CPK"
+       u64 vehicle_id "CPK"
+       u64 entrance_id
+       f64 cost
+       timestamp enter
+       timestamp exit
+   }
+
+   Vehicle {
+       u64 id "CPK"
+       u32 type
+       f64 length
+       f64 width
+       f64 height
+       string license_id "20 bytes"
+       u32 state
+   }
+   
+   ParkedVehicle {
+       u64 vehicle_id FK "CPK"
+       u64 spot_id FK "CPK"
+       timestamp start "CPK"
+       timestamp end
+       u64 ticket_id FK
+   }
+
+```
 
 ### 3. Make back-of-the-envelope estimates
 #### Users and Traffic
@@ -74,7 +139,30 @@ ParkedVehicle, and parent_spot_id and child spot id to ParkingSpot.
 The expected time for the vehicle to exit can be used to determine the ordering in which 
 vehicles should be parked and stacked
 
-![ParkedVehicle & ParkingSpot](imgs/0112a.jpg)
+```mermaid
+erDiagram
+   ParkedVehicle ||--|| ParkingSpot : has
+   ParkingSpot {
+       u64 id PK
+       u64 lot_id
+       f64 max_height
+       f64 max_width
+       f64 max_length
+       bool is_occupied "1 bit"
+       string lot_location "10 bytes"
+       u64 parent_spot_id "new"
+       u64 child_spot_id "new"
+   }
+   
+   ParkedVehicle {
+       u64 vehicle_id FK "CPK"
+       u64 spot_id FK "CPK"
+       timestamp start "CPK"
+       timestamp end
+       u64 ticket_id FK
+       timestamp expected_exit_time "new"
+   }
+```
 
 The parent and child parking spot ids are used to structure the ordering of the queue. A
 parent parking spot is blocked by a child parking spot, parent parking spots should be
