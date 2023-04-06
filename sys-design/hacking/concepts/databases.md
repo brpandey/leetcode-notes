@@ -185,42 +185,53 @@ The following diagram illustrates the drawing notation for the cardinality in ER
 * One-to-many
 * Many-to-many
 
+```mermaid
+erDiagram
+    Song }|--|{ Artist : has
+    Song }|--|| Album : belongs
+    Song ||--o{ SavedSong : has
+    Playlist ||--o{ SavedSong : has
+
+    Song {
+        long id PK
+        timestamp created
+        string title "128 bytes"
+        long artist_id
+        long album_id
+        string genre "20 bytes"
+        int song_length
+    }
+    
+    SavedSong {
+        long id PK
+        timestamp created
+        long song_id FK
+        long playlist_id FK
+    }
+    
+    Artist {
+        long id PK
+        timestamp created
+        string name "128 bytes"
+        string country "20 bytes"
+    }
+
+    Album {
+        long id PK
+        string name "128 bytes"
+        long artist_id FK
+        string description "256 bytes"
+        timestamp created
+    }
+
+    Playlist {
+        long id PK
+        string name "128 bytes"
+        long user_id
+        timestamp created
+    }
 ```
-Song
-song id: long (8 bytes) (PK)
-created_timestamp: timestamp (8 bytes)
-title: string (128 bytes)
-artist id: long (8 bytes)
-album_id: long (8 bytes)
-genre: string (20 bytes)
-song Jength: int (4 bytes)
-
-Saved Song
-saved song id: long (8 bytes) (PK)
-created imestamp: timestamp (8 bytes)
-song id: long (8 bytes)
-playlist id: long (8 bytes)
-
-Artist
-artist_id: long (8 bytes) (PK)
-created_timestamp: timestamp (8 bytes)
-artist name: string (128 bytes)
-country: string (20 bytes)
-
-Album
-albumid: long (8 bytes) (PK)
-created_timestamp: timestamp (8 bytes)
-album name: string (120 bytes)
-artist id: long (8 bytes)
-description: string (250 bytes)
-
-Playlist
-playlist id: long (8 bytes) (PK)
-created limestamp: timestamp (8 bytes)
-playlist name: string (128 bytes)
-user_id: long (8 bytes)
-```
-
+    
 #### Example ERD
 The Song entity has a strong one-to-many relationship with the Album entity since a song
 belongs to a single album, and an album can have multiple songs,
