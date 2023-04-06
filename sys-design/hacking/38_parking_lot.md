@@ -190,7 +190,132 @@ Vehicle, and Ticket.
 The fields of the types overlap with the attributes of the data models created in the previous 
 steps as states of the objects often overlap with the data that is persisted to a database.
 
-![Class Hierarchy](imgs/0112b.jpg)
+![Class Hierarchy](imgs/0112c.png)
+
+<!--
+
+```mermaid
+classDiagram
+    ParkingLot <|--|> ParkingSpot
+    ParkingLot <|-- MultiLevelParkingLot
+    ParkingLot <|-- AirportParkingLot
+    Vehicle <|--|> ParkingSpot
+    Vehicle <|--|> Ticket
+    Vehicle <|-- Car 
+    Vehicle <|-- Motorcycle
+    Ticket <|-- OneTimeTicket
+    Ticket <|-- ValetTicket
+    Ticket <|-- MonthlyPass
+    
+    class ParkingLot {
+      +long lot_id
+      +int capacity
+      +int spots_available
+      +enum lot_type
+      +double open_time
+      +double close_time
+      +get_num_spots_open(Vehicle): int
+      +get_open_time(): double
+      +get_close_time(): double
+      
+    }
+    
+    class MultiLevelParkingLot {
+      +int num_levels
+      +int num_buildings
+      +list handicap_levels
+      +get_buildings(): list
+      +get_handicap_levels(): list
+    }
+    
+    class AirportParkingLot {
+      +string terminal
+      +int num_long_term_spots
+      +string closest_train
+      +get_terminal() : string
+      +get_long_term_spots(): int
+      +get_train() : string
+    }
+    
+    class ParkingSpot {
+      +long spot_id
+      +long lot_id
+      +double max_height
+      +double max_width
+      +boolean is_occupied
+      +string lot_location
+      +park() : boolean
+      +is_open() : boolean
+      +vehicle_fits(Vehicle) : boolean
+      +dimensions() : tuple
+      +get_lot_location() : string
+    }
+    
+    class Vehicle {
+      +long vehicle_id
+      +enum vehicle_type
+      +double height 
+      +double width 
+      +double length
+      +string color
+      +string license_id
+      +enum state
+      +get_dimensions() : tuple
+      +get_state() : enum
+    }
+    
+    class Car {
+      +enum car_type
+      +boolean is_electric
+      +int num_passengers
+      +boolean handicap_accessible
+      +double turning_radius
+      +get_electric() : enum
+      +get_passengers() : int
+    }
+    
+    class Motorcycle {
+      +boolean is_small
+      +int num_wheels
+      +is_small() : boolean
+      +get_num_wheels(): int
+    }
+    
+    class Ticket {
+      +long ticket_id
+      +long vehicle_id
+      +long lot_id
+      +double cost
+      +timestamp enter_timestamp
+      +timestamp exit_timestamp
+      +calclate_cost(): double
+      +start_park(): boolean
+      +end_park(): boolean
+    }
+    
+    class OneTimeTicket {
+      +timestamp use_date
+      +double prepaid_amount
+      +get_date() : timestamp
+      +get_balance() : double
+    }
+    
+    class ValetTicket {
+      +string attendant
+      +timestamp return_time
+      +get_attendant() : string
+      +get_return_time() : timestamp
+    }
+    
+    class MonthlyPass {
+      +timestamp start_day
+      +timestamp end_day
+      +get_start_day(): timestamp
+      +get_end_day(): timestamp
+    }
+
+```
+-->
 
 When designing a type hierarchy, think about answering:
 * What are the submodules for the main module? Are there any interfaces?
