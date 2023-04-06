@@ -29,11 +29,11 @@
 * Can passengers reserve a trip beforehand?
 * What is the burst usage compared to the normal usage?
 
-2. Define the data models
+### 2. Define the data models
 
 ```mermaid
 erDiagram
-  Passenger ||--|{ Trip : takes
+  Passenger ||..|{ Trip : takes
   Passenger {
     u64 id PK
     string email "64 bytes"
@@ -75,7 +75,7 @@ erDiagram
     timestamp created
   }
   
-  Driver ||--|{ Trip : administers
+  Driver ||..|{ Trip : administers
   Driver {
     u64 id PK
     u32 status
@@ -115,7 +115,7 @@ mile.
 #### QPS (Queries per second)
 
 * The number of trip requests is:
-  * 200 million trips per month/ (30 days 24 hours 60 minutes* 60 seconds)
+  * 200 million trips per month/ (30 days * 24 hours * 60 minutes* 60 seconds)
   * =~77 trips per second
 
 * Assume that during each trip, the client makes 10 requests per second for telemetry.

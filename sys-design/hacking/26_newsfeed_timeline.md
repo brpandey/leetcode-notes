@@ -55,38 +55,37 @@ An Item has 3636 bytes, not including the media data in the object store.
 
 ```mermaid
 erDiagram
-    PROFILE }|--|{ USER : has
-    PROFILE ||--|{ ITEM : has
-    ITEM ||--|{ NEWSFEED_ITEM : has
-    ITEM ||--|{ TIMELINE_ITEM : has
+    PROFILE }|..|{ USER : has
+    PROFILE ||..|{ ITEM : has
+    ITEM ||..|{ NEWSFEED_ITEM : has
+    ITEM ||..|{ TIMELINE_ITEM : has
 
     PROFILE {
-        u64 id PK
-        u64 user_id 
-        string username
-        u32 profile_type
+        u64 id PK "8 bytes"
+        u64 user_id  "8 bytes"
+        string username "512 bytes"
+        u32 profile_type "4 bytes"
         string profile_img_url "512 bytes"
         string bio_text "2048 bytes"
-        timestamp update_ts
-        timestamp created_ts
-        u64 num_followers
-
+        timestamp update "8 bytes"
+        timestamp created "8 bytes"
+        u64 num_followers "8 bytes"
     }
     USER {
-        u64 id PK 
+        u64 id PK "8 bytes"
         string name "128 bytes"
         string email "128 bytes"
-        timestamp created
-        timestamp login
+        timestamp created "8 bytes"
+        timestamp login "8 bytes"
     }
     
     ITEM {
-        u64 id PK
-        u64 profile_id 
-        u32 type
-        timestamp created
-        u64 num_likes
-        u64 num_hearts
+        u64 id PK "8 bytes"
+        u64 profile_id "8 bytes"
+        u32 type "4 bytes"
+        timestamp created "8 bytes"
+        u64 num_likes "8 bytes"
+        u64 num_hearts "8 bytes"
         string text "2048 bytes"
         string image_url "512 bytes"
         string video_url "512 bytes"
@@ -94,18 +93,18 @@ erDiagram
     }
     
     NEWSFEED_ITEM {
-        u64 id PK
-        u64 item_id FK
-        u64 user_id FK
-        timestamp created
-        u32 ranking
+        u64 id PK "8 bytes"
+        u64 item_id FK "8 bytes"
+        u64 user_id FK "8 bytes"
+        timestamp created "8 bytes"
+        u32 ranking "4 bytes"
     }
     
     TIMELINE_ITEM {
-        u64 id PK
-        u64 item_id FK
-        u64 user_id FK
-        timestamp created
+        u64 id PK "8 bytes"
+        u64 item_id FK "8 bytes"
+        u64 user_id FK "8 bytes"
+        timestamp created "8 bytes"
         boolean visible "1 bit"
     }
 ```
@@ -129,7 +128,7 @@ posts and media data from the previous design question remain the same.
 
 * We previously assumed 500 million MAU registered users.
 * On average, assume that each user accesses the application once a day and triggers a
-request for the newsfeed. This means -15 billion newsfeed requests per month.
+request for the newsfeed. This means ~15 billion newsfeed requests per month.
 * Assume each generated newsfeed has 50 items.
 * On average, each user accesses 3 profiles each day, which includes a request for a
 timeline. This means ***-45 billion timeline requests per month.***
@@ -139,13 +138,13 @@ timeline. This means ***-45 billion timeline requests per month.***
 
 * The number of newsfeed requests per second is:
     15 billion newsfeeds per month / (30 days* 24 hours * 60 minutes 60 seconds)
-    = -5.8k newsfeeds per second
+    = ~5.8k newsfeeds per second
     = ~290k newsfeed items per second
 
 The number of timeline requests per second is:
 45 billion timelines per month / (30 days * 24 hours * 60 minutes* 60 seconds)
-= -17.4k timelines per second
-= -520k timeline items per second
+= ~17.4k timelines per second
+= ~520k timeline items per second
 
 #### Bandwidth Usage
 
@@ -154,10 +153,10 @@ newsfeeds are relatively smaller sized. Assume the average size of a post with
 an image or video was estimated to be 21.25 MB:
 
 * Outbound (egress) bandwidth for newsfeeds the number of newsfeed requests 
-  *size of a post with image or video:
-  290k timeline items per second * 21.25 MB = -6.2 TB per second
+  Size of a post with image or video:
+  290k timeline items per second * 21.25 MB = ~6.2 TB per second
 * Outbound (egress) bandwidth for timelines = the number of timeline requests size of a post
-  with image or video: 520k timeline items per second 21.25 MB = -11 TB per second
+  with image or video: 520k timeline items per second 21.25 MB = ~11 TB per second
 
 #### Memory
 
@@ -165,8 +164,8 @@ Estimate the newsfeeds/timeline amount that are computed beforehand and kept in 
 
 * Assuming we can correctly predict the newsfeeds and timelines that will be accessed
 in the next half hour, the memory usage of the cache is:
-  * -6.2 TB per second * 1800 seconds = ~11 PB for newsfeeds
-  * -11 TB per second * 1800 seconds=-20 PB for timelines
+  * ~6.2 TB per second * 1800 seconds = ~11 PB for newsfeeds
+  * ~11 TB per second * 1800 seconds= ~20 PB for timelines
 
 This estimate contains memory usage for both the database and object storage; if images and
 videos are excluded because of CDN usage, the memory usage will be lower.
@@ -177,10 +176,10 @@ In the previous question, we calculated that posts consume about 82 TB per year 
 usage and 127 PB per year of object storage. Calculate the additional storage cost of timelines
 and newsfeeds:
 
-* 15 billion newsfeeds per month * 50 items 36 bytes per newsfeed item
+* 15 billion newsfeeds per month * 50 items * 36 bytes per newsfeed item
   * =~27 TB per month= ~320 TB per year
-* 45 billion timelines per month 30 items 32 bytes per timeline item
-  * =-43 TB per month= -518 TB per year
+* 45 billion timelines per month * 30 items * 32 bytes per timeline item
+  * =~43 TB per month= ~518 TB per year
 
 Compared to the posts storage from before, these values are relatively small. This is because
 the newsfeed and timeline do not store the underlying posts but only the lists metadata that refer to the posts

@@ -124,7 +124,7 @@ consumer messaging system, but the same concepts can be extended to the pub sub 
   Should the queue support different message orderings (ie, priority-based)
   other than FIFO?
 
-2 Define the data models
+### 2 Define the data models
 Messages of a distributed queue are held in memory. However, if the queue nears capacity or
 message remains unconsumed for an extended period, older messages are placed into a
 database to free up memory for new messages.
@@ -164,7 +164,7 @@ The size of a message is ~256 KB, and the attributes are:
 * consumed_timestamp: if present, indicates that a consumer has already
   processed this message.
 
-3. Make back-of-the-envelope estimates
+### 3. Make back-of-the-envelope estimates
 Users and Traffic
 * Assume 100 million DAU use services that use the distributed queue.
 * Assume that each user makes, on average, 10 requests per day that each result in a
@@ -173,7 +173,7 @@ Users and Traffic
 QPS (Queries per second)
 
 * 1 billion messages per day / (24 hours 60 minutes 60 seconds)
-  =-11500 messages per second
+  = ~11500 messages per second
 
 Memory
 
@@ -181,7 +181,7 @@ Memory
   regardless of if the message was consumed.
 * Assume that 90% of the messages are consumed within 24 hours.
 * Over 24 hours, the max amount of memory needed is:
-  11500 messages per second 256 KB 24 hours= -254 TB
+  11500 messages per second * 256 KB * 24 hours= ~254 TB
 
 #### 4. Propose a high-level system design
 

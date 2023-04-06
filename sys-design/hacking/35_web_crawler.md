@@ -57,25 +57,25 @@ can be generated with the parent_page_id and parent_url attributes.
 
 ```mermaid
    erDiagram
-       Page ||--}| Keyword : contains
+       Page ||..}| Keyword : contains
        
        Page {
-           u64 id PK
+           u64 id PK "8 bytes"
            string url "500 bytes"
-           u64 signature
-           u64 duplicate_page_id FK "self referential"
-           timestamp updated
+           u64 signature "8 bytes"
+           u64 duplicate_page_id FK "self referential 8 bytes"
+           timestamp updated "8 bytes"
            string parent_url "500 bytes"
-           u64 parent_page_id FK "self referential"
+           u64 parent_page_id FK "self referential 8 bytes"
            bytes contents "500 KB"
        }
        
        Keyword {
-           u64 id "CPK"
-           u64 page_id FK "CPK"
-           f64 ranking
+           u64 id "CPK 8 bytes"
+           u64 page_id FK "CPK 8 bytes"
+           f64 ranking "8 bytes"
            string text "100 bytes"
-           timestamp updated
+           timestamp updated "8 bytes"
        }
 ```
 
@@ -88,20 +88,20 @@ can be generated with the parent_page_id and parent_url attributes.
   This means 10 billion unique web pages to crawl.
 * Assume that the web crawler needs to check each web page at least once a week to
   ensure that the content is updated regularly. This means that the web crawler needs to
-  crawl -40 billion web pages a month.
+  crawl ~40 billion web pages a month.
 
 #### QPS (Queries per second)
 * The number of web pages that the crawler needs to process per second:
-40 billion web pages per month / (30 days 24 hours 60 minutes 60 seconds)
-=-15,000 web pages per second
+40 billion web pages per month / (30 days * 24 hours *  60 minutes *  60 seconds)
+=~15,000 web pages per second
 
 #### Storage
 * Assume that each web page is about 500KB. A web crawler generally exclude
 multimedia files and only retains the text and metadata for a web page.
-* 10 billion web pages 500 KB=-5 PB
+* 10 billion web pages * 500 KB = ~5 PB
 
 #### Bandwidth Usage
-• -15k web pages per second 500 KB = 7.5 GB per second
+• ~15k web pages per second * 500 KB = 7.5 GB per second
 
 ### 4. Propose a high-level system design
 

@@ -49,53 +49,53 @@ The data models are similar to the previous question with some additional attrib
 
 ```mermaid
 erDiagram
-    MESSAGE }|--|| USER : belongs
-    MESSAGE }|--|| CONVERSATION : belongs
-    USER ||--|{ CONVERSATION_MEMBER : has 
+    MESSAGE }|..|| USER : belongs
+    MESSAGE }|..|| CONVERSATION : belongs
+    USER ||..|{ CONVERSATION_MEMBER : has 
     CONVERSATION ||--|{ CONVERSATION_MEMBER : has 
 
     MESSAGE {
-        u64 id PK
-        u64 user_id FK 
-        u64 convo_id FK
+        u64 id PK "8 bytes"
+        u64 user_id FK "8 bytes"
+        u64 convo_id FK "8 bytes"
         string text "2048 bytes"
         string image_url "512 bytes"
         string video_url "512 bytes"
-        u32 status
-        u32 state
-        timestamp created
-        timestamp expiration "new"
-        timestamp delivered "new"
-        timestamp read "new"
+        u32 status "4 bytes"
+        u32 state "4 bytes"
+        timestamp created "8 bytes"
+        timestamp expiration "new 8 bytes"
+        timestamp delivered "new 8 bytes"
+        timestamp read "new 8 bytes"
     }
 
     CONVERSATION {
-        u64 id PK "convo_id"
+        u64 id PK "convo_id 8 bytes"
         string convo_name "512 bytes"
         string profie_image_url "512 bytes"
         string bio_text "256 bytes"
-        timestamp created
-        timestamp update
+        timestamp created "8 bytes"
+        timestamp update "8 bytes"
     }
 
     USER {
-        u64 user_id PK
+        u64 id PK "user_id 8 bytes"
         string username "64 bytes"
-        string name "64 bytes"
+        string name "real name 64 bytes"
         string email "64 bytes"
-        timestamp created
-        timestamp last_login
+        timestamp created "8 bytes"
+        timestamp last_login "8 bytes"
         string profile_image_url "512 bytes"
         string bio_text "256 bytes"
     }
 
     CONVERSATION_MEMBER {
-        u64 user_id "CPK"
-        u64 convo_id "CPK"
+        u64 user_id "CPK 8 bytes"
+        u64 convo_id "CPK 8 bytes"
         bool notification_on "(1 bit)"
         bool is_owner "(1 bit)"
-        timestamp created
-        timestamp last_login
+        timestamp created "8 bytes"
+        timestamp last_login "8 bytes"
     }
 ```
 
@@ -124,10 +124,10 @@ Use the same message estimates from the previous question:
 * 3:2 read/write ratio
 
 #### Storage
-* The previous estimate was -1.4 PB per month (~17 PB per year) of database usage.
+* The previous estimate was ~1.4 PB per month (~17 PB per year) of database usage.
 However, since messages are ephemeral and continuously deleted, assume that the
-number of messages stored at any given point is -1 day's worth of messages. This
-would mean -47 TB of database storage.
+number of messages stored at any given point is ~1 day's worth of messages. This
+would mean ~47 TB of database storage.
 
 * Estimate a similar decrease in object storage since images and videos are deleted
 with their corresponding messages. The previous estimate of 1725 PB per month is

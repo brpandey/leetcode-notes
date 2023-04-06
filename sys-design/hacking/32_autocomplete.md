@@ -81,22 +81,22 @@ we could use the data models:
 
 ```mermaid
 erDiagram
-    TrieNode ||--|{ TopSearch : contains
+    TrieNode ||..|{ TopSearch : contains
 
     TrieNode {
-        u64 id PK
+        u64 id PK "8 bytes"
         char char_value "1 byte"
-        u64 parent_node_id FK "self-referential"
-        u64 count
-        timestamp updated
+        u64 parent_node_id FK "self-referential 8 bytes"
+        u64 count "8 bytes"
+        timestamp updated "8 bytes"
     }
 
     TopSearch {
-        u64 id PK
-        u64 node_id
-        u32 rank
+        u64 id PK "8 bytes"
+        u64 node_id "8 bytes"
+        u32 rank "4 bytes"
         string phrase "512 bytes"
-        timestamp updated
+        timestamp updated "8 bytes"
     }
 ```
 
@@ -130,9 +130,9 @@ between nodes and top search phrases. A TrieNode is 33 bytes, and a TopSearch is
 
 #### Bandwidth Usage
 * Assume that k (the number of top search results per partial phrase) is 5.
-* Outbound (egress) bandwidth = number of autocompletes* size of top search results:
+* Outbound (egress) bandwidth = number of autocompletes * size of top search results:
     11.5k autocompletes per second * 5 * 540 bytes
-    = -31 MB per second
+    = ~31 MB per second
 
 #### Memory & Storage
 
@@ -144,9 +144,9 @@ included in the trie.
 * For example, the trie shouldn't include the prefix "gz" but does need the prefix "ga."
 * If we limit the autocomplete to the first 15 chars (including space), we can estimate
   the number of nodes:
-  * 40* 10 = 4000 trillion nodes
+  * 40 * 10 = 4000 trillion nodes
 If each node holds k-5 top search results, the total trie size is:
-  * 4000 trillion nodes (33 bytes + 5* 540 bytes) = ~11000 PB
+  * 4000 trillion nodes * (33 bytes + 5 * 540 bytes) = ~11000 PB
 
 The exponential nature of the trie quickly becomes a scaling problem where a
 single or group of servers may not be able to hold the entirety of the trie in memory (or

@@ -55,36 +55,36 @@ be "is friends with" or "lives in" or "liked."*
 
 ```mermaid
 erDiagram
-    ENTITY ||--}| EDGE : has
-    ENTITY ||--}| SEARCHRESULT: has
-    SEARCHQUERY ||--}| SEARCHRESULT : has
+    ENTITY ||..}| EDGE : has
+    ENTITY ||..}| SEARCHRESULT: has
+    SEARCHQUERY ||..}| SEARCHRESULT : has
 
     EDGE {
-        u64 id PK
-        u64 type
-        u64 entity_id FK
-        u64 target_entity_id FK
-        timestamp created
+        u64 id PK "8 bytes"
+        u64 type "8 bytes"
+        u64 entity_id FK "8 bytes"
+        u64 target_entity_id FK "8 bytes"
+        timestamp created "8 bytes"
     }
     ENTITY {
-        u64 id PK
-        u32 type
-        timestamp created
+        u64 id PK "8 bytes"
+        u32 type "4 bytes"
+        timestamp created "8 bytes"
     }
     SEARCHRESULT {
-        u64 id PK
-        u64 entity_id FK
-        u64 user_id FK
-        u64 search_query_id FK
-        timestamp created 
-        string keywords
-        u64 search_score
+        u64 id PK "8 bytes"
+        u64 entity_id FK "8 bytes"
+        u64 user_id FK "8 bytes"
+        u64 search_query_id FK "8 bytes"
+        timestamp created "8 bytes"
+        string keywords "128 bytes"
+        f64 search_score "8 bytes"
     }
     SEARCHQUERY {
-        u64 id PK
-        u64 user_id FK
+        u64 id PK "8 bytes"
+        u64 user_id FK "8 bytes"
         string search_text "512 bytes"
-        timestamp created
+        timestamp created "8 bytes"
     }
 ```
 
@@ -105,20 +105,20 @@ million other entities such as people, events, groups, or pages added per month.
 #### QPS (Queries per second)
 The number of search requests per second is:
 5 billion searches per month / (30 days 24 hours * 60 minutes* 60 seconds)
-= -2,000 searches per second
+= ~2,000 searches per second
 
 #### Bandwidth Usage
 
 * Inbound (ingress) bandwidth = 2,000 searches per second * 536 bytes
-  = -1 MB per second
+  = ~1 MB per second
 * Assume each search query returns on average 10 search results, meaning 20,000 search
   results per second.
 * Outbound (egress) bandwidth = 20,000 search results per second * 176 bytes
-  = -3.5 MB per second
+  = ~3.5 MB per second
 
 #### Memory
 * Assume that servers will keep the search results in memory for an hour.
-  -3.5 MB per second 3600 seconds = ~12 GB
+  ~3.5 MB per second 3600 seconds = ~12 GB
 
 #### Storage
 

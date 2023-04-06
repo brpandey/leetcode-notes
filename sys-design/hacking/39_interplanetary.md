@@ -126,16 +126,16 @@ Data that needs to be persisted are stored as messages
    erDiagram
 
    Message {
-       u64 id PK
-       u64 type 
+       u64 id PK "8 bytes"
+       u64 type "8 bytes"
        binary payload "256 bytes"
        string payload_type "128 bytes"
-       u32 retry_attempts
-       u64 parent_msg_id FK "self-referential"
-       u64 child_msg_id FK "self-referential"
-       timestamp created
-       timestamp expiration
-       timestamp ack
+       u32 retry_attempts "4 bytes"
+       u64 parent_msg_id FK "self-referential 8 bytes"
+       u64 child_msg_id FK "self-referential 8 bytes"
+       timestamp created "8 bytes"
+       timestamp expiration "8 bytes"
+       timestamp ack "8 bytes"
    }
 ```
 
@@ -148,17 +148,19 @@ If the attributes are fully used, the size of Message is 444 bytes.
 * Assume the Mars colony has 10 million residents that use system services
 * Assume Each resident generates 100 requests a day.
 * The number of requests per month:
-    10 million DAU 100 requests per day 30 days 300 billion requests
+    10 million DAU * 100 requests per day * 30 days = 300 billion requests
 
 QPS (Queries per second)
 * The number of requests per second is:
-    10 billion requests per day / (24 hours 60 minutes 60 seconds)
+    10 billion requests per day / (24 hours * 60 minutes * 60 seconds)
     =~115k requests per second
 
 Bandwidth Usage
 * Assuming that the inbound and outbound bandwidth usage are the same and that
   each message is 444 bytes:
-    115k requests per second 444 bytes=-51MB per second
+    115k requests per second * 444 bytes = ~51MB per second
+    or
+* Shortcut => 100*10^3 * 450 = 4.5 * 10^7 or 45 MB per second
 
 ### 4. Propose a high level system design
 The system design below uses the "Interplanetary Transmission Service" to reliably deliver and
@@ -303,7 +305,7 @@ the transmission service to check if the data has been corrupted:
   not match, the receiver requests retransmission.
 
 
-#### 7. Identify and solve potential scaling problems and bottlenecks
+### 7. Identify and solve potential scaling problems and bottlenecks
 
 On unreliable networks, data loss events can be correlated. That is, if one service experiences
 packet loss, other services are likely to experience packet loss as well. This causes

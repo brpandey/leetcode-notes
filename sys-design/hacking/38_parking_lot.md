@@ -32,69 +32,68 @@ The db data models
 
 ```mermaid
 erDiagram
-
-   ParkingLot ||--|{ ParkingSpot : contains
-   ParkingLot ||--|{ Entrance_Exit : has
-   Entrance_Exit ||--|{ Ticket : gives-takes
-   ParkedVehicle ||--|| Ticket : gets
+   ParkingLot ||..|{ ParkingSpot : contains
+   ParkingLot ||..|{ Entrance_Exit : has
+   Entrance_Exit ||..|{ Ticket : gives-takes
+   ParkedVehicle ||..|| Ticket : gets
+   ParkedVehicle ||--|| ParkingSpot : has
    Vehicle ||--|| ParkedVehicle : belongs
    
    ParkingLot {
-       u64 lot_id PK
-       u32 capacity
-       u32 spots_available
-       u32 lot_type
-       timestamp last
-       f64 open_time
-       f64 close_time
+       u64 lot_id PK "8 bytes"
+       u32 capacity "4 bytes"
+       u32 spots_available "4 bytes"
+       u32 lot_type "4 bytes"
+       timestamp last "8 bytes"
+       f64 open_time "8 bytes"
+       f64 close_time "8 bytes"
    }
    
    ParkingSpot {
-       u64 id PK
-       u64 lot_id
-       f64 max_height
-       f64 max_width
-       f64 max_length
+       u64 id PK "8 bytes"
+       u64 lot_id FK "8 bytes"
+       f64 max_height "8 bytes"
+       f64 max_width "8 bytes"
+       f64 max_length "8 bytes"
        bool is_occupied "1 bit"
        string lot_location "10 bytes"
    }
    
    Entrance_Exit {
-       u64 id "CPK"
-       u64 lot_id FK "CPK"
-       f64 max_height
-       f64 max_width
-       timestamp last
-       bool is_open
+       u64 id "CPK 8 bytes"
+       u64 lot_id FK "CPK 8 bytes"
+       f64 max_height "8 bytes"
+       f64 max_width "8 bytes"
+       timestamp last "8 bytes"
+       bool is_open "1 bit"
    }
    
    Ticket {
-       u64 id "CPK"
-       u64 vehicle_id "CPK"
-       u64 entrance_id
-       f64 cost
-       timestamp enter
-       timestamp exit
+       u64 id "CPK 8 bytes"
+       u64 vehicle_id "CPK 8 bytes"
+       u64 entrance_id "8 bytes"
+       f64 cost "8 bytes"
+       timestamp enter "8 bytes"
+       timestamp exit "8 bytes"
    }
 
    Vehicle {
-       u64 id "CPK"
-       u32 type
-       f64 length
-       f64 width
-       f64 height
+       u64 id "CPK 8 bytes"
+       u32 type "4 bytes"
+       f64 length "8 bytes"
+       f64 width "8 bytes"
+       f64 height "8 bytes"
        string license_id "20 bytes"
-       u32 state
+       u32 state "4 bytes"
    }
    
    ParkedVehicle {
-       u64 vehicle_id FK "CPK"
-       u64 spot_id FK "CPK"
-       timestamp start "CPK"
-       timestamp end
-       u64 ticket_id FK
+       u64 vehicle_id FK "CPK 8 bytes"
+       u64 spot_id FK "CPK 8 bytes"
+       timestamp start "CPK 8 bytes"
+       timestamp end "8 bytes"
+       u64 ticket_id FK "8 bytes"
    }
-
 ```
 
 ### 3. Make back-of-the-envelope estimates
@@ -104,7 +103,8 @@ erDiagram
 * The parking lot is open 24 hours a day, 7 days a week.
 
 #### QPS (Queries per second)
-* The number of write requests per second is: 20k parkings per day / (60 seconds)
+* The number of write requests per second is: 20k parkings per day / (24 hours * 60 minutes * 60 seconds)
+  = 20*10<sup>3</sup> / 86400 = 0.24 / sec or
   = ~1 parking every 4 seconds
 
 ### 4. Propose a high-level system design

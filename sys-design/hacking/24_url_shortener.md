@@ -38,48 +38,63 @@ statistics are possible e.g.
       7. What should the max length of the shortened url generated token be?
 
 2. ### Data model
-      Short url record ~ 544 bytes, User record ~ 88 bytes, Click metric ~ 160 bytes
 
 ```mermaid
   erDiagram
-    USER ||--|{ SHORT_URL: creates
+    USER ||..|{ SHORT_URL: creates
     SHORT_URL ||--|{ CLICK_METRIC: has
     
     SHORT_URL {
-        u64 id PK
-        timestamp created
-        timestamp expire
-        u64 user_id FK
+        u64 id PK "url_id 8 bytes"
+        timestamp created "8 bytes"
+        timestamp expire "8 bytes"
+        u64 user_id FK "8 bytes"
         string original_url "512 bytes"
     }
     
     USER {
-        u64 id PK 
-        string name
+        u64 id PK "8 bytes"
         string email "64 bytes"
-        timestamp created
-        timestamp updated
+        timestamp created "8 bytes"
+        timestamp updated "8 bytes"
     }
     
     CLICK_METRIC {
-        u64 id PK
-        u64 url_id
-        timestamp clicked
-        string user_ip "ipv6"
-        string metric_type "64 bytes - CPK?"
+        u64 id PK "8 bytes"
+        u64 url_id "8 bytes"
+        timestamp clicked "8 bytes"
+        string user_ip "ipv6 8 bytes"
+        string metric_type "64"
     }
 ```
 
+> ShortUrl record ~ 544 bytes, User record ~ 88 bytes, Click metric ~ 160 bytes
+ShortUrl is the data model that holds the original URL which is sent to users who request the short url.
+The url_id attribute is used as part of the short URL that is returned to the user: tinyurl.com/<url_id>
+
+There are a few methods to generate the url_id
+
+Approaches - Generating short url generated id
+* Snowflake - e.g. generating a unique 64 bit id. The generated unique id will contain timestamp and 
+              machine id.  An obfuscation function can hide these values by creating another equivalent id
+              from the unique id, but that is not as easily interpreted (e.g. how they've created 3000 more urls since last time)
+* Cryptographic Hash - low collision and unique hash output
+* GUID generator - verify generated id has not been previously used.
 
 * Given n different characters and string length is k, n^k possible strings that can be generated.  See two examples:
   *  A binary string of length 3, has two values 0 or 1 for each binary value so 2^3 = 8, or 8 possible string values
   *  For a short url using 26 letters (a-z) and 10 digits (0-9) => 36 characters
-  *  Given a length of 8, this would mean 36^8 ~ 2.8 billion possible short urls
+  *  Given a length of 8, this would mean 36^8 ~ 2.8 trillion possible short urls
+  
+  This possible short urls is well with the upper limit of 3.6 billion short URLs created per year from below:
+  * 300 million writes / month * 12 months = 3.6 billion short URLs
 
-Approaches - Generating short url generated id
-* Snowflake
-* Cryptographic Hash
-* GUID generator
+* Short Url record has 544 bytes
+* User record has 88 bytes
+* Click Metric record has 160 bytes
+
+A metric is a measurement associated with a click e.g. user's web browser type, time spent on webpage, html metadata.
+A single click can generate multiple metrics.  ClickMetric stores such metrics.
 
 3. ### Back-of-the-envelope Calculations
     1. Assume 100 million (10^8) MAU - monthly active users that creates urls
@@ -135,11 +150,11 @@ Approaches - Generating short url generated id
    ```mermaid
    erDiagram
        Statistic {
-        u64 statistic_id
-        string statistic_type
-        u64 user_id
-        u64 timestamp
-        u64 value
+        u64 statistic_id "8 bytes"
+        string statistic_type "64 bytes"
+        u64 user_id "8 bytes"
+        u64 timestamp "8 bytes"
+        u64 value "8 bytes"
     }
     ```
    

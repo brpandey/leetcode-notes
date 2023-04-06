@@ -189,7 +189,7 @@ one that uses a hash map.
 #### Users and Traffic
 * Assume that there are 4 billion videos on YouTube.
 * Assume 1 billion DAU users watch 1 video a day.
-* This means the total view count will increase by 1 billion each day, or 30 billion a
+* This means the total view count will increase by 1 billion each day, or 30 billion a month
 
 #### QPS (Queries per second)
 * The number of view requests per second is:
@@ -198,16 +198,15 @@ one that uses a hash map.
 
 #### Memory
 * Assume each counter uses about 100 bytes, which includes metadata of the item.
-* Assume that N-1000 (the number of items in the Top N list).
+* Assume that N=1000 (the number of items in the Top N list).
 * Assume there are 200 categories and 10 time ranges. The system will not need to track
   separate counts per time range but does need to for each category.
 
-* The upper limit of memory usage for a hash map containing all the counts, per
-  category is:
-    4 billion videos 100 bytes 200 categories=80 TB
+* The upper limit of memory usage for a hash map containing all the counts, per category is:
+    4 billion videos * 100 bytes * 200 categories = 80 TB
 
 * For a count-min sketch with a width of 20000 and height of 500, memory usage is
-    20000 * 500*100*bytes * 200 categories = 200 GB
+    20000 * 500 * 100 bytes * 200 categories = 200 GB
   The count-min sketch uses ~ 0.25% of the memory of the hash map.
 
 ### 4. Propose a high-level system design

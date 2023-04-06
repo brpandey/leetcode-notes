@@ -137,15 +137,29 @@ Three main components in ERDs:
 * Relationships
 
   Relationships are represented by lines between entities.
+  
+  Relationships may be classified as either identifying or non-identifying and these are rendered with either solid or dashed lines respectively. This is relevant when one of the entities in question can not have independent existence without the other. For example a firm that insures people to drive cars might need to store data on NAMED-DRIVERs. In modelling this we might start out by observing that a CAR can be driven by many PERSON instances, and a PERSON can drive many CARs - both entities can exist without the other, so this is a non-identifying relationship that we might specify in Mermaid as: PERSON }|..|{ CAR : "driver". 
+  
+  Note the two dots in the middle of the relationship that will result in a dashed line being drawn between the two entities. But when this many-to-many relationship is resolved into two one-to-many relationships, we observe that a NAMED-DRIVER cannot exist without both a PERSON and a CAR - the relationships become identifying and would be specified using hyphens, which translate to a solid line:
+  
+  ```mermaid
+  erDiagram
+      CAR ||--o{ NAMED-DRIVER : allows
+      PERSON ||--o{ NAMED-DRIVER : is
+  ```
+  
   * A solid line means a strong (identifying) relationship. This means that the child entity's
     primary key contains the parent entity's primary key.
-    A strong entity can be uniquely identified by its own attributes.
+
+  * A dashed line means a weak (non-identifying) relationship where neither entity contains the
+    other's primary key in their primary key.
+
+  * A strong entity can be uniquely identified by its own attributes.
     Therefore, the entity’s existence does not depend on any other entity
     * a Dormitory can be uniquely identified by its name and location.
     * a US Bank is uniquely identified by its bank number.
-  * A dashed line means a weak (non-identifying) relationship where neither entity contains the
-    other's primary key in their primary key.
-    A weak entity cannot be uniquely identified by its own attributes.
+
+  * A weak entity cannot be uniquely identified by its own attributes.
     Thus, you must add attributes to the weak entity to uniquely identify it.
 
     This means you must extend the weak entity’s primary key to include one or more attributes 
@@ -153,6 +167,7 @@ Three main components in ERDs:
     * a Room in a Dormitory needs the Dormitory information as part of its identity.
     * an Account may be identified by an AccountNumber, but it is meaningless without being 
       associated with a Bank
+
 
 #### Cardinality and Modality
 Cardinality refers to the maximum number of elements of an entity that are associated with
@@ -187,48 +202,48 @@ The following diagram illustrates the drawing notation for the cardinality in ER
 
 ```mermaid
 erDiagram
-    Song }|--|{ Artist : has
-    Song }|--|| Album : belongs
-    Song ||--o{ SavedSong : has
+    Song }|..|{ Artist : has
+    Song }|..|| Album : belongs
+    Song ||..o{ SavedSong : has
     Playlist ||--o{ SavedSong : has
 
     Song {
         long id PK
         timestamp created
         string title "128 bytes"
-        long artist_id
-        long album_id
+        long artist_id "8 bytes"
+        long album_id "8 bytes"
         string genre "20 bytes"
-        int song_length
+        int song_length "4 bytes"
     }
     
     SavedSong {
-        long id PK
-        timestamp created
-        long song_id FK
-        long playlist_id FK
+        long id PK "8 bytes"
+        timestamp created "8 bytes"
+        long song_id FK "8 bytes"
+        long playlist_id FK "8 bytes"
     }
     
     Artist {
-        long id PK
-        timestamp created
+        long id PK "8 bytes"
+        timestamp created "8 bytes"
         string name "128 bytes"
         string country "20 bytes"
     }
 
     Album {
-        long id PK
+        long id PK "8 bytes"
         string name "128 bytes"
-        long artist_id FK
+        long artist_id FK "8 bytes"
         string description "256 bytes"
-        timestamp created
+        timestamp created "8 bytes"
     }
 
     Playlist {
-        long id PK
+        long id PK "8 bytes"
         string name "128 bytes"
-        long user_id
-        timestamp created
+        long user_id "8 bytes"
+        timestamp created "8 bytes"
     }
 ```
     
@@ -237,10 +252,12 @@ The Song entity has a strong one-to-many relationship with the Album entity sinc
 belongs to a single album, and an album can have multiple songs,
 
 The Saved_Song entity represents a song that is added to a playlist.
-* It has a weak one to-many relationship with the Song entity since multiple users can save
+* It has a weak (non-identifying) one to-many relationship with the Song entity since multiple users can save
   the same song to a playlist. Its existence depends on the existence of the Song entity.
-* Saved_Song has a strong/weak? one-to-many relationship with the Playlist since it
-  must belong to a playlist, and a playlist can have multiple songs
+  
+* Saved_Song has a strong (identifying) one-to-many relationship with the Playlist since it
+  must belong to a playlist, and a playlist can have multiple songs. A saved song can't
+  exist on its own but must be in a playlist.
 
 ### 4. Relational vs. NoSQL Databases
 

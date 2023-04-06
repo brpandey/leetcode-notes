@@ -29,56 +29,56 @@ The following shows a set of data models that are used for a persistent messagin
 
 ```mermaid
 erDiagram
-    MESSAGE }|--|| USER : belongs
-    MESSAGE }|--|| CONVERSATION : belongs
-    MESSAGE ||--|{ MESSAGE_REACTION : has
-    USER ||--|{ CONVERSATION_MEMBER : has 
-    CONVERSATION ||--|{ CONVERSATION_MEMBER : has 
+    MESSAGE }|..|| USER : belongs
+    MESSAGE }|..|| CONVERSATION : belongs
+    MESSAGE ||..|{ MESSAGE_REACTION : has
+    USER ||..|{ CONVERSATION_MEMBER : has 
+    CONVERSATION ||..|{ CONVERSATION_MEMBER : has 
 
     MESSAGE {
-        u64 id PK
-        u64 user_id FK 
-        u64 convo_id FK "fk for conversation"
+        u64 id PK "8 bytes"
+        u64 user_id FK "8 bytes"
+        u64 convo_id FK "8 bytes"
         string text "2048 bytes"
         string image_url "512 bytes"
         string video_url "512 bytes"
-        u32 status
+        u32 status "4 bytes"
     }
 
     MESSAGE_REACTION {
-        u64 user_id "CPK"
-        u64 msg_id "CPK"
-        timestamp created 
-        u32 reaction_type
+        u64 user_id "CPK 8 bytes"
+        u64 msg_id "CPK 8 bytes"
+        timestamp created "8 bytes"
+        u32 reaction_type "4 bytes"
     }
 
     CONVERSATION {
-        u64 id PK
+        u64 id PK "8 bytes"
         string convo_name "512 bytes"
         string profie_image_url "512 bytes"
         string bio_text "256 bytes"
-        timestamp created
-        timestamp update
+        timestamp created "8 bytes"
+        timestamp update "8 bytes"
     }
 
     USER {
-        u64 user_id PK
+        u64 user_id PK "8 bytes"
         string username "64 bytes"
         string name "64 bytes"
         string email "64 bytes"
-        timestamp created
-        timestamp last_login
+        timestamp created "8 bytes"
+        timestamp last_login "8 bytes"
         string profile_image_url "512 bytes"
         string bio_text "256 bytes"
     }
 
     CONVERSATION_MEMBER {
-        u64 user_id "CPK"
-        u64 convo_id "CPK"
+        u64 user_id "CPK 8 bytes"
+        u64 convo_id "CPK 8 bytes"
         bool notification_on "(1 bit)"
         bool is_owner "(1 bit)"
-        timestamp created
-        timestamp last_login
+        timestamp created "8 bytes"
+        timestamp last_login "8 bytes"
     }
 ```
 
@@ -112,12 +112,12 @@ and the underlying image or video files are held in object storage.
 #### Storage
 
 Assume that each message has 1 reaction on average:
-* 450 billion messages per month (3100 bytes + 36 bytes) = -163 GB per month
-  = ~1.4 PB per month= -17 PB per year
+* 450 billion messages per month (3100 bytes + 36 bytes) = ~163 GB per month
+  = ~1.4 PB per month= ~17 PB per year
 
-Assume that 1 in 10 messages contain an image and 1 in 30 messages contain a video. If each image is --5 MB and each video is -100 MB, the estimates for object store usage:
-* 1/10* 450 billion messages * 5 MB = 225 PB per month
-* 1/30 450 billion messages * 5 MB = 1500 PB per month
+Assume that 1 in 10 messages contain an image and 1 in 30 messages contain a video. If each image is ~~5 MB and each video is ~100 MB, the estimates for object store usage:
+* 1/10 * 450 billion messages * 5 MB = 225 PB per month
+* 1/30 * 450 billion messages * 5 MB = 1500 PB per month
 
 #### QPS (Queries per second)
 * The number of messages per second written and read per second:
@@ -126,7 +126,7 @@ Assume that 1 in 10 messages contain an image and 1 in 30 messages contain a vid
 
 #### Bandwidth Usage
 * Inbound (ingress) bandwidth = the number of write requests per-message size:
-  175k writes per second (3100 bytes + 36 bytes)
+  175k writes per second * (3100 bytes + 36 bytes)
   = ~550 MB per second
 
 * Outbound (egress) bandwidth = read-to-write ratio incoming bandwidth:
@@ -143,10 +143,10 @@ Assume that 1 in 10 messages contain an image and 1 in 30 messages contain a vid
 * The memory used by the application servers at any given time should be the combined
   bandwidth of ingress and egress over the time it takes for messages to be delivered or
   stored. Assuming this is 30 seconds:
-  30 seconds (550 MB + 825 MB) = ~41 GB
+  30 seconds * (550 MB + 825 MB) = ~41 GB
 
 * However, we assume that during heavy and burst usage, we may need to serve 50 times
-  the volume of normal steady-state requests. This would mean -2 TB of memory is
+  the volume of normal steady-state requests. This would mean ~2 TB of memory is
   needed during burst periods.
 
 ### 4. Propose a high-level system design

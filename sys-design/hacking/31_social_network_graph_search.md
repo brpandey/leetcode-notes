@@ -48,48 +48,49 @@ The Profile data model is a sub-type of Entity; entities can be people,
 businesses, groups, and interests. This question assumes that a Profile refers to a person
 only for simplicity.
 
+> ShortestPath here is the Shortest Edge in a sense
 
 ```mermaid
 erDiagram
-  Entity ||--|{ Edge : has
-  Entity ||--o{ ShortestPath : has
-  Entity ||--|| Profile : has
+  Entity ||..|{ Edge : has
+  Entity ||..o{ ShortestPath : has
+  Entity ||..|| Profile : has
    
   Edge {
-    u64 id PK
-    u64 type
-    u64 entity_id
-    u64 target_entity_id
-    timestamp created
+    u64 id PK "8 bytes"
+    u64 type "8 bytes"
+    u64 entity_id "8 bytes"
+    u64 target_entity_id "8 bytes"
+    timestamp created "8 bytes"
   }
     
   Entity {
-    u64 id PK
-    u32 type
-    timestamp created
+    u64 id PK "8 bytes"
+    u32 type "4 bytes"
+    timestamp created "8 bytes"
   }
   
   ShortestPath {
-    u64 entity_id "CPK"
-    u64 target_entity_id "CPK"
-    u64 degrees_apart 
-    u32 num_common_friends
+    u64 entity_id "CPK 8 bytes"
+    u64 target_entity_id "CPK 8 bytes"
+    u64 degrees_apart "8 bytes"
+    u32 num_common_friends "4 bytes"
     string common_friends "128 bytes"
     string shortest_path "128 bytes"
-    timestamp updated
+    timestamp updated "8 bytes"
   }
   
   Profile {
-    u64 id PK
-    u64 entity_id
-    u64 user_id
+    u64 id PK "8 bytes"
+    u64 entity_id "8 bytes"
+    u64 user_id "8 bytes"
     string username "512 bytes"
-    u32 profile_type
+    u32 profile_type "4 bytes"
     string profile_img_url "512 bytes"
     string bio_text "2048 bytes"
-    timestamp update
-    timestamp created
-    u64 num_followers
+    timestamp update "8 bytes"
+    timestamp created "8 bytes"
+    u64 num_followers "8 bytes"
   }
 ```
 
@@ -106,7 +107,7 @@ This step will estimate the additional cost of the graph search and the common f
 #### Users and Traffic
 * Assume 500 million MAU registered users.
 * On average, assume each user has 300 friends, which means *150 billion edges*.
-* For 2nd-degree connections, this means a total of 300 300 500 million=-45
+* For 2nd-degree connections, this means a total of 300 300 500 million=~45
   trillion possible Shortest Path entries, assuming the worst case of no friend
   overlaps.
 * For 3rd-degree connections, this is ~13.5 quadrillion possible Shortest Path
@@ -124,16 +125,14 @@ This step will estimate the additional cost of the graph search and the common f
 #### Storage
 Estimating the additional storage cost of the connections:
 * 2nd degree connections: 45 trillion possible Shortest Path * 292 bytes = ~13 PB
-* 3rd degree connections: 3.5 quadrillion possible Shortest Path 292 bytes= ~4
-  Exabytes
+* 3rd degree connections: 3.5 quadrillion possible Shortest Path 292 bytes= ~4 Exabytes
 
 While it might be possible to precompute the 2nd-degree connections, the number of possible
 3rd-degree connections makes an on-demand graph search more sensible.
 
 #### Bandwidth Usage
-* Outbound (egress) bandwidth = number of search requests per second * size of 
-* Shortest Path:
-    10k searches per second 292 bytes=-3 MB per second
+* Outbound (egress) bandwidth = number of search requests per second * size of Shortest Path:
+    10k searches per second * 292 bytes = ~3 MB per second
 
 ### 4. Propose a high-level system design
 In the design below, the Graph Search Service handles requests for searches between two
@@ -166,8 +165,8 @@ A more efficient approach would be to perform a bidirectional search, which is a
 algorithm that runs two simultaneous searches: 1) a forward search from the worcenter,
 and 2) a backward search from the target vertex. The goal of the search is to meet in the middle,
 and by performing both forward and backward searches, the time and space complexity of
-each search is O(b^d/2), for an overall complexity of O(b^d/2+b^d/2)=O(b^d/2). This complexity is
-much less than O(b^d), especially for large values of b and d.
+each search is O(b<sup>d/2</sup>), for an overall complexity of O(b<sup>d/2</sup>+b<sup>d/2</sup>)=O(b<sup>d/2</sup>). This complexity is
+much less than O(b<sup>d</sup>), especially for large values of b and d.
 
 ![](imgs/0083.jpg)
 

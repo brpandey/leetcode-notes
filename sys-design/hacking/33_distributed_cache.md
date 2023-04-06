@@ -110,13 +110,13 @@ cryptographic hash is CRC16.
 #### QPS (Queries per second)
 * Assume each user makes 10 read requests per day to the services that use the
   distributed cache:
-  * 1 billion read requests per day / (24 hours 60 minutes 60 seconds)
-  = -11500 reads per second
+  * 1 billion read requests per day / (24 hours * 60 minutes * 60 seconds)
+  = ~11500 reads per second
 
 #### Memory
 * Assume that each read request results in cache data of 10 MB. Over two hours, the
   cache size needed is:
-  * 11500 reads per second 10 MB 7200 seconds= -830 TB
+  * 11500 reads per second * 10 MB * 7200 seconds= ~830 TB
 
 * This required size for a cache exceeds the capacity of a single server or machine.
 

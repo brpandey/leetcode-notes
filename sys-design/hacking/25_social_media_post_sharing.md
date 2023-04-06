@@ -53,55 +53,53 @@ the size and length of the images and videos?
 
 ```mermaid
 erDiagram
-    PROFILE }|--|{ USER : has
-    PROFILE ||--|{ EDGE : contains 
-    PROFILE ||--o{ ACTION : contains
-    PROFILE ||--|{ POST : contains
+    PROFILE }|..|{ USER : has
+    PROFILE ||..|{ EDGE : contains 
+    PROFILE ||..o{ ACTION : contains
+    PROFILE ||..|{ POST : contains
     PROFILE {
-        u64 id PK
-        string user_id FK
-        string username
-        u32 profile_type
-        string profile_img_url
-        string bio_text
-        timestamp update_ts
-        timestamp created_ts
-        u64 num_followers
-
+        u64 id PK "8 bytes"
+        u64 user_id FK "8 bytes"
+        string username "512 bytes"
+        u32 profile_type "4 bytes"
+        string profile_img_url "512 bytes"
+        string bio_text "2048 bytes"
+        timestamp update "8 bytes"
+        timestamp created "8 bytes"
+        u64 num_followers "8 bytes"
     }
     USER {
-        u64 id PK 
-        string name
-        string email
-        timestamp created
-        timestamp login
+        u64 id PK "8 bytes"
+        string name "128 bytes"
+        string email "512 bytes"
+        timestamp created "8 bytes"
+        timestamp login "8 bytes"
     }
-    POST ||--o{ ACTION : contains
+    POST ||..o{ ACTION : contains
     POST {
-        u64 id PK 
-        u64 profile_id FK
-        timestamp created
-        string text
-        u64 num_likes
-        u64 num_hearts
-        string image_url
-        string video_url
+        u64 id PK "8 bytes"
+        u64 profile_id FK "8 bytes"
+        timestamp created "8 bytes"
+        string text "2048 bytes"
+        u64 num_likes "8 bytes"
+        u64 num_hearts "8 bytes"
+        string image_url "512 bytes"
+        string video_url "512 bytes"
     }
     EDGE {
-        u64 profile_id PK "CPK"
-        u64 target_profile_id PK "CPK"
-        u64 edge_type
-        timestamp created
-        bool is_pending
-        bool notification_on 
+        u64 profile_id PK "CPK 8 bytes"
+        u64 target_profile_id PK "CPK 8 bytes"
+        u64 edge_type "8 bytes"
+        timestamp created "8 bytes"
+        bool is_pending "1 bit"
+        bool notification_on "1 bit"
     }
-
     ACTION {
-        u64 profile_id PK "CPK"
-        u64 post_id PK "CPK"
-        u32 action_type PK "CPK"
-        timestamp created 
-        string comment_text
+        u64 profile_id PK "CPK 8 bytes"
+        u64 post_id PK "CPK 8 bytes"
+        u32 action_type PK "CPK 4 bytes"
+        timestamp created "8 bytes"
+        string comment_text "2048 bytes"
     }
 ```
 
@@ -152,7 +150,7 @@ storage in powers of 10
 500 million posts per month / (30 days * 24 hours* 60 minutes * 60 seconds
 = ~192 post writes per second
 
-*Shortcut => 500 * 10<sup>6</sup> / 2 * 10<sup>6</sup> => ~ 250 post wps*
+*Shortcut => 500 * 10<sup>6</sup> / 2 * 10<sup>6</sup> => ~250 post wps*
 
 * The number of read requests per second is:
 10 billion posts per month / (30 days * 24 hours* 60 minutes * 60 seconds

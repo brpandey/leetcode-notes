@@ -108,7 +108,7 @@ arrival, and the leaky bucket rate limiter allows requests to be taken off the q
 rate. This algorithm protects servers against burst traffic, allowing servers to process requests
 at a rate that is known to be below capacity.
 
-![](imgs/0107a.jpg
+![](imgs/0107a.jpg)
 
 In a **token bucket** algorithm, the rate limiter allows requests as long as there are sufficient
 tokens. Each request that is allowed uses up a token, and tokens are refilled at a fixed rate. It
@@ -128,7 +128,7 @@ varying request flow but prevents bursts that occur over longer periods.
 
 #### QPS (Queries per second)
 * The average requests per second:
-  10 billion requests per day / (24 hours 60 minutes * 60 seconds)
+  10 billion requests per day / (24 hours *  60 minutes * 60 seconds)
   =~*115k requests per second*
 * During non-peak hours, the cluster of 25 servers has the capacity to handle this usage.
 * During peak hours, at three times the normal traffic, there are 345k requests per
