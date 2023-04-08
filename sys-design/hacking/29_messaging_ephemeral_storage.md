@@ -1,4 +1,4 @@
-29. Design a Messaging Application with Ephemeral Messages - 6
+## 29. Design a Messaging Application with Ephemeral Messages - 6
 
 > A messaging application with ephemeral messages are deleted on the client and/or
 > the server after they are delivered and read.
@@ -150,7 +150,40 @@ are placed into the pending database message, to be retried when the user logs i
 * **Wipeout Service**: Periodically checks and deletes expired messages and objects from
 the pending messages database, push notification queues, and object storage.
 
+### 5. Design components in detail
+
+The implementation of the push notification service uses ephemeral (temporary) queues to
+minige messages and a dispatcher that delivers the messages to users with a FIFO round-robin policy.
+
 ![](imgs/0074b.jpg)
+
+The benefits of using temporary queues are:
+
+* Provide a lightweight communication channel that allows threads and processes to
+communicate without locks or RPC method overhead.
+* Allows a dispatcher to asynchronously deliver messages and control the rate of
+processing messages. This regulates periods of high traffic without requiring
+additional computational resources.
+* Allows better scalability: the service is easily parallelizable since the number of threads
+or processes used by the dispatcher(s) can be increased by an arbitrarily large amount
+without concerns of race conditions or bottlenecks.
+* Queues are created per producer. A round-robin FIFO policy ensures a quality of
+service across different message producers and prevents a single producer from
+overusing their share of resources.
+* When no longer used, queues are automatically cleaned up, matching the
+behavior of the ephemeral behavior of the messages.
+
+Temporary queues are a common design pattern used in request-response messaging systems.
+
+The logic for message retries and retrieval should exhibit idempotence, that is, calling the
+methods of the push notification service more than once with the same inputs should not
+impact the results. 
+
+Additionally, the client-side application should be an idempotent consumer, which is a message 
+consumer that can handle duplicate and out-of-sequence messages correctly.
+
+### 6. Write out service definitions, APIs, interfaces, and/or classes
+The service definition of PushNotificationService:
 
 ```
 PushNotificationservice
