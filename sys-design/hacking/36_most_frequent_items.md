@@ -118,7 +118,7 @@ Suppose a view for video id 1 occurs, and afterward, a view for a video id 2 occ
 The count min sketch hashes each of the video ids using the hash functions and gets
 the following hash outputs:
 
-> h1(id1)=2, h2(id2)=4, h3(id1)=3, h4(id1)=1
+> h1(id1)=2, h2(id1)=4, h3(id1)=3, h4(id1)=1
 
 > h1(id2)=4, h2(id2)=1, h3(id2)=3, h4(id2)=5
 
@@ -153,9 +153,9 @@ same.
 To retrieve the estimated count, calculate the hash values for the item id, and then take the
 minimum of all the counts of the (hash function, hash output) pairs. Formally, this is
 
-```
-count(x) = min^height(i=1) count[h1(x)]
-```
+
+count(x) = min<sup>height</sup><sub>(i=1)</sub> count[h1(x)]
+
 
 To retrieve the view count for video id_2, use the same hash values from before, and find the
 counts of each of (hash function, hash output) pairs
@@ -171,8 +171,9 @@ Taking the min of all the counts: count (id_2) = min ([1, 1, 2,1]) = 1.
 
 As the height and width of the count-min sketch are increased, the probability of hash
 collisions decreases, and the accuracy of the count increases. However, the space complexity
-Because of hash collisions, some of the estimated counts will be greater than the actual count
 of the count-min sketch is height width: there is a tradeoff between space and accuracy.
+Because of hash collisions, some of the estimated counts will be greater than the actual count
+
 
 Taking the minimum of the relevant counts reduces the overestimation, but there will still be
 some over estimation because there are fewer (hash function, hash otput) pairs than is. A
@@ -230,8 +231,8 @@ data processing pipeline will perform a degree of aggregation and send the aggre
 lover frequency to the next layer. The Realtime Count Service also aggregates the count-min
 sketches at a 5-minute interval before updating the Realtime Database.
 
-Updating the count-min sketch in each database from multiple servers is straightforward: cach
-cement of the count-min sketch can be added elementwise to an existing count-min sketch to
+Updating the count-min sketch in each database from multiple servers is straightforward: each
+element of the count-min sketch can be added elementwise to an existing count-min sketch to
 get the summed count-min sketch.
 
 ### 5. Design components in detail
@@ -286,7 +287,26 @@ some accuracy.
 Other popular sketch data structures are *bloom filter* and the *hyperloglog*:
 
 * The bloom filter is used to test if an element is in a set. It can generate false
-  positives, but not false negatives. 
+  positives (false yes), but not false negatives (false no). 
+  
+| x1 | h1 | h2 | h3 | h4 | h5 |
+|----| ---| ---| ---|---|---|
+| out|  0 |  1 |  0 |  1 |  0 |
+
+* Assume we do hash functions h1-h5 on x1, if the hash functions produce a 1 for h2 and h4 for x1 then mark as above
+* If x2 is hashed in the similiar way, with value 1 for h2 and h4 and h5, then the table becomes:
+
+| x1,x2 | h1 | h2 | h3 | h4 | h5 |
+|----| ---| ---| ---|---|---|
+| out|  0 |  1 |  0 |  1 |  1 |
+
+* x2's values potentially mask x1's hashed values, thus x1 could be present or not, as only an x2 could be present (false positive)
+* But if there is a 0 in the value for h2, then we know for sure that x1 or x2 has not been seen (hence no false negative):
+
+|   | h1 | h2 | h3 | h4 | h5 |
+|----| ---| ---| ---|---|---|
+| out|  0 |  0 |  0 |  1 |  1 |  
+  
 * The hyperloglog is used to determine the approximate cardinality of a set (set size).
 
 Both sketch structures use a small amount of memory compared to their accurate counterparts.
